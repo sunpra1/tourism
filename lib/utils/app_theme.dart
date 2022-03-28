@@ -18,7 +18,6 @@ class AppTheme {
     gradient: LinearGradient(
       colors: [
         Colors.green,
-        Colors.green.shade600,
         Colors.green.shade800,
       ],
       begin: Alignment.topCenter,
