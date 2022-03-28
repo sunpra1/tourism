@@ -10,6 +10,10 @@ class AppTheme {
         headline4: const TextStyle(fontFamily: AppTheme.fontFamilySans),
         headline5: const TextStyle(fontFamily: AppTheme.fontFamilySans),
         headline6: const TextStyle(fontFamily: AppTheme.fontFamilySans),
+        labelSmall: const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 12),
+        labelMedium: const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 14),
+        labelLarge: const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 16),
+        titleLarge: const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 18),
       );
   static ColorScheme colorScheme =
       ColorScheme.fromSwatch(primarySwatch: Colors.blue)

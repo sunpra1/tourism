@@ -26,9 +26,4 @@ class DrawerMenu {
   }
 }
 
-enum DrawerMenuType {
-  login,
-  register,
-  home,
-  places
-}
+enum DrawerMenuType { login, register, home, places }
