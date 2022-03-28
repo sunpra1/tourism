@@ -13,9 +13,19 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  static const _KEY_FULL_NAME = "fullName";
+  static const _KEY_EMAIL = "email";
+  static const _KEY_MOBILE_NUMBER = "mobileNumber";
+  static const _KEY_PASSWORD = "password";
+  static const _KEY_CONFIRM_PASSWORD = "cPassword";
+
   bool isPasswordEnabled = true;
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController cPasswordController = TextEditingController();
 
   FocusNode fullNameFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
@@ -23,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
   FocusNode passwordFocusNode = FocusNode();
   FocusNode cPasswordFocusNode = FocusNode();
 
-  HashMap<String, String> formValues = HashMap<String, String>();
+  HashMap<String, String> formErrors = HashMap<String, String>();
 
   @override
   void dispose() {
@@ -35,10 +45,140 @@ class _RegisterPageState extends State<RegisterPage> {
     cPasswordFocusNode.dispose();
   }
 
+  bool _validateFullName({bool displayError = true}) {
+    bool isValid = true;
+    String value = fullNameController.value.text;
+    print(value);
+    if (value.isEmpty) {
+      formErrors[_KEY_FULL_NAME] = "Full name is required.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_FULL_NAME)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateEmail({bool displayError = true}) {
+    bool isValid = true;
+    String value = emailController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_EMAIL] = "Email is required.";
+      isValid = false;
+    } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+        .hasMatch(value)) {
+      formErrors[_KEY_EMAIL] = "Email is not valid.";
+      isValid = false;
+    }
+    if (formErrors.containsKey(_KEY_EMAIL)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateMobileNumber({bool displayError = true}) {
+    bool isValid = true;
+    String value = mobileNumberController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_MOBILE_NUMBER] = "Mobile number is required.";
+      isValid = false;
+    } else if (!RegExp(r"^(?:[+0]9)?[0-9]{10,12}$").hasMatch(value)) {
+      formErrors[_KEY_MOBILE_NUMBER] = "Mobile number is not valid.";
+      isValid = false;
+    }
+    if (formErrors.containsKey(_KEY_MOBILE_NUMBER)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validatePassword({bool displayError = true}) {
+    bool isValid = true;
+    String value = passwordController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_PASSWORD] = "Password is required.";
+      isValid = false;
+    } else if (value.length < 6) {
+      formErrors[_KEY_PASSWORD] =
+          "Password must be at-least six characters long.";
+      isValid = false;
+    } else if (!RegExp("^(?=.*[A-Z])(?=.*[!@#\$&*])(?=.*[0-9]).{6}\$")
+        .hasMatch(value)) {
+      formErrors[_KEY_PASSWORD] =
+          "Password must al-least contain one uppercase letter, one special character, and one number.";
+      isValid = false;
+    }
+    if (formErrors.containsKey(_KEY_PASSWORD)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateCPassword({bool displayError = true}) {
+    bool isValid = true;
+    String value = cPasswordController.value.text;
+    String password = passwordController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_CONFIRM_PASSWORD] = "Password is required.";
+      isValid = false;
+    } else if (value.length < 6) {
+      formErrors[_KEY_CONFIRM_PASSWORD] =
+          "Password must be at-least six characters long.";
+      isValid = false;
+    } else if (!RegExp("^(?=.*[A-Z])(?=.*[!@#\$&*])(?=.*[0-9]).{6}\$")
+        .hasMatch(value)) {
+      formErrors[_KEY_CONFIRM_PASSWORD] =
+          "Password must al-least contain one uppercase letter, one special character, and one number.";
+      isValid = false;
+    } else if (value != password) {
+      formErrors[_KEY_CONFIRM_PASSWORD] =
+          "Confirm password doesn't match with password.";
+      isValid = false;
+    }
+    if (formErrors.containsKey(_KEY_CONFIRM_PASSWORD)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validate() {
+    bool isValid = true;
+    if (_validateFullName(displayError: false)) {
+      isValid = false;
+    }
+    if (_validateEmail(displayError: false)) {
+      isValid = false;
+    }
+    if (_validateMobileNumber(displayError: false)) {
+      isValid = false;
+    }
+    if (_validatePassword(displayError: false)) {
+      isValid = false;
+    }
+    if (_validateCPassword(displayError: false)) {
+      isValid = false;
+    }
+
+    if (!isValid) {
+      setState(() {});
+    }
+
+    return isValid;
+  }
+
+  void _clearError(String key) {
+    HashMap<String, String> newErrors = HashMap.from(formErrors);
+    if (newErrors.containsKey(key)) {
+      newErrors.remove(key);
+    }
+    setState(() {
+      formErrors = newErrors;
+    });
+  }
+
   void _onFormSubmitted() {
-    if (formKey.currentState != null && formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-      //TODO
+    if (_validate()) {
+      print("Form is valid");
     }
   }
 
@@ -49,19 +189,28 @@ class _RegisterPageState extends State<RegisterPage> {
       height: double.infinity,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Card(
             shadowColor: Colors.black,
             elevation: 8,
-            child: Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    TextFormField(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+              child: Column(
+                children: [
+                  Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        _clearError(_KEY_FULL_NAME);
+                      else
+                        _validateFullName();
+                    },
+                    child: TextFormField(
+                      controller: fullNameController,
                       focusNode: fullNameFocusNode,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        errorText: formErrors[_KEY_FULL_NAME],
+                        errorMaxLines: 2,
                         contentPadding: EdgeInsets.only(left: 12, right: 12),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -74,20 +223,22 @@ class _RegisterPageState extends State<RegisterPage> {
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) =>
                           FocusScope.of(context).requestFocus(emailFocusNode),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Full name is required";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        formValues["fullName"] = value!;
-                      },
                     ),
-                    const SizedBox(height: 18.0),
-                    TextFormField(
+                  ),
+                  const SizedBox(height: 18.0),
+                  Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        _clearError(_KEY_EMAIL);
+                      else
+                        _validateEmail();
+                    },
+                    child: TextFormField(
+                      controller: emailController,
                       focusNode: emailFocusNode,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        errorText: formErrors[_KEY_EMAIL],
+                        errorMaxLines: 2,
                         contentPadding: EdgeInsets.only(left: 12, right: 12),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -100,24 +251,22 @@ class _RegisterPageState extends State<RegisterPage> {
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
                           .requestFocus(mobileNumberFocusNode),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Email is required";
-                        } else if (!RegExp(
-                                "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}\$")
-                            .hasMatch(value)) {
-                          return "Please provide valid email address";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        formValues["email"] = value!;
-                      },
                     ),
-                    const SizedBox(height: 18.0),
-                    TextFormField(
+                  ),
+                  const SizedBox(height: 18.0),
+                  Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        _clearError(_KEY_MOBILE_NUMBER);
+                      else
+                        _validateMobileNumber();
+                    },
+                    child: TextFormField(
+                      controller: mobileNumberController,
                       focusNode: mobileNumberFocusNode,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        errorText: formErrors[_KEY_MOBILE_NUMBER],
+                        errorMaxLines: 2,
                         contentPadding: EdgeInsets.only(left: 12, right: 12),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -126,30 +275,26 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         labelText: "MOBILE NUMBER",
                       ),
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
                           .requestFocus(passwordFocusNode),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Mobile number is required";
-                        } else if (!RegExp(
-                                "^([1-9]\d{2})([- .])(\d{3})\$2(\d{4})\$")
-                            .hasMatch(value)) {
-                          return "Please provide valid mobile number";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          formValues["mobileNumber"] = value;
-                        }
-                      },
                     ),
-                    const SizedBox(height: 18.0),
-                    TextFormField(
+                  ),
+                  const SizedBox(height: 18.0),
+                  Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        _clearError(_KEY_PASSWORD);
+                      else
+                        _validatePassword();
+                    },
+                    child: TextFormField(
+                      controller: passwordController,
                       focusNode: passwordFocusNode,
                       decoration: InputDecoration(
+                        errorText: formErrors[_KEY_PASSWORD],
+                        errorMaxLines: 2,
                         contentPadding: EdgeInsets.only(left: 12, right: 12),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -173,22 +318,22 @@ class _RegisterPageState extends State<RegisterPage> {
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => FocusScope.of(context)
                           .requestFocus(cPasswordFocusNode),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Password is required";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          formValues["password"] = value;
-                        }
-                      },
                     ),
-                    const SizedBox(height: 18.0),
-                    TextFormField(
+                  ),
+                  const SizedBox(height: 18.0),
+                  Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        _clearError(_KEY_CONFIRM_PASSWORD);
+                      else
+                        _validateCPassword();
+                    },
+                    child: TextFormField(
+                      controller: cPasswordController,
                       focusNode: cPasswordFocusNode,
                       decoration: InputDecoration(
+                        errorText: formErrors[_KEY_CONFIRM_PASSWORD],
+                        errorMaxLines: 2,
                         contentPadding: EdgeInsets.only(left: 12, right: 12),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -211,37 +356,26 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _onFormSubmitted(),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Confirm password is required";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          formValues["cPassword"] = value;
-                        }
-                      },
                     ),
-                    const SizedBox(height: 18.0),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).colorScheme.secondary),
-                          shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero),
-                          ),
+                  ),
+                  const SizedBox(height: 18.0),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary),
+                        shape: MaterialStateProperty.all(
+                          const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero),
                         ),
-                        onPressed: () => _onFormSubmitted(),
-                        child: const Text("LOGIN"),
                       ),
-                    )
-                  ],
-                ),
+                      onPressed: () => _onFormSubmitted(),
+                      child: const Text("REGISTER"),
+                    ),
+                  )
+                ],
               ),
             ),
           ),

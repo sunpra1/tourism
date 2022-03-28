@@ -38,6 +38,13 @@ class AppDrawer extends StatelessWidget {
 class AppDrawerBanner extends StatelessWidget {
   const AppDrawerBanner({Key? key}) : super(key: key);
 
+  void _handleLoginBtnClick(BuildContext context) {
+    context
+        .read<ActiveDrawerMenuProvider>()
+        .setActiveDrawerMenu(DrawerMenuType.login);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,17 +65,23 @@ class AppDrawerBanner extends StatelessWidget {
                 children: [
                   Text(
                     "KERALA TOURISM",
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.white),
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
                         minimumSize: MaterialStateProperty.all(Size(60, 36)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24)))),
-                    onPressed: () {},
+                    onPressed: () => _handleLoginBtnClick(context),
                     child: Text(
                       "LOGIN",
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: Colors.white),
                     ),
                   )
                 ],
@@ -103,7 +116,7 @@ class AppDrawerMenuItem extends StatelessWidget {
 
   const AppDrawerMenuItem({Key? key, required this.menu}) : super(key: key);
 
-  void _handleOnAppDrawerMenuItemClicked(BuildContext context) {
+  void _handleOnAppDrawerMenuItemClick(BuildContext context) {
     context
         .read<ActiveDrawerMenuProvider>()
         .setActiveDrawerMenu(menu.drawerMenuType);
@@ -121,7 +134,7 @@ class AppDrawerMenuItem extends StatelessWidget {
     return Material(
       color: backGroundColor,
       child: InkWell(
-        onTap: () => _handleOnAppDrawerMenuItemClicked(context),
+        onTap: () => _handleOnAppDrawerMenuItemClick(context),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
           child: Row(
@@ -137,7 +150,10 @@ class AppDrawerMenuItem extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
                     DrawerMenu.getOptionString(menu.drawerMenuType),
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.white),
                   ),
                 ),
               )

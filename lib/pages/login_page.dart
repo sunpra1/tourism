@@ -2,6 +2,10 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+import '../models/drawer_menu.dart';
+import '../providers/active_drawer_menu_provider.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
@@ -32,6 +36,12 @@ class _LoginPageState extends State<LoginPage> {
     passwordFocusNode.dispose();
   }
 
+  void _handleRegisterBtnClick(BuildContext context) {
+    context
+        .read<ActiveDrawerMenuProvider>()
+        .setActiveDrawerMenu(DrawerMenuType.register);
+  }
+
   void _onFormSubmitted() {
     if (formKey.currentState != null && formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -46,14 +56,15 @@ class _LoginPageState extends State<LoginPage> {
       height: double.infinity,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Card(
             shadowColor: Colors.black,
             elevation: 8,
             child: Form(
               key: formKey,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 24.0),
                 child: Column(
                   children: [
                     TextFormField(
@@ -137,7 +148,30 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () => _onFormSubmitted(),
                         child: const Text("LOGIN"),
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 18.0),
+                    Text(
+                      "IF YOUR ARE A NEW USER PLEASE CLICK ON REGISTER BUTTON.",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.deepPurple),
+                    ),
+                    const SizedBox(height: 18.0),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.secondary),
+                          shape: MaterialStateProperty.all(
+                            const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero),
+                          ),
+                        ),
+                        onPressed: () => _handleRegisterBtnClick(context),
+                        child: const Text("REGISTER"),
+                      ),
+                    ),
                   ],
                 ),
               ),
