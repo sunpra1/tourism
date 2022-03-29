@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tourism/providers/active_drawer_menu_provider.dart';
 import 'package:tourism/providers/drawer_menu_items_provider.dart';
+import 'package:tourism/screens/register_screen.dart';
 import 'package:tourism/screens/root_screen.dart';
 
 void main() {
@@ -17,12 +18,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ActiveDrawerMenuProvider()),
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'KERALA TOURISM',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: RootScreen()),
+        debugShowCheckedModeBanner: false,
+        title: 'KERALA TOURISM',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: RootScreen(),
+        routes: {
+          RootScreen.routeName: (_) => RootScreen(),
+          RegisterScreen.routeName: (_) => RegisterScreen(),
+        },
+      ),
     );
   }
 }

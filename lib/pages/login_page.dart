@@ -2,14 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-
-import '../models/drawer_menu.dart';
-import '../providers/active_drawer_menu_provider.dart';
+import 'package:tourism/screens/register_screen.dart';
 
 class LoginPage extends StatefulWidget {
-  static const routeName = "/login";
-
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -17,17 +12,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const _KEY_PASSWORD = "password";
+  static const _KEY_USERNAME = "userName";
+
   bool isPasswordEnabled = true;
 
-  TextEditingController imageController = TextEditingController();
-
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   FocusNode usernameFocusNode = FocusNode();
-
   FocusNode passwordFocusNode = FocusNode();
 
-  HashMap<String, String> formValues = HashMap<String, String>();
+  HashMap<String, String> formErrors = HashMap<String, String>();
 
   @override
   void dispose() {
@@ -36,16 +32,79 @@ class _LoginPageState extends State<LoginPage> {
     passwordFocusNode.dispose();
   }
 
+  bool _validateUsername({bool displayError = true}) {
+    bool isValid = true;
+    String value = usernameController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_USERNAME] = "Username is required.";
+      isValid = false;
+    } else if (!(RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+        .hasMatch(value) ||
+        RegExp(r"^(?:[+0]9)?[0-9]{10,12}$").hasMatch(value))) {
+      formErrors[_KEY_USERNAME] =
+      "Username must be valid email or mobile number.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_USERNAME)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validatePassword({bool displayError = true}) {
+    bool isValid = true;
+    String value = passwordController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_PASSWORD] = "Password is required.";
+      isValid = false;
+    } else if (value.length < 6) {
+      formErrors[_KEY_PASSWORD] =
+      "Password must be at-least six characters long.";
+      isValid = false;
+    } else if (!RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{6,}$")
+        .hasMatch(value)) {
+      formErrors[_KEY_PASSWORD] =
+      "Password must at-least contain one uppercase and lowercase letter, one special character, and one number.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_PASSWORD)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validate() {
+    bool isValid = true;
+    if (!_validateUsername(displayError: false)) {
+      isValid = false;
+    }
+    if (!_validatePassword(displayError: false)) {
+      isValid = false;
+    }
+    if (!isValid) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  void _clearError(String key) {
+    HashMap<String, String> newErrors = HashMap.from(formErrors);
+    if (newErrors.containsKey(key)) {
+      newErrors.remove(key);
+    }
+    setState(() {
+      formErrors = newErrors;
+    });
+  }
+
   void _handleRegisterBtnClick(BuildContext context) {
-    context
-        .read<ActiveDrawerMenuProvider>()
-        .setActiveDrawerMenu(DrawerMenuType.register);
+    Navigator.of(context).pushNamed(RegisterScreen.routeName);
   }
 
   void _onFormSubmitted() {
-    if (formKey.currentState != null && formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-      //TODO
+    if (_validate()){
+
     }
   }
 
@@ -60,16 +119,24 @@ class _LoginPageState extends State<LoginPage> {
           child: Card(
             shadowColor: Colors.black,
             elevation: 8,
-            child: Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 24.0),
-                child: Column(
-                  children: [
-                    TextFormField(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 24.0),
+              child: Column(
+                children: [
+                  Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        _clearError(_KEY_USERNAME);
+                      else
+                        _validateUsername();
+                    },
+                    child: TextFormField(
+                      controller: usernameController,
                       focusNode: usernameFocusNode,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        errorText: formErrors[_KEY_USERNAME],
+                        errorMaxLines: 2,
                         contentPadding: EdgeInsets.only(left: 12, right: 12),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -80,24 +147,25 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(usernameFocusNode),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Username is required";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          formValues["username"] = value;
-                        }
-                      },
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context)
+                              .requestFocus(usernameFocusNode),
                     ),
-                    const SizedBox(height: 18.0),
-                    TextFormField(
+                  ),
+                  const SizedBox(height: 18.0),
+                  Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        _clearError(_KEY_PASSWORD);
+                      else
+                        _validatePassword();
+                    },
+                    child: TextFormField(
+                      controller: passwordController,
                       focusNode: passwordFocusNode,
                       decoration: InputDecoration(
+                        errorText: formErrors[_KEY_PASSWORD],
+                        errorMaxLines: 2,
                         contentPadding: EdgeInsets.only(left: 12, right: 12),
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -120,60 +188,59 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _onFormSubmitted(),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Password is required";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          formValues["password"] = value;
-                        }
-                      },
                     ),
-                    const SizedBox(height: 18.0),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).colorScheme.secondary),
-                          shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero),
-                          ),
+                  ),
+                  const SizedBox(height: 18.0),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme
+                                .of(context)
+                                .colorScheme
+                                .secondary),
+                        shape: MaterialStateProperty.all(
+                          const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero),
                         ),
-                        onPressed: () => _onFormSubmitted(),
-                        child: const Text("LOGIN"),
                       ),
+                      onPressed: () => _onFormSubmitted(),
+                      child: const Text("LOGIN"),
                     ),
-                    const SizedBox(height: 18.0),
-                    Text(
-                      "IF YOUR ARE A NEW USER PLEASE CLICK ON REGISTER BUTTON.",
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.deepPurple),
-                    ),
-                    const SizedBox(height: 18.0),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).colorScheme.secondary),
-                          shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero),
-                          ),
+                  ),
+                  const SizedBox(height: 18.0),
+                  Text(
+                    "IF YOUR ARE A NEW USER PLEASE CLICK ON REGISTER BUTTON.",
+                    textAlign: TextAlign.center,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.deepPurple),
+                  ),
+                  const SizedBox(height: 18.0),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme
+                                .of(context)
+                                .colorScheme
+                                .secondary),
+                        shape: MaterialStateProperty.all(
+                          const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero),
                         ),
-                        onPressed: () => _handleRegisterBtnClick(context),
-                        child: const Text("REGISTER"),
                       ),
+                      onPressed: () => _handleRegisterBtnClick(context),
+                      child: const Text("REGISTER"),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -10,7 +10,7 @@ import '../widgets/app_drawer.dart';
 import '../widgets/my_app_bar.dart';
 
 class RootScreen extends StatelessWidget {
-  static const String routeName = "/";
+  static const String routeName = "/rootScreen";
 
   const RootScreen({Key? key}) : super(key: key);
 

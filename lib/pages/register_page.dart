@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RegisterPage extends StatefulWidget {
-  static const routeName = "/register";
-
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
@@ -43,6 +41,12 @@ class _RegisterPageState extends State<RegisterPage> {
     mobileNumberFocusNode.dispose();
     passwordFocusNode.dispose();
     cPasswordFocusNode.dispose();
+
+    fullNameController.dispose();
+    emailController.dispose();
+    mobileNumberController.dispose();
+    passwordController.dispose();
+    cPasswordController.dispose();
   }
 
   bool _validateFullName({bool displayError = true}) {
@@ -70,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
       formErrors[_KEY_EMAIL] = "Email is not valid.";
       isValid = false;
     }
-    if (formErrors.containsKey(_KEY_EMAIL)) {
+    if (displayError && formErrors.containsKey(_KEY_EMAIL)) {
       setState(() {});
     }
     return isValid;
@@ -86,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
       formErrors[_KEY_MOBILE_NUMBER] = "Mobile number is not valid.";
       isValid = false;
     }
-    if (formErrors.containsKey(_KEY_MOBILE_NUMBER)) {
+    if (displayError && formErrors.containsKey(_KEY_MOBILE_NUMBER)) {
       setState(() {});
     }
     return isValid;
@@ -102,13 +106,13 @@ class _RegisterPageState extends State<RegisterPage> {
       formErrors[_KEY_PASSWORD] =
           "Password must be at-least six characters long.";
       isValid = false;
-    } else if (!RegExp("^(?=.*[A-Z])(?=.*[!@#\$&*])(?=.*[0-9]).{6}\$")
+    } else if (!RegExp(r"^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{6}$")
         .hasMatch(value)) {
       formErrors[_KEY_PASSWORD] =
           "Password must al-least contain one uppercase letter, one special character, and one number.";
       isValid = false;
     }
-    if (formErrors.containsKey(_KEY_PASSWORD)) {
+    if (displayError && formErrors.containsKey(_KEY_PASSWORD)) {
       setState(() {});
     }
     return isValid;
@@ -125,17 +129,17 @@ class _RegisterPageState extends State<RegisterPage> {
       formErrors[_KEY_CONFIRM_PASSWORD] =
           "Password must be at-least six characters long.";
       isValid = false;
-    } else if (!RegExp("^(?=.*[A-Z])(?=.*[!@#\$&*])(?=.*[0-9]).{6}\$")
+    } else if (!RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{6,}$")
         .hasMatch(value)) {
       formErrors[_KEY_CONFIRM_PASSWORD] =
-          "Password must al-least contain one uppercase letter, one special character, and one number.";
+          "Password must at-least contain one uppercase and lowercase letter, one special character, and one number.";
       isValid = false;
     } else if (value != password) {
       formErrors[_KEY_CONFIRM_PASSWORD] =
           "Confirm password doesn't match with password.";
       isValid = false;
     }
-    if (formErrors.containsKey(_KEY_CONFIRM_PASSWORD)) {
+    if (displayError && formErrors.containsKey(_KEY_CONFIRM_PASSWORD)) {
       setState(() {});
     }
     return isValid;
@@ -143,26 +147,24 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _validate() {
     bool isValid = true;
-    if (_validateFullName(displayError: false)) {
+    if (!_validateFullName(displayError: false)) {
       isValid = false;
     }
-    if (_validateEmail(displayError: false)) {
+    if (!_validateEmail(displayError: false)) {
       isValid = false;
     }
-    if (_validateMobileNumber(displayError: false)) {
+    if (!_validateMobileNumber(displayError: false)) {
       isValid = false;
     }
-    if (_validatePassword(displayError: false)) {
+    if (!_validatePassword(displayError: false)) {
       isValid = false;
     }
-    if (_validateCPassword(displayError: false)) {
+    if (!_validateCPassword(displayError: false)) {
       isValid = false;
     }
-
     if (!isValid) {
       setState(() {});
     }
-
     return isValid;
   }
 
