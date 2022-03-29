@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tourism/widgets/carousel.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -6,8 +7,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: Text("Home Page"),
+      height: double.infinity,
+      width: double.infinity,
+      child: Column(
+        children: [
+          Carousel(),
+        ],
       ),
     );
   }
