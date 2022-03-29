@@ -30,9 +30,13 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
     usernameFocusNode.dispose();
     passwordFocusNode.dispose();
+
+    usernameController.dispose();
+    passwordController.dispose();
   }
 
   bool _validateUsername({bool displayError = true}) {
+    _clearError(_KEY_USERNAME);
     bool isValid = true;
     String value = usernameController.value.text;
     if (value.isEmpty) {
@@ -53,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool _validatePassword({bool displayError = true}) {
+    _clearError(_KEY_PASSWORD);
     bool isValid = true;
     String value = passwordController.value.text;
     if (value.isEmpty) {
@@ -143,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                             Radius.circular(1.0),
                           ),
                         ),
-                        labelText: "USERNAME",
+                        labelText: "EMAIL OR MOBILE NUMBER",
                       ),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,

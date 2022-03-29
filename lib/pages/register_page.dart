@@ -50,6 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   bool _validateFullName({bool displayError = true}) {
+    _clearError(_KEY_FULL_NAME);
     bool isValid = true;
     String value = fullNameController.value.text;
     print(value);
@@ -64,6 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   bool _validateEmail({bool displayError = true}) {
+    _clearError(_KEY_EMAIL);
     bool isValid = true;
     String value = emailController.value.text;
     if (value.isEmpty) {
@@ -81,6 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   bool _validateMobileNumber({bool displayError = true}) {
+    _clearError(_KEY_MOBILE_NUMBER);
     bool isValid = true;
     String value = mobileNumberController.value.text;
     if (value.isEmpty) {
@@ -97,6 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   bool _validatePassword({bool displayError = true}) {
+    _clearError(_KEY_PASSWORD);
     bool isValid = true;
     String value = passwordController.value.text;
     if (value.isEmpty) {
@@ -119,6 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   bool _validateCPassword({bool displayError = true}) {
+    _clearError(_KEY_CONFIRM_PASSWORD);
     bool isValid = true;
     String value = cPasswordController.value.text;
     String password = passwordController.value.text;
