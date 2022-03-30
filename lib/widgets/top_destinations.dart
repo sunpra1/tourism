@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/widgets/carousel_indicator.dart';
+import 'package:tourism/widgets/slider_footer.dart';
+import 'package:tourism/widgets/slider_header.dart';
 
 class TopDestinations extends StatefulWidget {
   const TopDestinations({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class _TopDestinationsState extends State<TopDestinations> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TopDestinationHeader(
+            SliderHeader(
               headerHeight: headerHeight,
             ),
             Container(
@@ -59,7 +60,7 @@ class _TopDestinationsState extends State<TopDestinations> {
                 ),
               ),
             ),
-            TopDestinationFooter(
+            SliderFooter(
               currentPageIndex: currentPageIndex,
               itemCount: images.length,
               carouselPageIndicatorWidth: mainGridTileSize,
@@ -68,24 +69,6 @@ class _TopDestinationsState extends State<TopDestinations> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class TopDestinationHeader extends StatelessWidget {
-  final double headerHeight;
-
-  const TopDestinationHeader({Key? key, required this.headerHeight})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: Text("TOP DESTINATIONS"),
-      ),
-      height: headerHeight,
     );
   }
 }
@@ -115,28 +98,26 @@ class TopDestinationItem extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               header: GridTileBar(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "WATERFALLS",
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: Colors.white),
-                    ),
-                  ],
+                title: Text(
+                  "WATERFALLS",
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall
+                      ?.copyWith(color: Colors.white),
                 ),
                 subtitle: Text(
                   "Arhirappilly",
                   style: Theme.of(context)
                       .textTheme
-                      .labelLarge
+                      .displayMedium
                       ?.copyWith(color: Colors.white),
                 ),
               ),
               footer: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 12.0,
+                ),
                 child: Text(
                   "Located around 63 km from Kathmandu district, it is a great spot for picnic.",
                   style: Theme.of(context)
@@ -177,12 +158,10 @@ class TopDestinationItem extends StatelessWidget {
                     Center(
                       child: Text(
                         "+51",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayLarge
-                            ?.copyWith(
-                              color: Colors.white,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.displayLarge?.copyWith(
+                                  color: Colors.white,
+                                ),
                       ),
                     )
                   ],
@@ -192,56 +171,6 @@ class TopDestinationItem extends StatelessWidget {
           ],
         )
       ],
-    );
-  }
-}
-
-class TopDestinationFooter extends StatelessWidget {
-  final double carouselPageIndicatorWidth;
-  final double footerHeight;
-  final int currentPageIndex;
-  final int itemCount;
-
-  const TopDestinationFooter({
-    Key? key,
-    required this.currentPageIndex,
-    required this.itemCount,
-    required this.carouselPageIndicatorWidth,
-    required this.footerHeight,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Row(
-          children: [
-            SizedBox(
-              width: carouselPageIndicatorWidth,
-              child: Center(
-                child: CarouselIndicator(
-                  itemCount: itemCount,
-                  currentPageIndex: currentPageIndex,
-                ),
-              ),
-            ),
-            Expanded(
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  "VIEW ALL",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: Theme.of(context).colorScheme.secondary),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      height: footerHeight,
     );
   }
 }

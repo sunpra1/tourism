@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tourism/widgets/carousel.dart';
+import 'package:tourism/widgets/image_slider.dart';
 import 'package:tourism/widgets/seperator.dart';
 import 'package:tourism/widgets/top_destinations.dart';
 
@@ -18,6 +19,8 @@ class HomePage extends StatelessWidget {
             Separator(),
             TopDestinations(),
             Separator(),
+            ImageSlider(),
+            Separator()
           ],
         ),
       ),
