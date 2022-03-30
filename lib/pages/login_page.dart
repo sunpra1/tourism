@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tourism/screens/register_screen.dart';
+import 'package:tourism/widgets/gradient_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -43,11 +44,11 @@ class _LoginPageState extends State<LoginPage> {
       formErrors[_KEY_USERNAME] = "Username is required.";
       isValid = false;
     } else if (!(RegExp(
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-        .hasMatch(value) ||
+                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+            .hasMatch(value) ||
         RegExp(r"^(?:[+0]9)?[0-9]{10,12}$").hasMatch(value))) {
       formErrors[_KEY_USERNAME] =
-      "Username must be valid email or mobile number.";
+          "Username must be valid email or mobile number.";
       isValid = false;
     }
     if (displayError && formErrors.containsKey(_KEY_USERNAME)) {
@@ -65,12 +66,13 @@ class _LoginPageState extends State<LoginPage> {
       isValid = false;
     } else if (value.length < 6) {
       formErrors[_KEY_PASSWORD] =
-      "Password must be at-least six characters long.";
+          "Password must be at-least six characters long.";
       isValid = false;
-    } else if (!RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{6,}$")
+    } else if (!RegExp(
+            r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{6,}$")
         .hasMatch(value)) {
       formErrors[_KEY_PASSWORD] =
-      "Password must at-least contain one uppercase and lowercase letter, one special character, and one number.";
+          "Password must at-least contain one uppercase and lowercase letter, one special character, and one number.";
       isValid = false;
     }
     if (displayError && formErrors.containsKey(_KEY_PASSWORD)) {
@@ -108,9 +110,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _onFormSubmitted() {
-    if (_validate()){
-
-    }
+    if (_validate()) {}
   }
 
   @override
@@ -125,8 +125,8 @@ class _LoginPageState extends State<LoginPage> {
             shadowColor: Colors.black,
             elevation: 8,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0, vertical: 24.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
               child: Column(
                 children: [
                   Focus(
@@ -152,9 +152,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context)
-                              .requestFocus(usernameFocusNode),
+                      onFieldSubmitted: (_) => FocusScope.of(context)
+                          .requestFocus(usernameFocusNode),
                     ),
                   ),
                   const SizedBox(height: 18.0),
@@ -196,54 +195,23 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 18.0),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme
-                                .of(context)
-                                .colorScheme
-                                .secondary),
-                        shape: MaterialStateProperty.all(
-                          const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero),
-                        ),
-                      ),
-                      onPressed: () => _onFormSubmitted(),
-                      child: const Text("LOGIN"),
-                    ),
+                  GradientButton(
+                    text: "LOGIN",
+                    onPressed: () => _onFormSubmitted(),
                   ),
                   const SizedBox(height: 18.0),
                   Text(
                     "IF YOUR ARE A NEW USER PLEASE CLICK ON REGISTER BUTTON.",
                     textAlign: TextAlign.center,
-                    style: Theme
-                        .of(context)
+                    style: Theme.of(context)
                         .textTheme
                         .labelLarge
                         ?.copyWith(color: Colors.deepPurple),
                   ),
                   const SizedBox(height: 18.0),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme
-                                .of(context)
-                                .colorScheme
-                                .secondary),
-                        shape: MaterialStateProperty.all(
-                          const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero),
-                        ),
-                      ),
-                      onPressed: () => _handleRegisterBtnClick(context),
-                      child: const Text("REGISTER"),
-                    ),
+                  GradientButton(
+                    text: "REGISTER",
+                    onPressed: () => _handleRegisterBtnClick(context),
                   ),
                 ],
               ),

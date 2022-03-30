@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tourism/widgets/gradient_button.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -71,7 +72,8 @@ class _RegisterPageState extends State<RegisterPage> {
     if (value.isEmpty) {
       formErrors[_KEY_EMAIL] = "Email is required.";
       isValid = false;
-    } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+    } else if (!RegExp(
+            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
         .hasMatch(value)) {
       formErrors[_KEY_EMAIL] = "Email is not valid.";
       isValid = false;
@@ -134,7 +136,8 @@ class _RegisterPageState extends State<RegisterPage> {
       formErrors[_KEY_CONFIRM_PASSWORD] =
           "Password must be at-least six characters long.";
       isValid = false;
-    } else if (!RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{6,}$")
+    } else if (!RegExp(
+            r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{6,}$")
         .hasMatch(value)) {
       formErrors[_KEY_CONFIRM_PASSWORD] =
           "Password must at-least contain one uppercase and lowercase letter, one special character, and one number.";
@@ -366,22 +369,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   const SizedBox(height: 18.0),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.secondary),
-                        shape: MaterialStateProperty.all(
-                          const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero),
-                        ),
-                      ),
-                      onPressed: () => _onFormSubmitted(),
-                      child: const Text("REGISTER"),
-                    ),
-                  )
+                  GradientButton(
+                    text: "REGISTER",
+                    onPressed: () => _onFormSubmitted(),
+                  ),
                 ],
               ),
             ),

@@ -72,6 +72,7 @@ class AppDrawerBanner extends StatelessWidget {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
                         minimumSize: MaterialStateProperty.all(Size(60, 36)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24)))),
@@ -81,7 +82,7 @@ class AppDrawerBanner extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .labelSmall
-                          ?.copyWith(color: Colors.white),
+                          ?.copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
                   )
                 ],
@@ -128,7 +129,7 @@ class AppDrawerMenuItem extends StatelessWidget {
     DrawerMenuType _activeMenu =
         context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
     Color backGroundColor = _activeMenu == menu.drawerMenuType
-        ? Colors.green.shade800
+        ? Colors.black12
         : Colors.transparent;
 
     return Material(
@@ -152,7 +153,7 @@ class AppDrawerMenuItem extends StatelessWidget {
                     DrawerMenu.getOptionString(menu.drawerMenuType),
                     style: Theme.of(context)
                         .textTheme
-                        .labelLarge
+                        .labelMedium
                         ?.copyWith(color: Colors.white),
                   ),
                 ),

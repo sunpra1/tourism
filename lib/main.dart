@@ -4,6 +4,7 @@ import 'package:tourism/providers/active_drawer_menu_provider.dart';
 import 'package:tourism/providers/drawer_menu_items_provider.dart';
 import 'package:tourism/screens/register_screen.dart';
 import 'package:tourism/screens/root_screen.dart';
+import 'package:tourism/utils/app_theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'KERALA TOURISM',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          colorScheme: AppTheme.colorScheme,
+          textTheme: AppTheme.textTheme,
         ),
         home: RootScreen(),
         routes: {

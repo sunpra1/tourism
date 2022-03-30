@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'carousel_indicator.dart';
+
 class Carousel extends StatefulWidget {
   const Carousel({Key? key}) : super(key: key);
 
@@ -27,18 +29,23 @@ class _CarouselState extends State<Carousel> {
     return Container(
         height: 220,
         width: double.infinity,
-        child: GridTile(
-          child: PageView.builder(
-            onPageChanged: _onPageChanged,
-            pageSnapping: true,
-            itemBuilder: (_, index) => CarouselItem(image: images[index]),
-            itemCount: images.length,
-            scrollDirection: Axis.horizontal,
-          ),
-          footer: GridTileBar(
-            title: Center(
-              child: CarouselIndicator(
-                  itemCount: images.length, currentPageIndex: currentPageIndex),
+        child: Card(
+          margin: EdgeInsets.zero,
+          elevation: 8,
+          shadowColor: Colors.black,
+          child: GridTile(
+            child: PageView.builder(
+              onPageChanged: _onPageChanged,
+              pageSnapping: true,
+              itemBuilder: (_, index) => CarouselItem(image: images[index]),
+              itemCount: images.length,
+              scrollDirection: Axis.horizontal,
+            ),
+            footer: GridTileBar(
+              title: Center(
+                child: CarouselIndicator(
+                    itemCount: images.length, currentPageIndex: currentPageIndex),
+              ),
             ),
           ),
         ));
@@ -56,34 +63,6 @@ class CarouselItem extends StatelessWidget {
       image,
       width: MediaQuery.of(context).size.width,
       fit: BoxFit.cover,
-    );
-  }
-}
-
-class CarouselIndicator extends StatelessWidget {
-  final int currentPageIndex;
-  final int itemCount;
-
-  CarouselIndicator(
-      {Key? key, required this.itemCount, required this.currentPageIndex})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (_, index) => Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Container(
-          height: 12,
-          width: 12,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: currentPageIndex == index ? Colors.black : Colors.grey),
-        ),
-      ),
-      itemCount: itemCount,
     );
   }
 }
