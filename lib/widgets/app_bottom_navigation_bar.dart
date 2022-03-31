@@ -72,11 +72,11 @@ class AppBottomNavigationBarItem extends StatelessWidget {
         onTap: () {},
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 8.0,
+            horizontal: 4.0,
             vertical: 12.0,
           ),
           child: Container(
-            width: 72,
+            width: 80,
             height: 48,
             child: Center(
               child: Column(
@@ -98,7 +98,7 @@ class AppBottomNavigationBarItem extends StatelessWidget {
                           .labelSmall
                           ?.copyWith(color: Colors.white),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
