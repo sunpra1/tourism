@@ -62,7 +62,7 @@ class AppDrawerBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "KERALA TOURISM",
+                    "NEPAL TOURISM",
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
