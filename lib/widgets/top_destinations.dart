@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tourism/widgets/slider_footer.dart';
 import 'package:tourism/widgets/slider_header.dart';
 
+import '../screens/view_destination_screen.dart';
+
 class TopDestinations extends StatefulWidget {
   const TopDestinations({Key? key}) : super(key: key);
 
@@ -90,40 +92,43 @@ class TopDestinationItem extends StatelessWidget {
       children: [
         Container(
           width: mainGridTileSize,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: GridTile(
-              child: Image.asset(
-                "assets/images/carousel1.jpg",
-                fit: BoxFit.cover,
-              ),
-              header: GridTileBar(
-                title: Text(
-                  "WATERFALLS",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: Colors.white),
+          child: GestureDetector(
+            onTap: (){ Navigator.of(context).pushNamed(ViewDestinationScreen.routeName); },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: GridTile(
+                child: Image.asset(
+                  "assets/images/carousel1.jpg",
+                  fit: BoxFit.cover,
                 ),
-                subtitle: Text(
-                  "Arhirappilly",
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium
-                      ?.copyWith(color: Colors.white),
+                header: GridTileBar(
+                  title: Text(
+                    "WATERFALLS",
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(color: Colors.white),
+                  ),
+                  subtitle: Text(
+                    "Arhirappilly",
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: Colors.white),
+                  ),
                 ),
-              ),
-              footer: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 12.0,
-                ),
-                child: Text(
-                  "Located around 63 km from Kathmandu district, it is a great spot for picnic.",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: Colors.white),
+                footer: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
+                  child: Text(
+                    "Located around 63 km from Kathmandu district, it is a great spot for picnic.",
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(color: Colors.white),
+                  ),
                 ),
               ),
             ),

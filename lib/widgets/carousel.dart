@@ -27,7 +27,7 @@ class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 220,
+        height: 250,
         width: double.infinity,
         child: Card(
           margin: EdgeInsets.zero,
