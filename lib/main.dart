@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tourism/providers/active_drawer_menu_provider.dart';
-import 'package:tourism/providers/drawer_menu_items_provider.dart';
+import 'package:tourism/screens/login_screen.dart';
 import 'package:tourism/screens/register_screen.dart';
 import 'package:tourism/screens/root_screen.dart';
 import 'package:tourism/screens/view_destination_screen.dart';
@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => DrawerMenuItemsProvider()),
         ChangeNotifierProvider(create: (_) => ActiveDrawerMenuProvider()),
       ],
       child: MaterialApp(
@@ -31,6 +30,7 @@ class MyApp extends StatelessWidget {
           RootScreen.routeName: (_) => RootScreen(),
           RegisterScreen.routeName: (_) => RegisterScreen(),
           ViewDestinationScreen.routeName: (_) => ViewDestinationScreen(),
+          LoginScreen.routeName: (_) => LoginScreen(),
         },
       ),
     );

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tourism/models/drawer_menu.dart';
-import 'package:tourism/providers/drawer_menu_items_provider.dart';
+import 'package:tourism/screens/login_screen.dart';
 
 import '../providers/active_drawer_menu_provider.dart';
 import '../utils/app_theme.dart';
@@ -39,10 +40,7 @@ class AppDrawerBanner extends StatelessWidget {
   const AppDrawerBanner({Key? key}) : super(key: key);
 
   void _handleLoginBtnClick(BuildContext context) {
-    context
-        .read<ActiveDrawerMenuProvider>()
-        .setActiveDrawerMenu(DrawerMenuType.login);
-    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(LoginScreen.routeName);
   }
 
   @override
@@ -72,17 +70,16 @@ class AppDrawerBanner extends StatelessWidget {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.inversePrimary),
                         minimumSize: MaterialStateProperty.all(Size(60, 36)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24)))),
                     onPressed: () => _handleLoginBtnClick(context),
                     child: Text(
                       "LOGIN",
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary),
                     ),
                   )
                 ],
@@ -100,8 +97,11 @@ class AppDrawerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DrawerMenu> _drawerMenus =
-        context.watch<DrawerMenuItemsProvider>().drawerMenus;
+    List<DrawerMenu> _drawerMenus = [
+      DrawerMenu(
+          drawerMenuType: DrawerMenuType.home,
+          icon: FaIcon(FontAwesomeIcons.home).icon),
+    ];
 
     return Expanded(
       child: ListView.builder(
@@ -139,7 +139,8 @@ class AppDrawerMenuItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 menu.icon,

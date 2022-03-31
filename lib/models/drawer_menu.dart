@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class DrawerMenu {
   final DrawerMenuType drawerMenuType;
@@ -9,21 +9,12 @@ class DrawerMenu {
   static String getOptionString(DrawerMenuType drawerMenuType) {
     String value;
     switch (drawerMenuType) {
-      case DrawerMenuType.login:
-        value = "LOGIN";
-        break;
-      case DrawerMenuType.register:
-        value = "REGISTER";
-        break;
       case DrawerMenuType.home:
         value = "HOME";
-        break;
-      case DrawerMenuType.places:
-        value = "PLACES";
         break;
     }
     return value;
   }
 }
 
-enum DrawerMenuType { login, register, home, places }
+enum DrawerMenuType { home }
