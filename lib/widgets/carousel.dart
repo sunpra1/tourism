@@ -27,28 +27,29 @@ class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 250,
-        width: double.infinity,
-        child: Card(
-          margin: EdgeInsets.zero,
-          elevation: 8,
-          shadowColor: Colors.black,
-          child: GridTile(
-            child: PageView.builder(
-              onPageChanged: _onPageChanged,
-              pageSnapping: true,
-              itemBuilder: (_, index) => CarouselItem(image: images[index]),
-              itemCount: images.length,
-              scrollDirection: Axis.horizontal,
-            ),
-            footer: GridTileBar(
-              title: Center(
-                child: CarouselIndicator(
-                    itemCount: images.length, currentPageIndex: currentPageIndex),
-              ),
+      height: 250,
+      width: double.infinity,
+      child: Card(
+        margin: EdgeInsets.zero,
+        elevation: 8,
+        shadowColor: Colors.black,
+        child: GridTile(
+          child: PageView.builder(
+            onPageChanged: _onPageChanged,
+            pageSnapping: true,
+            itemBuilder: (_, index) => CarouselItem(image: images[index]),
+            itemCount: images.length,
+            scrollDirection: Axis.horizontal,
+          ),
+          footer: GridTileBar(
+            title: Center(
+              child: CarouselIndicator(
+                  itemCount: images.length, currentPageIndex: currentPageIndex),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

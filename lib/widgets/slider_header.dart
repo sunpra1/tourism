@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class SliderHeader extends StatelessWidget {
   final double headerHeight;
 
-  const SliderHeader({Key? key, required this.headerHeight})
-      : super(key: key);
+  const SliderHeader({Key? key, required this.headerHeight}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

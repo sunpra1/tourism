@@ -4,7 +4,8 @@ class BottomNavigationBarMenu {
   final BottomNavigationBarMenuType bottomNavigationBarMenuType;
   final IconData? icon;
 
-  BottomNavigationBarMenu({required this.bottomNavigationBarMenuType, required this.icon});
+  BottomNavigationBarMenu(
+      {required this.bottomNavigationBarMenuType, required this.icon});
 
   static String getOptionString(BottomNavigationBarMenuType drawerMenuType) {
     String value;

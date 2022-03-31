@@ -20,7 +20,9 @@ class HomePage extends StatelessWidget {
             TopDestinations(),
             Separator(),
             ImageSlider(),
-            Separator(isLast: true,)
+            Separator(
+              isLast: true,
+            ),
           ],
         ),
       ),

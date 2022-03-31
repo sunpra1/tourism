@@ -93,7 +93,9 @@ class TopDestinationItem extends StatelessWidget {
         Container(
           width: mainGridTileSize,
           child: GestureDetector(
-            onTap: (){ Navigator.of(context).pushNamed(ViewDestinationScreen.routeName); },
+            onTap: () {
+              Navigator.of(context).pushNamed(ViewDestinationScreen.routeName);
+            },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: GridTile(
@@ -172,9 +174,9 @@ class TopDestinationItem extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }

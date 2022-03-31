@@ -10,8 +10,16 @@ class Separator extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          SizedBox(height: 12, child: Container(color: Colors.grey.shade300,),),
-          if(!isLast) SizedBox(height: 24,),
+          SizedBox(
+            height: 12,
+            child: Container(
+              color: Colors.grey.shade300,
+            ),
+          ),
+          if (!isLast)
+            SizedBox(
+              height: 24,
+            ),
         ],
       ),
     );

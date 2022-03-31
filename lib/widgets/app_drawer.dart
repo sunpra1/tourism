@@ -56,35 +56,37 @@ class AppDrawerBanner extends StatelessWidget {
               child: Image.asset("assets/images/abstract.png"),
             ),
             Expanded(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "NEPAL TOURISM",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.white),
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.inversePrimary),
-                        minimumSize: MaterialStateProperty.all(Size(60, 36)),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24)))),
-                    onPressed: () => _handleLoginBtnClick(context),
-                    child: Text(
-                      "LOGIN",
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.primary),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "NEPAL TOURISM",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: Colors.white),
                     ),
-                  )
-                ],
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.inversePrimary),
+                          minimumSize: MaterialStateProperty.all(Size(60, 36)),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24)))),
+                      onPressed: () => _handleLoginBtnClick(context),
+                      child: Text(
+                        "LOGIN",
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            )),
+            ),
           ],
         ),
       ),

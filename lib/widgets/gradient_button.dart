@@ -37,7 +37,12 @@ class GradientButton extends StatelessWidget {
           child: InkWell(
               onTap: onPressed,
               child: Center(
-                child: Text(text, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white,),),
+                child: Text(
+                  text,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
               )),
         ),
       ),

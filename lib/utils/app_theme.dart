@@ -14,7 +14,8 @@ class AppTheme {
         const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 18),
     displayLarge:
         const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 24),
-    displayMedium: const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 20),
+    displayMedium:
+        const TextStyle(fontFamily: AppTheme.fontFamilySans, fontSize: 20),
   );
   static ColorScheme colorScheme = ColorScheme.fromSwatch(
     primarySwatch: Colors.blue,

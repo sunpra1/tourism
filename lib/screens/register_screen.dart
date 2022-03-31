@@ -13,6 +13,6 @@ class RegisterScreen extends StatelessWidget {
     return Scaffold(
       appBar: MyAppBar(),
       body: RegisterPage(),
-    );;
+    );
   }
 }

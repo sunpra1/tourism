@@ -37,13 +37,11 @@ class SliderFooter extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   "VIEW ALL",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

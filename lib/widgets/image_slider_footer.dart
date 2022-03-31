@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'carousel_indicator.dart';
-
 class ImageSliderFooter extends StatelessWidget {
   final double imageWidth;
   final double footerHeight;
@@ -27,10 +25,8 @@ class ImageSliderFooter extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   "VIEW ALL",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
             )

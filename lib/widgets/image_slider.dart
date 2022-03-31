@@ -49,7 +49,8 @@ class _ImageSliderState extends State<ImageSlider> {
                     isLastItem: index == images.length - 1),
               ),
             ),
-            ImageSliderFooter(imageWidth: mainGridTileSize, footerHeight: footerHeight)
+            ImageSliderFooter(
+                imageWidth: mainGridTileSize, footerHeight: footerHeight)
           ],
         ),
       ),

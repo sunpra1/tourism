@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CarouselIndicator extends StatelessWidget {
   final int currentPageIndex;
   final int itemCount;
@@ -21,7 +20,9 @@ class CarouselIndicator extends StatelessWidget {
           width: 12,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: currentPageIndex == index ? Theme.of(context).colorScheme.primary : Colors.grey),
+              color: currentPageIndex == index
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.grey),
         ),
       ),
       itemCount: itemCount,
