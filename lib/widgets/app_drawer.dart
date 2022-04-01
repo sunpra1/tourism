@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:tourism/models/drawer_menu.dart';
 import 'package:tourism/screens/login_screen.dart';
 
+import '../models/user.dart';
 import '../providers/active_drawer_menu_provider.dart';
+import '../providers/user_provider.dart';
 import '../utils/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -45,6 +47,8 @@ class AppDrawerBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User? user = context.watch<UserProvider>().loggedInUser;
+
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -78,7 +82,7 @@ class AppDrawerBanner extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(24)))),
                       onPressed: () => _handleLoginBtnClick(context),
                       child: Text(
-                        "LOGIN",
+                        user == null ? "LOGIN" : "PROFILE",
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                             color: Theme.of(context).colorScheme.primary),
                       ),
