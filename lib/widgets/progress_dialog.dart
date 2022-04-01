@@ -22,7 +22,10 @@ class ProgressDialog extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18.0,
+                    vertical: 12.0,
+                  ),
                   child: SizedBox(
                     height: 28,
                     width: 28,

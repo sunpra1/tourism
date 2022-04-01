@@ -62,7 +62,7 @@ class APIRequest {
 
 enum RequestType { get, post, put, patch, delete }
 
-enum RequestEndPoint { register }
+enum RequestEndPoint { register, login }
 
 extension RequestEndPointExt on RequestEndPoint {
   String get value {
@@ -70,6 +70,9 @@ extension RequestEndPointExt on RequestEndPoint {
     switch (this) {
       case RequestEndPoint.register:
         value = "/api/Account/Register";
+        break;
+      case RequestEndPoint.login:
+        value = "/api/Account/Login";
         break;
     }
     return value;

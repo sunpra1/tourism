@@ -4,7 +4,6 @@ import 'dart:convert' as Convert;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tourism/data/pojo/register_body.dart';
 import 'package:tourism/models/user.dart';
 import 'package:tourism/providers/user_provider.dart';
 import 'package:tourism/screens/root_screen.dart';
@@ -12,6 +11,7 @@ import 'package:tourism/utils/api_request.dart';
 import 'package:tourism/widgets/gradient_button.dart';
 import 'package:tourism/widgets/progress_dialog.dart';
 
+import '../data/pojo/auth_body.dart';
 import '../models/api_response.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -152,11 +152,15 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _onFormSubmitted(BuildContext context) async {
     if (_validate()) {
       showDialog(
-          context: context,
-          builder: (_) => ProgressDialog(),
-          barrierDismissible: false);
-      RegisterBody body = RegisterBody(
-          email: emailController.text, password: passwordController.text);
+        context: context,
+        builder: (_) => ProgressDialog(),
+        barrierDismissible: false,
+      );
+      AuthBody body = AuthBody(
+        email: emailController.text,
+        password: passwordController.text,
+        authType: AuthType.register,
+      );
       APIResponse response = await APIRequest(
               requestType: RequestType.post,
               requestEndPoint: RequestEndPoint.register,

@@ -1,9 +1,17 @@
 import 'dart:collection';
-
+import 'dart:convert' as Convert;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tourism/screens/register_screen.dart';
 import 'package:tourism/widgets/gradient_button.dart';
+import '../data/pojo/auth_body.dart';
+import '../models/api_response.dart';
+import '../models/user.dart';
+import '../providers/user_provider.dart';
+import '../screens/root_screen.dart';
+import '../utils/api_request.dart';
+import '../widgets/progress_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -44,11 +52,9 @@ class _LoginPageState extends State<LoginPage> {
       formErrors[_KEY_USERNAME] = "Username is required.";
       isValid = false;
     } else if (!(RegExp(
-                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-            .hasMatch(value) ||
-        RegExp(r"^(?:[+0]9)?[0-9]{10,12}$").hasMatch(value))) {
-      formErrors[_KEY_USERNAME] =
-          "Username must be valid email or mobile number.";
+            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+        .hasMatch(value))) {
+      formErrors[_KEY_USERNAME] = "Username must be valid email";
       isValid = false;
     }
     if (displayError && formErrors.containsKey(_KEY_USERNAME)) {
@@ -109,12 +115,57 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.of(context).pushNamed(RegisterScreen.routeName);
   }
 
-  void _onFormSubmitted() {
-    if (_validate()) {}
+  Future<void> _onFormSubmitted(BuildContext context) async {
+    if (_validate()) {
+      showDialog(
+        context: context,
+        builder: (_) => ProgressDialog(),
+        barrierDismissible: false,
+      );
+      AuthBody body = AuthBody(
+        email: usernameController.text,
+        password: passwordController.text,
+        authType: AuthType.login,
+      );
+      APIResponse response = await APIRequest(
+              requestType: RequestType.post,
+              requestEndPoint: RequestEndPoint.login,
+              body: body.toMap())
+          .make();
+      Navigator.of(context).pop();
+      if (response.success) {
+        context.read<UserProvider>().setLoggedInUser(
+              User.fromMap(
+                Convert.jsonEncode(response.data) as Map<String, dynamic>,
+              ),
+            );
+      } else {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text("LOGIN FAILED"),
+            content: Text(response.message ??
+                "Registration failed, please try again sometime later."),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"))
+            ],
+          ),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (context.watch<UserProvider>().loggedInUser != null) {
+      Navigator.of(context).popUntil(ModalRoute.withName(RootScreen.routeName));
+    }
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -148,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                             Radius.circular(1.0),
                           ),
                         ),
-                        labelText: "EMAIL OR MOBILE NUMBER",
+                        labelText: "EMAIL",
                       ),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
@@ -191,13 +242,13 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: isPasswordEnabled,
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) => _onFormSubmitted(),
+                      onFieldSubmitted: (_) => _onFormSubmitted(context),
                     ),
                   ),
                   const SizedBox(height: 18.0),
                   GradientButton(
                     text: "LOGIN",
-                    onPressed: () => _onFormSubmitted(),
+                    onPressed: () => _onFormSubmitted(context),
                   ),
                   const SizedBox(height: 18.0),
                   Text(
