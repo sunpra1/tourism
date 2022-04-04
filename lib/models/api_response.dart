@@ -1,8 +1,8 @@
-class APIResponse {
+class APIResponse<T> {
   int code;
   bool success;
   String? message;
-  String? data;
+  T? data;
 
   APIResponse({
     required this.code,
@@ -16,7 +16,7 @@ class APIResponse {
       code: int.parse(map["code"]),
       success: map["success"] as bool,
       message: map["message"],
-      data: map["data"],
+      data: map["data"] as T?,
     );
   }
 }

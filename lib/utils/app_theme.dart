@@ -22,7 +22,17 @@ class AppTheme {
     primaryColorDark: Colors.blue.shade800,
     accentColor: Colors.red.shade800,
   );
-  static LinearGradient gradient = LinearGradient(
+  static LinearGradient gradientLR = LinearGradient(
+    colors: [
+      Colors.blue,
+      Colors.red.shade800,
+    ],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    stops: const [0.0, 1.0],
+    tileMode: TileMode.clamp,
+  );
+  static LinearGradient gradientTB = LinearGradient(
     colors: [
       Colors.blue,
       Colors.red.shade800,
@@ -33,15 +43,6 @@ class AppTheme {
     tileMode: TileMode.clamp,
   );
   static BoxDecoration backgroundGradient = BoxDecoration(
-    gradient: LinearGradient(
-      colors: [
-        Colors.blue,
-        Colors.red.shade800,
-      ],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      stops: const [0.0, 1.0],
-      tileMode: TileMode.clamp,
-    ),
+    gradient: gradientTB,
   );
 }

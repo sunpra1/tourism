@@ -23,7 +23,7 @@ class GradientButton extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          gradient: AppTheme.gradient,
+          gradient: AppTheme.gradientLR,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade500,

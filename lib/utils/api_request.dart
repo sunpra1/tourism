@@ -1,8 +1,9 @@
+import 'dart:collection';
 import 'dart:convert' as Convert;
 import 'package:http/http.dart' as Http;
 import '../models/api_response.dart';
 
-class APIRequest {
+class APIRequest<T> {
   final String baseUrl = "www.panchpokharitourism.com";
   static const String _contentType = "Content-Type";
   static const String _contentTypeValue = "application/json; charset=utf-8";
@@ -23,10 +24,6 @@ class APIRequest {
     this.headers,
     this.body,
   });
-
-  T myMethod<T>(T param) {
-    return param;
-  }
 
   Future<APIResponse> make() async {
     Uri uri = Uri.http(baseUrl, requestEndPoint.value, queryParameters);
@@ -54,8 +51,8 @@ class APIRequest {
         break;
     }
     print("Response ${response.body}");
-    return APIResponse.fromMap(
-      Convert.jsonDecode(response.body) as Map<String, dynamic>,
+    return APIResponse<T>.fromMap(
+      Convert.jsonDecode(response.body),
     );
   }
 }

@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
         authType: AuthType.login,
       );
-      APIResponse response = await APIRequest(
+      APIResponse response = await APIRequest<Map<String, dynamic>>(
               requestType: RequestType.post,
               requestEndPoint: RequestEndPoint.login,
               body: body.toMap())
@@ -135,10 +135,9 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).pop();
       if (response.success) {
         context.read<UserProvider>().setLoggedInUser(
-              User.fromMap(
-                Convert.jsonEncode(response.data) as Map<String, dynamic>,
-              ),
+              User.fromMap(response.data),
             );
+        Navigator.of(context).pop(ModalRoute.withName(RootScreen.routeName));
       } else {
         showDialog(
           barrierDismissible: false,
@@ -146,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
           builder: (_) => AlertDialog(
             title: Text("LOGIN FAILED"),
             content: Text(response.message ??
-                "Registration failed, please try again sometime later."),
+                "Login failed, please try again sometime later."),
             actions: [
               TextButton(
                   onPressed: () {
@@ -162,10 +161,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.watch<UserProvider>().loggedInUser != null) {
-      Navigator.of(context).popUntil(ModalRoute.withName(RootScreen.routeName));
-    }
-
     return Container(
       width: double.infinity,
       height: double.infinity,

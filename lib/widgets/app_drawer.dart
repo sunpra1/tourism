@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tourism/models/drawer_menu.dart';
 import 'package:tourism/screens/login_screen.dart';
+import 'package:tourism/screens/profile_screen.dart';
 
 import '../models/user.dart';
 import '../providers/active_drawer_menu_provider.dart';
@@ -45,6 +46,10 @@ class AppDrawerBanner extends StatelessWidget {
     Navigator.of(context).pushNamed(LoginScreen.routeName);
   }
 
+  void _handleProfileBtnClick(BuildContext context) {
+    Navigator.of(context).pushNamed(ProfileScreen.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     User? user = context.watch<UserProvider>().loggedInUser;
@@ -72,6 +77,27 @@ class AppDrawerBanner extends StatelessWidget {
                           .titleLarge
                           ?.copyWith(color: Colors.white),
                     ),
+                    (user != null && user.firstName.isNotEmpty)
+                        ? Text(
+                            "${user.firstName} ${user.lastName}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  color: Colors.white,
+                                ),
+                          )
+                        : (user != null)
+                            ? Text(
+                                user.userName,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                              )
+                            : SizedBox.shrink(),
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
@@ -80,7 +106,7 @@ class AppDrawerBanner extends StatelessWidget {
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(24)))),
-                      onPressed: () => _handleLoginBtnClick(context),
+                      onPressed: () => user == null ? _handleLoginBtnClick(context) : _handleProfileBtnClick(context),
                       child: Text(
                         user == null ? "LOGIN" : "PROFILE",
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(

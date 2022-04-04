@@ -67,6 +67,7 @@ flutter:
     - assets/images/carousel1.jpg
     - assets/images/carousel2.jpg
     - assets/images/carousel3.jpg
+    - assets/images/default_user.png
 
   fonts:
     - family: Roboto

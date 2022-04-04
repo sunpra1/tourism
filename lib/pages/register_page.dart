@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert' as Convert;
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -161,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
         password: passwordController.text,
         authType: AuthType.register,
       );
-      APIResponse response = await APIRequest(
+      APIResponse response = await APIRequest<String>(
               requestType: RequestType.post,
               requestEndPoint: RequestEndPoint.register,
               body: body.toMap())
@@ -169,10 +168,18 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.of(context).pop();
       if (response.success) {
         context.read<UserProvider>().setLoggedInUser(
-              User.fromMap(
-                Convert.jsonEncode(response.data) as Map<String, dynamic>,
+              User(
+                userId: "",
+                userName: body.email,
+                firstName: "",
+                lastName: "",
+                profileId: "",
+                profileImage: "",
+                roleName: UserRole.user,
+                token: response.data,
               ),
             );
+        Navigator.of(context).popUntil(ModalRoute.withName(RootScreen.routeName));
       } else {
         showDialog(
           barrierDismissible: false,
@@ -196,10 +203,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.watch<UserProvider>().loggedInUser != null) {
-      Navigator.of(context).popUntil(ModalRoute.withName(RootScreen.routeName));
-    }
-
     return Container(
       width: double.infinity,
       height: double.infinity,

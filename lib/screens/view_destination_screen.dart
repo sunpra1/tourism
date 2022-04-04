@@ -52,7 +52,7 @@ class _ViewDestinationScreenState extends State<ViewDestinationScreen> {
                         child: TabBar(
                           isScrollable: true,
                           indicator: BoxDecoration(
-                              gradient: AppTheme.gradient,
+                              gradient: AppTheme.gradientLR,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(24))),
                           unselectedLabelColor:

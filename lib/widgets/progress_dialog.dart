@@ -16,7 +16,7 @@ class ProgressDialog extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
         child: Center(
           child: Container(
-            decoration: BoxDecoration(gradient: AppTheme.gradient),
+            decoration: BoxDecoration(gradient: AppTheme.gradientLR),
             height: 64,
             width: width,
             child: Row(

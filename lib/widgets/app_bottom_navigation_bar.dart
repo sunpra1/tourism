@@ -41,7 +41,7 @@ class AppBottomNavigationBar extends StatelessWidget {
     ];
 
     return Container(
-      decoration: BoxDecoration(gradient: AppTheme.gradient),
+      decoration: BoxDecoration(gradient: AppTheme.gradientLR),
       child: SizedBox(
         width: double.infinity,
         height: 64,
