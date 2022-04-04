@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tourism/utils/app_theme.dart';
 
 import '../models/user.dart';
+import '../utils/app_theme.dart';
 
 class ProfilePage extends StatelessWidget {
   final User user;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/models/drawer_menu.dart';
+
+import '../models/drawer_menu.dart';
 
 class ActiveDrawerMenuProvider with ChangeNotifier {
   DrawerMenuType activeDrawerMenuType = DrawerMenuType.home;

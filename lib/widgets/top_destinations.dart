@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/widgets/slider_footer.dart';
-import 'package:tourism/widgets/slider_header.dart';
 
 import '../screens/view_destination_screen.dart';
+import 'slider_footer.dart';
+import 'slider_header.dart';
 
 class TopDestinations extends StatefulWidget {
   const TopDestinations({Key? key}) : super(key: key);

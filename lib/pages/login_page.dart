@@ -1,10 +1,11 @@
 import 'dart:collection';
-import 'dart:convert' as Convert;
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tourism/screens/register_screen.dart';
 import 'package:tourism/widgets/gradient_button.dart';
+
 import '../data/pojo/auth_body.dart';
 import '../models/api_response.dart';
 import '../models/user.dart';

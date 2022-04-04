@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/models/user.dart';
-import 'package:tourism/utils/shared_preference_storage.dart';
+
+import '../models/user.dart';
+import '../utils/shared_preference_storage.dart';
 
 class UserProvider with ChangeNotifier {
   final SharedPreferenceStorage storage = SharedPreferenceStorage();

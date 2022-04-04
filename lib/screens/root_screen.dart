@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tourism/models/drawer_menu.dart';
-import 'package:tourism/pages/home_page.dart';
-import 'package:tourism/providers/active_drawer_menu_provider.dart';
-import 'package:tourism/widgets/app_bottom_navigation_bar.dart';
 
+import '../models/drawer_menu.dart';
+import '../pages/home_page.dart';
+import '../providers/active_drawer_menu_provider.dart';
+import '../widgets/app_bottom_navigation_bar.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/my_app_bar.dart';
 

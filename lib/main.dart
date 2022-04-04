@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tourism/providers/active_drawer_menu_provider.dart';
-import 'package:tourism/providers/user_provider.dart';
-import 'package:tourism/screens/login_screen.dart';
-import 'package:tourism/screens/profile_screen.dart';
-import 'package:tourism/screens/register_screen.dart';
-import 'package:tourism/screens/root_screen.dart';
-import 'package:tourism/screens/view_destination_screen.dart';
-import 'package:tourism/utils/app_theme.dart';
+
+import 'providers/active_drawer_menu_provider.dart';
+import 'providers/user_provider.dart';
+import 'screens/login_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/root_screen.dart';
+import 'screens/view_destination_screen.dart';
+import 'utils/app_theme.dart';
 
 void main() {
   runApp(MyApp());

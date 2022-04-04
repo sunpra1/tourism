@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/utils/app_theme.dart';
+
+import '../utils/app_theme.dart';
 
 class ProgressDialog extends StatelessWidget {
   const ProgressDialog({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/pages/login_page.dart';
 
+import '../pages/login_page.dart';
 import '../widgets/my_app_bar.dart';
 
 class LoginScreen extends StatelessWidget {

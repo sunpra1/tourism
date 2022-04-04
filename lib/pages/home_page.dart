@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/widgets/carousel.dart';
-import 'package:tourism/widgets/image_slider.dart';
-import 'package:tourism/widgets/seperator.dart';
-import 'package:tourism/widgets/top_destinations.dart';
+
+import '../widgets/carousel.dart';
+import '../widgets/image_slider.dart';
+import '../widgets/separator.dart';
+import '../widgets/top_destinations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

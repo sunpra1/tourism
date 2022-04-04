@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tourism/models/drawer_menu.dart';
-import 'package:tourism/screens/login_screen.dart';
-import 'package:tourism/screens/profile_screen.dart';
 
+import '../models/drawer_menu.dart';
 import '../models/user.dart';
 import '../providers/active_drawer_menu_provider.dart';
 import '../providers/user_provider.dart';
+import '../screens/login_screen.dart';
+import '../screens/profile_screen.dart';
 import '../utils/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -106,7 +106,9 @@ class AppDrawerBanner extends StatelessWidget {
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(24)))),
-                      onPressed: () => user == null ? _handleLoginBtnClick(context) : _handleProfileBtnClick(context),
+                      onPressed: () => user == null
+                          ? _handleLoginBtnClick(context)
+                          : _handleProfileBtnClick(context),
                       child: Text(
                         user == null ? "LOGIN" : "PROFILE",
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(

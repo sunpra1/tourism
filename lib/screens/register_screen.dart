@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/pages/register_page.dart';
 
+import '../pages/register_page.dart';
 import '../widgets/my_app_bar.dart';
 
 class RegisterScreen extends StatelessWidget {

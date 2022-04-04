@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/widgets/image_slider_footer.dart';
-import 'package:tourism/widgets/slider_header.dart';
+
+import 'image_slider_footer.dart';
+import 'slider_header.dart';
 
 class ImageSlider extends StatefulWidget {
   const ImageSlider({Key? key}) : super(key: key);

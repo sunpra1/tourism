@@ -1,7 +1,8 @@
 import 'dart:convert' as Convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tourism/models/user.dart';
+
+import '../models/user.dart';
 
 class SharedPreferenceStorage {
   static const _key_user = "user";

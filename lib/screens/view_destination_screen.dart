@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/utils/app_theme.dart';
+
+import '../utils/app_theme.dart';
 
 class ViewDestinationScreen extends StatefulWidget {
   static const String routeName = "/viewDestination";
