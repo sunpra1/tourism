@@ -30,7 +30,7 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24),
-              AppDrawerMenu()
+              AppDrawerMenu(),
             ],
           ),
         ),
@@ -114,7 +114,7 @@ class AppDrawerBanner extends StatelessWidget {
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                             color: Theme.of(context).colorScheme.primary),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -133,8 +133,17 @@ class AppDrawerMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DrawerMenu> _drawerMenus = [
       DrawerMenu(
-          drawerMenuType: DrawerMenuType.home,
-          icon: FaIcon(FontAwesomeIcons.home).icon),
+        drawerMenuType: DrawerMenuType.home,
+        icon: FaIcon(FontAwesomeIcons.home).icon,
+      ),
+      DrawerMenu(
+        drawerMenuType: DrawerMenuType.blog,
+        icon: FaIcon(FontAwesomeIcons.newspaper).icon,
+      ),
+      DrawerMenu(
+        drawerMenuType: DrawerMenuType.images,
+        icon: FaIcon(FontAwesomeIcons.images).icon,
+      ),
     ];
 
     return Expanded(

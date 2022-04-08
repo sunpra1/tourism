@@ -11,7 +11,7 @@ class UserProvider with ChangeNotifier {
   User? get loggedInUser => _loggedInUser;
 
   UserProvider() {
-    getUserFromStorage();
+    _setUserFromStorage();
   }
 
   Future<void> setLoggedInUser(User? user) async {
@@ -20,10 +20,13 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<User?> getUserFromStorage() async {
-    if (_loggedInUser != null) return _loggedInUser;
+  Future<void> _setUserFromStorage() async {
+    if (_loggedInUser != null) return;
     _loggedInUser = await storage.getLoggedInUser();
     notifyListeners();
-    return _loggedInUser;
+  }
+
+  Future<User?> getLoggedInUser() async {
+    return await storage.getLoggedInUser();
   }
 }

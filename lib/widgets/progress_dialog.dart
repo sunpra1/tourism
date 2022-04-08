@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 
 class ProgressDialog extends StatelessWidget {
-  const ProgressDialog({Key? key}) : super(key: key);
+  final String message;
+
+  const ProgressDialog({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +41,14 @@ class ProgressDialog extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0),
                     child: Text(
-                      "LOADING...",
+                      message,
                       style: Theme.of(context)
                           .textTheme
                           .labelMedium
                           ?.copyWith(color: Colors.white),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

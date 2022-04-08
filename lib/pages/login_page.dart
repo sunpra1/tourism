@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_validate()) {
       showDialog(
         context: context,
-        builder: (_) => ProgressDialog(),
+        builder: (_) => ProgressDialog(message: "LOADING..."),
         barrierDismissible: false,
       );
       AuthBody body = AuthBody(
@@ -196,6 +196,10 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         labelText: "EMAIL",
+                        labelStyle: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.grey.shade600),
                       ),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
@@ -224,6 +228,10 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         labelText: "PASSWORD",
+                        labelStyle: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.grey.shade600),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {

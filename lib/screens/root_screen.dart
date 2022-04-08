@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tourism/pages/blog_page.dart';
+import 'package:tourism/pages/images_page.dart';
 
 import '../models/drawer_menu.dart';
 import '../pages/home_page.dart';
@@ -22,6 +24,12 @@ class RootScreen extends StatelessWidget {
     switch (selectedMenu) {
       case DrawerMenuType.home:
         page = HomePage();
+        break;
+      case DrawerMenuType.blog:
+        page = BlogPage();
+        break;
+      case DrawerMenuType.images:
+        page = ImagesPage();
         break;
     }
 

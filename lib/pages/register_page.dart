@@ -152,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (_validate()) {
       showDialog(
         context: context,
-        builder: (_) => ProgressDialog(),
+        builder: (_) => ProgressDialog(message: "LOADING..."),
         barrierDismissible: false,
       );
       AuthBody body = AuthBody(
@@ -238,6 +238,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         labelText: "EMAIL",
+                        labelStyle: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.grey.shade600),
                       ),
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
@@ -266,6 +270,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         labelText: "PASSWORD",
+                        labelStyle: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.grey.shade600),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -305,6 +313,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         labelText: "CONFIRM PASSWORD",
+                        labelStyle: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.grey.shade600),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
