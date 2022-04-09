@@ -27,6 +27,6 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<User?> getLoggedInUser() async {
-    return await storage.getLoggedInUser();
+    return _loggedInUser ?? await storage.getLoggedInUser();
   }
 }

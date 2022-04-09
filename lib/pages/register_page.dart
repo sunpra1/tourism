@@ -169,12 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (response.success) {
         context.read<UserProvider>().setLoggedInUser(
               User(
-                userId: "",
                 userName: body.email,
-                firstName: "",
-                lastName: "",
-                profileId: "",
-                profileImage: "",
                 roleName: UserRole.user,
                 token: response.data,
               ),

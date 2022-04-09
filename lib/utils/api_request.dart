@@ -18,7 +18,6 @@ class APIRequest<T> {
   };
   Map<String, String>? headers;
   Map<String, dynamic>? body;
-  bool isMultipart;
   List<MultipartFile>? multipartFiles;
 
   APIRequest(
@@ -27,7 +26,6 @@ class APIRequest<T> {
       this.queryParameters,
       this.headers,
       this.body,
-      this.isMultipart = false,
       this.multipartFiles});
 
   Future<APIResponse> make() async {
@@ -65,6 +63,8 @@ class APIRequest<T> {
     Uri uri = Uri.http(baseUrl, requestEndPoint.value, queryParameters);
     Http.MultipartRequest request =
         new Http.MultipartRequest(requestType.value, uri);
+    if (headers != null) _requiredHeaders.addAll(headers!);
+    request.headers.addAll(_requiredHeaders);
     body?.entries.map((e) {
       request.fields[e.key] = e.value;
     });
@@ -78,10 +78,11 @@ class APIRequest<T> {
         ),
       );
     });
-
     Http.StreamedResponse response = await request.send();
+    String responseString = await response.stream.bytesToString();
+    print("Multipart Response: $responseString");
     return APIResponse<T>.fromMap(
-      Convert.jsonDecode(response.stream.toString()),
+      Convert.jsonDecode(responseString),
     );
   }
 }
@@ -106,7 +107,7 @@ extension RequestTypeExt on RequestType {
   }
 }
 
-enum RequestEndPoint { register, login, blog, images }
+enum RequestEndPoint { register, login, blog, images, updateProfile }
 
 extension RequestEndPointExt on RequestEndPoint {
   String get value {
@@ -123,6 +124,9 @@ extension RequestEndPointExt on RequestEndPoint {
         break;
       case RequestEndPoint.images:
         value = "/api/ImageVideo/GetAllImageList";
+        break;
+      case RequestEndPoint.updateProfile:
+        value = "/api/UserProfile/SaveUpdateUserProfile";
         break;
     }
     return value;

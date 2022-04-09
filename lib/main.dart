@@ -9,6 +9,7 @@ import 'screens/login_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/root_screen.dart';
+import 'screens/update_profile_screen.dart';
 import 'screens/view_blog_screen.dart';
 import 'screens/view_destination_screen.dart';
 import 'screens/view_image_screen.dart';
@@ -46,9 +47,8 @@ class MyApp extends StatelessWidget {
                     (user.firstName.isEmpty ||
                         user.lastName.isEmpty ||
                         user.profileImage.isEmpty)) {
-                  //TODO
-                  // return UpdateProfileScreen();
-                  return RootScreen();
+                  return UpdateProfileScreen();
+                  // return RootScreen();
                 }
                 return RootScreen();
               },

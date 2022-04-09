@@ -34,7 +34,7 @@ class ImagesPage extends StatelessWidget {
           }
           List<MyImage> images = snapshot.data as List<MyImage>;
           return GridView.builder(
-            itemCount: images.length ?? 0,
+            itemCount: images.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 1,
