@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
                     (user.firstName.isEmpty ||
                         user.lastName.isEmpty ||
                         user.profileImage.isEmpty)) {
-                  return UpdateProfileScreen();
-                  // return RootScreen();
+                  // return UpdateProfileScreen();
+                  return RootScreen();
                 }
                 return RootScreen();
               },

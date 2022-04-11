@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:tourism/widgets/progress_dialog.dart';
 
+import '../models/api_response.dart';
 import '../models/blog.dart';
+import '../utils/api_request.dart';
 import '../widgets/carousel_with_arrow.dart';
 
 class ViewBlogScreen extends StatelessWidget {
@@ -11,6 +15,17 @@ class ViewBlogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Blog blog = ModalRoute.of(context)!.settings.arguments as Blog;
+
+    Future<Blog?> _getBlog() async {
+      APIResponse response = await APIRequest<Map<String, dynamic>>(
+          requestType: RequestType.get,
+          requestEndPoint: RequestEndPoint.blog,
+          body: {}).make(pathParams: [blog.blogId]);
+      if (response.success)
+        return Blog.fromMap(response.data);
+      else
+        return null;
+    }
 
     return Scaffold(
       body: Container(
@@ -40,15 +55,26 @@ class ViewBlogScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height - 75,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16.0,
                     vertical: 32.0,
                   ),
-                  child: Text(
-                    blog.shortDes,
-                    style: Theme.of(context).textTheme.labelMedium,
+                  child: FutureBuilder(
+                    future: _getBlog(),
+                    builder: (_, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return ProgressDialog(message: "LOADING...");
+                      }
+
+                      Blog blogWithDetails = snapshot.data as Blog;
+
+                      return SingleChildScrollView(
+                        child: Html(
+                          data: blogWithDetails.longDes ?? blogWithDetails.shortDes,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

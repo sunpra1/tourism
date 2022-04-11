@@ -28,8 +28,9 @@ class APIRequest<T> {
       this.body,
       this.multipartFiles});
 
-  Future<APIResponse> make() async {
-    Uri uri = Uri.http(baseUrl, requestEndPoint.value, queryParameters);
+  Future<APIResponse> make({List<String> pathParams = const []}) async {
+    Uri uri = Uri.http(baseUrl,
+        requestEndPoint.getValue(pathParams: pathParams), queryParameters);
     Http.Response response;
     if (headers != null) _requiredHeaders.addAll(headers!);
     switch (requestType) {
@@ -59,8 +60,10 @@ class APIRequest<T> {
     );
   }
 
-  Future<APIResponse> makeMultipart() async {
-    Uri uri = Uri.http(baseUrl, requestEndPoint.value, queryParameters);
+  Future<APIResponse> makeMultipart(
+      {List<String> pathParams = const []}) async {
+    Uri uri = Uri.http(baseUrl,
+        requestEndPoint.getValue(pathParams: pathParams), queryParameters);
     Http.MultipartRequest request =
         new Http.MultipartRequest(requestType.value, uri);
     if (headers != null) _requiredHeaders.addAll(headers!);
@@ -107,10 +110,10 @@ extension RequestTypeExt on RequestType {
   }
 }
 
-enum RequestEndPoint { register, login, blog, images, updateProfile }
+enum RequestEndPoint { register, login, blogs, blog, images, updateProfile }
 
 extension RequestEndPointExt on RequestEndPoint {
-  String get value {
+  String getValue({List<String> pathParams = const []}) {
     String value;
     switch (this) {
       case RequestEndPoint.register:
@@ -119,7 +122,7 @@ extension RequestEndPointExt on RequestEndPoint {
       case RequestEndPoint.login:
         value = "/api/Account/Login";
         break;
-      case RequestEndPoint.blog:
+      case RequestEndPoint.blogs:
         value = "/api/Blog/GetAllBlog";
         break;
       case RequestEndPoint.images:
@@ -128,7 +131,19 @@ extension RequestEndPointExt on RequestEndPoint {
       case RequestEndPoint.updateProfile:
         value = "/api/UserProfile/SaveUpdateUserProfile";
         break;
+      case RequestEndPoint.blog:
+        value = _formatPath("/api/Blog/GetBlogById/%s", pathParams);
+        break;
     }
     return value;
+  }
+
+  String _formatPath(String path, List<String> pathParams) {
+    pathParams.forEach((element) {
+      if (path.contains("%s")) {
+        path = path.replaceFirst("%s", element);
+      }
+    });
+    return path;
   }
 }

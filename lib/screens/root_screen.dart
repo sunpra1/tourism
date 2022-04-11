@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tourism/pages/blog_page.dart';
 import 'package:tourism/pages/images_page.dart';
+import 'package:tourism/pages/video_page.dart';
 
 import '../models/drawer_menu.dart';
 import '../pages/home_page.dart';
@@ -30,6 +31,9 @@ class RootScreen extends StatelessWidget {
         break;
       case DrawerMenuType.images:
         page = ImagesPage();
+        break;
+      case DrawerMenuType.videos:
+        page = VideosPage();
         break;
     }
 

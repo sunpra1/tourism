@@ -144,6 +144,10 @@ class AppDrawerMenu extends StatelessWidget {
         drawerMenuType: DrawerMenuType.images,
         icon: FaIcon(FontAwesomeIcons.images).icon,
       ),
+      DrawerMenu(
+        drawerMenuType: DrawerMenuType.videos,
+        icon: FaIcon(FontAwesomeIcons.video).icon,
+      ),
     ];
 
     return Expanded(

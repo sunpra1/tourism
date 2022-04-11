@@ -12,7 +12,7 @@ class BlogPage extends StatelessWidget {
   Future<List<Blog>?> _getBlogs(BuildContext context) async {
     APIResponse response = await APIRequest<List<dynamic>>(
         requestType: RequestType.post,
-        requestEndPoint: RequestEndPoint.blog,
+        requestEndPoint: RequestEndPoint.blogs,
         body: {}).make();
     if (response.success)
       return Blog.fromListMap(response.data);

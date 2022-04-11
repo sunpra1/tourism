@@ -18,9 +18,12 @@ class DrawerMenu {
       case DrawerMenuType.images:
         value = "IMAGES";
         break;
+      case DrawerMenuType.videos:
+        value = "VIDEOS";
+        break;
     }
     return value;
   }
 }
 
-enum DrawerMenuType { home, blog, images }
+enum DrawerMenuType { home, blog, images, videos }
