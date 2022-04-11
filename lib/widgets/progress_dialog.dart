@@ -4,15 +4,16 @@ import '../utils/app_theme.dart';
 
 class ProgressDialog extends StatelessWidget {
   final String message;
+  final bool wrap;
 
-  const ProgressDialog({Key? key, required this.message}) : super(key: key);
+  const ProgressDialog({Key? key, required this.message, this.wrap = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width * 0.5;
 
     return Container(
-      height: double.infinity,
+      height: wrap ? 84 : double.infinity,
       width: double.infinity,
       color: Colors.transparent,
       child: Padding(

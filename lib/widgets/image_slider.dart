@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
+import '../models/dashboard_item.dart';
+import '../models/dashboard_item_info.dart';
+import '../utils/api_request.dart';
 import 'image_slider_footer.dart';
 import 'slider_header.dart';
 
 class ImageSlider extends StatefulWidget {
-  const ImageSlider({Key? key}) : super(key: key);
+  final DashboardItem dashboardItem;
+  final bool showDetailsAtTop;
+
+  ImageSlider({Key? key, required this.dashboardItem, this.showDetailsAtTop = false}) : super(key: key);
 
   @override
   State<ImageSlider> createState() => _ImageSliderState();
 }
 
 class _ImageSliderState extends State<ImageSlider> {
-  final List<String> images = [
-    "assets/images/carousel1.jpg",
-    "assets/images/carousel2.jpg",
-    "assets/images/carousel3.jpg"
-  ];
-
   @override
   Widget build(BuildContext context) {
     final double padding = 0.0;
@@ -38,16 +38,22 @@ class _ImageSliderState extends State<ImageSlider> {
           children: [
             SliderHeader(
               headerHeight: headerHeight,
+              title: widget.dashboardItem.typeName.toUpperCase(),
             ),
             Container(
               width: double.infinity,
               height: mainGridTileSize,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: images.length,
+                itemCount: widget.dashboardItem.dashboardItemInfoItems.length,
                 itemBuilder: (_, index) => ImageSliderItem(
-                    mainGridTileSize: mainGridTileSize,
-                    isLastItem: index == images.length - 1),
+                  mainGridTileSize: mainGridTileSize,
+                  isLastItem: index ==
+                      widget.dashboardItem.dashboardItemInfoItems.length - 1,
+                  dashboardItemInfo:
+                      widget.dashboardItem.dashboardItemInfoItems[index],
+                  showDetailsAtTop: widget.showDetailsAtTop,
+                ),
               ),
             ),
             ImageSliderFooter(
@@ -62,11 +68,15 @@ class _ImageSliderState extends State<ImageSlider> {
 class ImageSliderItem extends StatelessWidget {
   final double mainGridTileSize;
   final bool isLastItem;
+  final DashboardItemInfo dashboardItemInfo;
+  final bool showDetailsAtTop;
 
-  const ImageSliderItem({
+  ImageSliderItem({
     Key? key,
     required this.mainGridTileSize,
     required this.isLastItem,
+    required this.dashboardItemInfo,
+    this.showDetailsAtTop = false
   }) : super(key: key);
 
   @override
@@ -82,41 +92,56 @@ class ImageSliderItem extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: GridTile(
-            child: Image.asset(
-              "assets/images/carousel1.jpg",
+            child: Image.network(
+              "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
               fit: BoxFit.cover,
             ),
-            footer: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: GridTileBar(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "LOG TAG",
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: Colors.white),
-                    ),
-                    Text(
-                      "Arhirappilly",
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium
-                          ?.copyWith(color: Colors.white),
-                    )
-                  ],
-                ),
-                subtitle: Text(
-                  "30 Mar, 2022",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: Colors.white),
-                ),
+            header: showDetailsAtTop ? GridTileBar(
+              backgroundColor: Colors.black54,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    dashboardItemInfo.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(color: Colors.white),
+                  )
+                ],
               ),
-            ),
+              subtitle: Text(
+                dashboardItemInfo.subTitle,
+                maxLines: 3,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+            ) : SizedBox.shrink(),
+            footer: !showDetailsAtTop ? GridTileBar(
+              backgroundColor: Colors.black54,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    dashboardItemInfo.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(color: Colors.white),
+                  )
+                ],
+              ),
+              subtitle: Text(
+                dashboardItemInfo.subTitle,
+                maxLines: 3,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+            ) : SizedBox.shrink(),
           ),
         ),
       ),

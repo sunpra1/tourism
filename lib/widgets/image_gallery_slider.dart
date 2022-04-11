@@ -1,23 +1,24 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:tourism/models/dashboard_item.dart';
+import 'package:tourism/models/dashboard_item_info.dart';
+import 'package:tourism/utils/api_request.dart';
 
 import '../screens/view_destination_screen.dart';
 import 'slider_footer.dart';
 import 'slider_header.dart';
 
-class TopDestinations extends StatefulWidget {
-  const TopDestinations({Key? key}) : super(key: key);
+class ImageGallerySlider extends StatefulWidget {
+  final DashboardItem dashboardItem;
+
+  ImageGallerySlider({Key? key, required this.dashboardItem}) : super(key: key);
 
   @override
-  State<TopDestinations> createState() => _TopDestinationsState();
+  State<ImageGallerySlider> createState() => _ImageGallerySliderState();
 }
 
-class _TopDestinationsState extends State<TopDestinations> {
-  final List<String> images = [
-    "assets/images/carousel1.jpg",
-    "assets/images/carousel2.jpg",
-    "assets/images/carousel3.jpg"
-  ];
-
+class _ImageGallerySliderState extends State<ImageGallerySlider> {
   int currentPageIndex = 0;
 
   void _onPageChanged(int index) {
@@ -48,6 +49,7 @@ class _TopDestinationsState extends State<TopDestinations> {
           children: [
             SliderHeader(
               headerHeight: headerHeight,
+              title: widget.dashboardItem.typeName.toUpperCase(),
             ),
             Container(
               width: double.infinity,
@@ -55,16 +57,18 @@ class _TopDestinationsState extends State<TopDestinations> {
               child: PageView.builder(
                 onPageChanged: _onPageChanged,
                 pageSnapping: true,
-                itemCount: images.length,
-                itemBuilder: (_, index) => TopDestinationItem(
+                itemCount: widget.dashboardItem.dashboardItemInfoItems.length,
+                itemBuilder: (_, index) => ImageGalleryItem(
                   mainGridTileSize: mainGridTileSize,
                   secondaryGridTileSize: secondaryGridTileSize,
+                  dashboardItemInfo:
+                      widget.dashboardItem.dashboardItemInfoItems[index],
                 ),
               ),
             ),
             SliderFooter(
               currentPageIndex: currentPageIndex,
-              itemCount: images.length,
+              itemCount: widget.dashboardItem.dashboardItemInfoItems.length,
               carouselPageIndicatorWidth: mainGridTileSize,
               footerHeight: footerHeight,
             ),
@@ -75,15 +79,17 @@ class _TopDestinationsState extends State<TopDestinations> {
   }
 }
 
-class TopDestinationItem extends StatelessWidget {
+class ImageGalleryItem extends StatelessWidget {
   final double mainGridTileSize;
   final double secondaryGridTileSize;
+  final DashboardItemInfo dashboardItemInfo;
 
-  const TopDestinationItem(
-      {Key? key,
-      required this.mainGridTileSize,
-      required this.secondaryGridTileSize})
-      : super(key: key);
+  const ImageGalleryItem({
+    Key? key,
+    required this.mainGridTileSize,
+    required this.secondaryGridTileSize,
+    required this.dashboardItemInfo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,38 +100,27 @@ class TopDestinationItem extends StatelessWidget {
           width: mainGridTileSize,
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(ViewDestinationScreen.routeName);
+
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: GridTile(
-                child: Image.asset(
-                  "assets/images/carousel1.jpg",
+                child: Image.network(
+                  "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
                   fit: BoxFit.cover,
                 ),
                 header: GridTileBar(
+                  backgroundColor: Colors.black54,
                   title: Text(
-                    "WATERFALLS",
+                    dashboardItemInfo.title,
                     style: Theme.of(context)
                         .textTheme
-                        .labelSmall
+                        .labelMedium
                         ?.copyWith(color: Colors.white),
                   ),
                   subtitle: Text(
-                    "Arhirappilly",
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-                footer: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 12.0,
-                  ),
-                  child: Text(
-                    "Located around 63 km from Kathmandu district, it is a great spot for picnic.",
+                    dashboardItemInfo.subTitle,
+                    maxLines: 3,
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall
@@ -144,8 +139,8 @@ class TopDestinationItem extends StatelessWidget {
               width: secondaryGridTileSize,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  "assets/images/carousel1.jpg",
+                child: Image.network(
+                  "https://${APIRequest.baseUrl}/${dashboardItemInfo.image1}",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -158,13 +153,13 @@ class TopDestinationItem extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.asset(
-                      "assets/images/carousel1.jpg",
+                    Image.network(
+                      "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
                       fit: BoxFit.cover,
                     ),
                     Center(
                       child: Text(
-                        "+51",
+                        "+${Random().nextInt(150)}",
                         style:
                             Theme.of(context).textTheme.displayLarge?.copyWith(
                                   color: Colors.white,

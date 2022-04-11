@@ -20,13 +20,14 @@ class APIRequest<T> {
   Map<String, dynamic>? body;
   List<MultipartFile>? multipartFiles;
 
-  APIRequest(
-      {required this.requestType,
-      required this.requestEndPoint,
-      this.queryParameters,
-      this.headers,
-      this.body,
-      this.multipartFiles});
+  APIRequest({
+    required this.requestType,
+    required this.requestEndPoint,
+    this.queryParameters,
+    this.headers,
+    this.body,
+    this.multipartFiles,
+  });
 
   Future<APIResponse> make({List<String> pathParams = const []}) async {
     Uri uri = Uri.http(baseUrl,
@@ -110,7 +111,15 @@ extension RequestTypeExt on RequestType {
   }
 }
 
-enum RequestEndPoint { register, login, blogs, blog, images, updateProfile }
+enum RequestEndPoint {
+  register,
+  login,
+  blogs,
+  blog,
+  images,
+  updateProfile,
+  dashBoardItems,
+}
 
 extension RequestEndPointExt on RequestEndPoint {
   String getValue({List<String> pathParams = const []}) {
@@ -133,6 +142,9 @@ extension RequestEndPointExt on RequestEndPoint {
         break;
       case RequestEndPoint.blog:
         value = _formatPath("/api/Blog/GetBlogById/%s", pathParams);
+        break;
+      case RequestEndPoint.dashBoardItems:
+        value = "/api/Public/AppInitial";
         break;
     }
     return value;

@@ -18,9 +18,9 @@ class ViewBlogScreen extends StatelessWidget {
 
     Future<Blog?> _getBlog() async {
       APIResponse response = await APIRequest<Map<String, dynamic>>(
-          requestType: RequestType.get,
-          requestEndPoint: RequestEndPoint.blog,
-          body: {}).make(pathParams: [blog.blogId]);
+        requestType: RequestType.get,
+        requestEndPoint: RequestEndPoint.blog,
+      ).make(pathParams: [blog.blogId]);
       if (response.success)
         return Blog.fromMap(response.data);
       else
@@ -64,14 +64,16 @@ class ViewBlogScreen extends StatelessWidget {
                     future: _getBlog(),
                     builder: (_, snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
-                        return ProgressDialog(message: "LOADING...");
+                        return ProgressDialog(
+                            message: "LOADING...", wrap: true);
                       }
 
                       Blog blogWithDetails = snapshot.data as Blog;
 
                       return SingleChildScrollView(
                         child: Html(
-                          data: blogWithDetails.longDes ?? blogWithDetails.shortDes,
+                          data: blogWithDetails.longDes ??
+                              blogWithDetails.shortDes,
                         ),
                       );
                     },
