@@ -22,7 +22,7 @@ class _ImageSliderState extends State<ImageSlider> {
   @override
   Widget build(BuildContext context) {
     final double padding = 0.0;
-    final double headerHeight = 24.0;
+    final double headerHeight = 32.0;
     final double footerHeight = 48.0;
     final double availableWidth =
         MediaQuery.of(context).size.width - padding * 2;
@@ -37,6 +37,7 @@ class _ImageSliderState extends State<ImageSlider> {
         padding: EdgeInsets.all(padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SliderHeader(
               headerHeight: headerHeight,

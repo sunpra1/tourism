@@ -55,7 +55,6 @@ class ApplicationDetails extends StatelessWidget {
           ],
         ),
       );
-      Navigator.of(context).pop();
     }
     return null;
   }
