@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tourism/utils/api_request.dart';
 
 import '../models/user.dart';
 import '../utils/app_theme.dart';
@@ -57,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                   child: user.profileImage.isNotEmpty
                       ? CircleAvatar(
                           radius: 50,
-                          backgroundImage: NetworkImage(user.profileImage),
+                          backgroundImage: NetworkImage("https://${APIRequest.baseUrl}/${user.profileImage}"),
                         )
                       : CircleAvatar(
                           radius: 50,

@@ -106,6 +106,17 @@ class ImageGalleryItem extends StatelessWidget {
                 child: Image.network(
                   "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, widget, loadingProgress) {
+                    if (loadingProgress == null) return widget;
+                    return Center(
+                      child: LinearProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
                 ),
                 header: GridTileBar(
                   backgroundColor: Colors.black54,
@@ -140,6 +151,17 @@ class ImageGalleryItem extends StatelessWidget {
                 child: Image.network(
                   "https://${APIRequest.baseUrl}/${dashboardItemInfo.image1}",
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, widget, loadingProgress) {
+                    if (loadingProgress == null) return widget;
+                    return Center(
+                      child: LinearProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -154,6 +176,17 @@ class ImageGalleryItem extends StatelessWidget {
                     Image.network(
                       "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, widget, loadingProgress) {
+                        if (loadingProgress == null) return widget;
+                        return Center(
+                          child: LinearProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      },
                     ),
                     Center(
                       child: Text(

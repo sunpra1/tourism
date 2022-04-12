@@ -46,6 +46,17 @@ class ImagesPage extends StatelessWidget {
                   child: Image.network(
                     "https://${APIRequest.baseUrl}/${images[index].path}",
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, widget, loadingProgress) {
+                      if (loadingProgress == null) return widget;
+                      return Center(
+                        child: LinearProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 Positioned.fill(

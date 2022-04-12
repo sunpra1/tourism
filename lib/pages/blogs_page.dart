@@ -75,6 +75,17 @@ class BlogItem extends StatelessWidget {
                     fit: BoxFit.cover,
                     height: imageSize,
                     width: imageSize,
+                    loadingBuilder: (context, widget, loadingProgress) {
+                      if (loadingProgress == null) return widget;
+                      return Center(
+                        child: LinearProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
                   ),
                   title: Text(
                     blog.title,
