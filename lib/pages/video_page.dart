@@ -2,8 +2,9 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import '../models/VideoInfo.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
+
+import '../models/VideoInfo.dart';
 
 class VideosPage extends StatelessWidget {
   final List<VideoInfo> videos = [
@@ -54,10 +55,10 @@ class VideoItem extends StatelessWidget {
 
   const VideoItem({Key? key, required this.videoInfo}) : super(key: key);
 
-  Future<void> _tryLaunchUrl(BuildContext context, String urlString) async{
-    if(await Launcher.canLaunch(urlString)){
+  Future<void> _tryLaunchUrl(BuildContext context, String urlString) async {
+    if (await Launcher.canLaunch(urlString)) {
       Launcher.launch(urlString);
-    }else{
+    } else {
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -92,24 +93,27 @@ class VideoItem extends StatelessWidget {
                 height: totalWidth * 3 / 2,
                 width: totalWidth,
                 child: GridTile(
-                  child: Image.asset(videoInfo.coverImage, fit: BoxFit.cover,),
+                  child: Image.asset(
+                    videoInfo.coverImage,
+                    fit: BoxFit.cover,
+                  ),
                   header: GridTileBar(
                     backgroundColor: Colors.black54,
                     title: Text(
                       videoInfo.videoTitle,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Colors.white,
-                      ),
+                            color: Colors.white,
+                          ),
                     ),
                     leading: Icon(FaIcon(FontAwesomeIcons.play).icon, size: 18),
                   ),
                   footer: GridTileBar(
                     backgroundColor: Colors.black54,
                     subtitle: Text(videoInfo.videoDesc ?? "",
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Colors.white,
-                              fontSize: 9
-                            ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall
+                            ?.copyWith(color: Colors.white, fontSize: 9),
                         maxLines: 3),
                   ),
                 ),
@@ -121,7 +125,7 @@ class VideoItem extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: ()  => _tryLaunchUrl(context, videoInfo.videoUrl),
+              onTap: () => _tryLaunchUrl(context, videoInfo.videoUrl),
             ),
           ),
         ),

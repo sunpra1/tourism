@@ -57,7 +57,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   FocusNode cityFocusNode = FocusNode();
   FocusNode addressFocusNode = FocusNode();
 
-
   @override
   void initState() {
     super.initState();

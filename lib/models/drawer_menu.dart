@@ -5,10 +5,14 @@ class DrawerMenu {
   final IconData? icon;
 
   DrawerMenu({required this.drawerMenuType, required this.icon});
+}
 
-  static String getOptionString(DrawerMenuType drawerMenuType) {
+enum DrawerMenuType { home, blog, images, videos, aboutUs, privacyPolicy, termsAndCondition, }
+
+extension DrawerMenuTypeExt on DrawerMenuType{
+  String get value {
     String value;
-    switch (drawerMenuType) {
+    switch (this) {
       case DrawerMenuType.home:
         value = "HOME";
         break;
@@ -21,9 +25,16 @@ class DrawerMenu {
       case DrawerMenuType.videos:
         value = "VIDEOS";
         break;
+      case DrawerMenuType.aboutUs:
+        value = "ABOUT PANCHPOKHARI";
+        break;
+      case DrawerMenuType.privacyPolicy:
+        value = "PRIVICY POLICY";
+        break;
+      case DrawerMenuType.termsAndCondition:
+        value = "TERMS & CONDITION";
+        break;
     }
     return value;
   }
 }
-
-enum DrawerMenuType { home, blog, images, videos }

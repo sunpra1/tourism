@@ -5,7 +5,6 @@ import 'package:tourism/models/dashboard_item.dart';
 import 'package:tourism/models/dashboard_item_info.dart';
 import 'package:tourism/utils/api_request.dart';
 
-import '../screens/view_destination_screen.dart';
 import 'slider_footer.dart';
 import 'slider_header.dart';
 
@@ -99,9 +98,7 @@ class ImageGalleryItem extends StatelessWidget {
         Container(
           width: mainGridTileSize,
           child: GestureDetector(
-            onTap: () {
-
-            },
+            onTap: () {},
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: GridTile(

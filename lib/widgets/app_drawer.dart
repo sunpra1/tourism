@@ -148,6 +148,18 @@ class AppDrawerMenu extends StatelessWidget {
         drawerMenuType: DrawerMenuType.videos,
         icon: FaIcon(FontAwesomeIcons.video).icon,
       ),
+      DrawerMenu(
+        drawerMenuType: DrawerMenuType.aboutUs,
+        icon: FaIcon(FontAwesomeIcons.infoCircle).icon,
+      ),
+      DrawerMenu(
+        drawerMenuType: DrawerMenuType.privacyPolicy,
+        icon: FaIcon(FontAwesomeIcons.key).icon,
+      ),
+      DrawerMenu(
+        drawerMenuType: DrawerMenuType.termsAndCondition,
+        icon: FaIcon(FontAwesomeIcons.fileContract).icon,
+      ),
     ];
 
     return Expanded(
@@ -198,7 +210,7 @@ class AppDrawerMenuItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    DrawerMenu.getOptionString(menu.drawerMenuType),
+                    menu.drawerMenuType.value,
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium

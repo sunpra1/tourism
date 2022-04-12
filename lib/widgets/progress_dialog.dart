@@ -6,7 +6,8 @@ class ProgressDialog extends StatelessWidget {
   final String message;
   final bool wrap;
 
-  const ProgressDialog({Key? key, required this.message, this.wrap = false}) : super(key: key);
+  const ProgressDialog({Key? key, required this.message, this.wrap = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

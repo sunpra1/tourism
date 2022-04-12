@@ -23,7 +23,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       shadowColor: Colors.transparent,
       iconTheme: iconThemeData,
       backgroundColor: backgroundColor,
-      title: Text(title ?? (useDefaultTitle ? appTitle : "")),
+      title: title != null ? Text(title!) : null,
       actions: actions,
     );
   }

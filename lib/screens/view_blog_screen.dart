@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:tourism/widgets/progress_dialog.dart';
 
 import '../models/api_response.dart';
@@ -15,16 +15,35 @@ class ViewBlogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Blog blog = ModalRoute.of(context)!.settings.arguments as Blog;
-
     Future<Blog?> _getBlog() async {
-      APIResponse response = await APIRequest<Map<String, dynamic>>(
-        requestType: RequestType.get,
-        requestEndPoint: RequestEndPoint.blog,
-      ).make(pathParams: [blog.blogId]);
-      if (response.success)
-        return Blog.fromMap(response.data);
-      else
-        return null;
+      try {
+        APIResponse response = await APIRequest<Map<String, dynamic>>(
+          requestType: RequestType.get,
+          requestEndPoint: RequestEndPoint.blog,
+        ).make(pathParams: [blog.blogId]);
+        if (response.success)
+          return Blog.fromMap(response.data);
+        else
+          throw Exception();
+      } on Exception catch (_) {
+        await showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text("ERROR"),
+            content: Text("Unable to load blog details."),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"))
+            ],
+          ),
+        );
+        Navigator.of(context).pop();
+      }
+      return null;
     }
 
     return Scaffold(
@@ -67,15 +86,17 @@ class ViewBlogScreen extends StatelessWidget {
                         return ProgressDialog(
                             message: "LOADING...", wrap: true);
                       }
-
-                      Blog blogWithDetails = snapshot.data as Blog;
-
-                      return SingleChildScrollView(
-                        child: Html(
-                          data: blogWithDetails.longDes ??
-                              blogWithDetails.shortDes,
-                        ),
-                      );
+                      Blog? blogWithDetails = snapshot.data as Blog?;
+                      if (blogWithDetails != null) {
+                        return SingleChildScrollView(
+                          child: HtmlWidget(
+                            blogWithDetails.longDes ??
+                                blogWithDetails.shortDes,
+                          ),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
                     },
                   ),
                 ),

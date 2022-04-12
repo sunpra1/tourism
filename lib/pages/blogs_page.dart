@@ -6,8 +6,8 @@ import 'package:tourism/widgets/progress_dialog.dart';
 import '../models/api_response.dart';
 import '../utils/api_request.dart';
 
-class BlogPage extends StatelessWidget {
-  const BlogPage({Key? key}) : super(key: key);
+class BlogsPage extends StatelessWidget {
+  const BlogsPage({Key? key}) : super(key: key);
 
   Future<List<Blog>?> _getBlogs(BuildContext context) async {
     APIResponse response = await APIRequest<List<dynamic>>(

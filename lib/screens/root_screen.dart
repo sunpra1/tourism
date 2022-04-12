@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tourism/pages/blog_page.dart';
+import 'package:tourism/pages/application_details.dart';
+import 'package:tourism/pages/blogs_page.dart';
 import 'package:tourism/pages/images_page.dart';
 import 'package:tourism/pages/video_page.dart';
 
@@ -22,12 +23,13 @@ class RootScreen extends StatelessWidget {
         context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
 
     Widget page;
+    String? title = selectedMenu.value;
     switch (selectedMenu) {
       case DrawerMenuType.home:
         page = HomePage();
         break;
       case DrawerMenuType.blog:
-        page = BlogPage();
+        page = BlogsPage();
         break;
       case DrawerMenuType.images:
         page = ImagesPage();
@@ -35,10 +37,25 @@ class RootScreen extends StatelessWidget {
       case DrawerMenuType.videos:
         page = VideosPage();
         break;
+      case DrawerMenuType.aboutUs:
+        page = ApplicationDetails(drawerMenuType: DrawerMenuType.aboutUs);
+        title = null;
+        break;
+      case DrawerMenuType.privacyPolicy:
+        page = ApplicationDetails(drawerMenuType: DrawerMenuType.privacyPolicy);
+        title = null;
+        break;
+      case DrawerMenuType.termsAndCondition:
+        page = ApplicationDetails(
+            drawerMenuType: DrawerMenuType.termsAndCondition);
+        title = null;
+        break;
     }
 
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: MyAppBar(
+        title: title,
+      ),
       body: page,
       drawer: AppDrawer(),
       bottomNavigationBar: AppBottomNavigationBar(),

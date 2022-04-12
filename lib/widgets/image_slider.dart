@@ -10,7 +10,9 @@ class ImageSlider extends StatefulWidget {
   final DashboardItem dashboardItem;
   final bool showDetailsAtTop;
 
-  ImageSlider({Key? key, required this.dashboardItem, this.showDetailsAtTop = false}) : super(key: key);
+  ImageSlider(
+      {Key? key, required this.dashboardItem, this.showDetailsAtTop = false})
+      : super(key: key);
 
   @override
   State<ImageSlider> createState() => _ImageSliderState();
@@ -76,7 +78,7 @@ class ImageSliderItem extends StatelessWidget {
     required this.mainGridTileSize,
     required this.isLastItem,
     required this.dashboardItemInfo,
-    this.showDetailsAtTop = false
+    this.showDetailsAtTop = false,
   }) : super(key: key);
 
   @override
@@ -96,52 +98,56 @@ class ImageSliderItem extends StatelessWidget {
               "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
               fit: BoxFit.cover,
             ),
-            header: showDetailsAtTop ? GridTileBar(
-              backgroundColor: Colors.black54,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    dashboardItemInfo.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(color: Colors.white),
+            header: showDetailsAtTop
+                ? GridTileBar(
+                    backgroundColor: Colors.black54,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          dashboardItemInfo.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.copyWith(color: Colors.white),
+                        )
+                      ],
+                    ),
+                    subtitle: Text(
+                      dashboardItemInfo.subTitle,
+                      maxLines: 3,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: Colors.white),
+                    ),
                   )
-                ],
-              ),
-              subtitle: Text(
-                dashboardItemInfo.subTitle,
-                maxLines: 3,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: Colors.white),
-              ),
-            ) : SizedBox.shrink(),
-            footer: !showDetailsAtTop ? GridTileBar(
-              backgroundColor: Colors.black54,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    dashboardItemInfo.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(color: Colors.white),
+                : SizedBox.shrink(),
+            footer: !showDetailsAtTop
+                ? GridTileBar(
+                    backgroundColor: Colors.black54,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          dashboardItemInfo.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.copyWith(color: Colors.white),
+                        )
+                      ],
+                    ),
+                    subtitle: Text(
+                      dashboardItemInfo.subTitle,
+                      maxLines: 3,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: Colors.white),
+                    ),
                   )
-                ],
-              ),
-              subtitle: Text(
-                dashboardItemInfo.subTitle,
-                maxLines: 3,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: Colors.white),
-              ),
-            ) : SizedBox.shrink(),
+                : SizedBox.shrink(),
           ),
         ),
       ),

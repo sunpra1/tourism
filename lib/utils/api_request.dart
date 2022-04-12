@@ -119,6 +119,7 @@ enum RequestEndPoint {
   images,
   updateProfile,
   dashBoardItems,
+  appDetails,
 }
 
 extension RequestEndPointExt on RequestEndPoint {
@@ -145,6 +146,9 @@ extension RequestEndPointExt on RequestEndPoint {
         break;
       case RequestEndPoint.dashBoardItems:
         value = "/api/Public/AppInitial";
+        break;
+      case RequestEndPoint.appDetails:
+        value = "/api/Website/PPTCFAQ";
         break;
     }
     return value;

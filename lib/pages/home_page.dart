@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:tourism/models/dashboard.dart';
-import 'package:tourism/models/dashboard_item.dart';
 import 'package:tourism/screens/loading_screen.dart';
 
 import '../models/api_response.dart';
 import '../utils/api_request.dart';
 import '../widgets/carousel.dart';
+import '../widgets/image_gallery_slider.dart';
 import '../widgets/image_slider.dart';
 import '../widgets/separator.dart';
-import '../widgets/image_gallery_slider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  Future<Dashboard?> _getDashboardDetails(
-      BuildContext context) async {
+  Future<Dashboard?> _getDashboardDetails(BuildContext context) async {
     APIResponse response = await APIRequest<Map<String, dynamic>>(
       requestType: RequestType.get,
       requestEndPoint: RequestEndPoint.dashBoardItems,
@@ -43,13 +41,22 @@ class HomePage extends StatelessWidget {
               children: [
                 Carousel(),
                 Separator(),
-                ImageGallerySlider(dashboardItem: dashboard.dashBoardItems[0],),
+                ImageGallerySlider(
+                  dashboardItem: dashboard.dashBoardItems[0],
+                ),
                 Separator(),
-                ImageSlider(dashboardItem: dashboard.dashBoardItems[1],),
+                ImageSlider(
+                  dashboardItem: dashboard.dashBoardItems[1],
+                ),
                 Separator(),
-                ImageSlider(dashboardItem: dashboard.dashBoardItems[2], showDetailsAtTop: true,),
+                ImageSlider(
+                  dashboardItem: dashboard.dashBoardItems[2],
+                  showDetailsAtTop: true,
+                ),
                 Separator(),
-                ImageGallerySlider(dashboardItem: dashboard.dashBoardItems[3],),
+                ImageGallerySlider(
+                  dashboardItem: dashboard.dashBoardItems[3],
+                ),
                 Separator(
                   isLast: true,
                 ),
