@@ -77,12 +77,16 @@ class BlogItem extends StatelessWidget {
                     width: imageSize,
                     loadingBuilder: (context, widget, loadingProgress) {
                       if (loadingProgress == null) return widget;
-                      return Center(
-                        child: LinearProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                              : null,
+                      return Container(
+                        height: imageSize,
+                        width: imageSize,
+                        child: Center(
+                          child: LinearProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
                         ),
                       );
                     },
