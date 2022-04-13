@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/dashboard_item.dart';
 import '../models/dashboard_item_info.dart';
+import '../screens/view_blog_screen.dart';
 import '../utils/api_request.dart';
 import 'image_slider_footer.dart';
 import 'slider_header.dart';
@@ -84,82 +85,88 @@ class ImageSliderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 16.0,
-        right: isLastItem ? 16.0 : 0.0,
-      ),
-      child: Container(
-        width: mainGridTileSize,
-        height: mainGridTileSize,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: GridTile(
-            child: Image.network(
-              "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
-              fit: BoxFit.cover,
-              loadingBuilder: (context, widget, loadingProgress) {
-              if (loadingProgress == null) return widget;
-              return Center(
-                child: LinearProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                      : null,
+    return Material(
+      child: InkWell(
+        onTap: () { Navigator.of(context)
+            .pushNamed(ViewBlogScreen.routeName, arguments: dashboardItemInfo.blogId); },
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 16.0,
+            right: isLastItem ? 16.0 : 0.0,
+          ),
+          child: Container(
+            width: mainGridTileSize,
+            height: mainGridTileSize,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: GridTile(
+                child: Image.network(
+                  "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, widget, loadingProgress) {
+                  if (loadingProgress == null) return widget;
+                  return Center(
+                    child: LinearProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
                 ),
-              );
-            },
+                header: showDetailsAtTop
+                    ? GridTileBar(
+                        backgroundColor: Colors.black54,
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              dashboardItemInfo.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(color: Colors.white),
+                            )
+                          ],
+                        ),
+                        subtitle: Text(
+                          dashboardItemInfo.subTitle,
+                          maxLines: 3,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                footer: !showDetailsAtTop
+                    ? GridTileBar(
+                        backgroundColor: Colors.black54,
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              dashboardItemInfo.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(color: Colors.white),
+                            )
+                          ],
+                        ),
+                        subtitle: Text(
+                          dashboardItemInfo.subTitle,
+                          maxLines: 3,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+              ),
             ),
-            header: showDetailsAtTop
-                ? GridTileBar(
-                    backgroundColor: Colors.black54,
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          dashboardItemInfo.title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium
-                              ?.copyWith(color: Colors.white),
-                        )
-                      ],
-                    ),
-                    subtitle: Text(
-                      dashboardItemInfo.subTitle,
-                      maxLines: 3,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: Colors.white),
-                    ),
-                  )
-                : SizedBox.shrink(),
-            footer: !showDetailsAtTop
-                ? GridTileBar(
-                    backgroundColor: Colors.black54,
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          dashboardItemInfo.title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium
-                              ?.copyWith(color: Colors.white),
-                        )
-                      ],
-                    ),
-                    subtitle: Text(
-                      dashboardItemInfo.subTitle,
-                      maxLines: 3,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: Colors.white),
-                    ),
-                  )
-                : SizedBox.shrink(),
           ),
         ),
       ),

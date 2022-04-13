@@ -173,9 +173,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 roleName: UserRole.user,
                 token: response.data,
               ),
-            );
-        Navigator.of(context)
-            .popUntil(ModalRoute.withName(RootScreen.routeName));
+        );
+        Navigator.of(context).popUntil(ModalRoute.withName("/"));
       } else {
         showDialog(
           barrierDismissible: false,

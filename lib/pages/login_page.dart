@@ -138,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
         context.read<UserProvider>().setLoggedInUser(
               User.fromMap(response.data),
             );
-        Navigator.of(context).pop(ModalRoute.withName(RootScreen.routeName));
+        Navigator.of(context).popUntil(ModalRoute.withName("/"));
       } else {
         showDialog(
           barrierDismissible: false,

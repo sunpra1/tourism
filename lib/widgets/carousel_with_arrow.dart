@@ -84,11 +84,15 @@ class CarouselItem extends StatelessWidget {
       loadingBuilder: (context, widget, loadingProgress) {
         if (loadingProgress == null) return widget;
         return Center(
-          child: LinearProgressIndicator(
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded /
-                loadingProgress.expectedTotalBytes!
-                : null,
+          child: SizedBox(
+            height: 64,
+            width: 64,
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                  loadingProgress.expectedTotalBytes!
+                  : null,
+            ),
           ),
         );
       },

@@ -58,7 +58,7 @@ class BlogItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context)
-              .pushNamed(ViewBlogScreen.routeName, arguments: blog);
+              .pushNamed(ViewBlogScreen.routeName, arguments: blog.blogId);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(
