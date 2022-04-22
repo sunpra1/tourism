@@ -100,8 +100,10 @@ class ImageGalleryItem extends StatelessWidget {
         Container(
           width: mainGridTileSize,
           child: GestureDetector(
-            onTap: () { Navigator.of(context)
-                .pushNamed(ViewBlogScreen.routeName, arguments: dashboardItemInfo.blogId); },
+            onTap: () {
+              Navigator.of(context).pushNamed(ViewBlogScreen.routeName,
+                  arguments: dashboardItemInfo.blogId);
+            },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: GridTile(
@@ -114,7 +116,7 @@ class ImageGalleryItem extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
+                                loadingProgress.expectedTotalBytes!
                             : null,
                       ),
                     );
@@ -159,7 +161,7 @@ class ImageGalleryItem extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
+                                loadingProgress.expectedTotalBytes!
                             : null,
                       ),
                     );
@@ -184,7 +186,7 @@ class ImageGalleryItem extends StatelessWidget {
                           child: LinearProgressIndicator(
                             value: loadingProgress.expectedTotalBytes != null
                                 ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
+                                    loadingProgress.expectedTotalBytes!
                                 : null,
                           ),
                         );

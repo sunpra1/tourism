@@ -13,7 +13,7 @@ class DashboardItemInfo {
 
   DashboardItemInfo(
       {required this.blogId,
-        required this.title,
+      required this.title,
       required this.subTitle,
       required this.image,
       required this.image1});

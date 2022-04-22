@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../models/drawer_menu.dart';
+import '../models/menu.dart';
 import '../models/user.dart';
 import '../providers/active_drawer_menu_provider.dart';
 import '../providers/user_provider.dart';
@@ -71,7 +71,7 @@ class AppDrawerBanner extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "NEPAL TOURISM",
+                      "PANCHPOKHARI TOURISM",
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge
@@ -131,34 +131,38 @@ class AppDrawerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DrawerMenu> _drawerMenus = [
-      DrawerMenu(
-        drawerMenuType: DrawerMenuType.home,
+    List<Menu> _drawerMenus = [
+      Menu(
+        menuType: MenuType.home,
         icon: FaIcon(FontAwesomeIcons.home).icon,
       ),
-      DrawerMenu(
-        drawerMenuType: DrawerMenuType.blog,
+      Menu(
+        menuType: MenuType.blog,
         icon: FaIcon(FontAwesomeIcons.newspaper).icon,
       ),
-      DrawerMenu(
-        drawerMenuType: DrawerMenuType.images,
+      Menu(
+        menuType: MenuType.images,
         icon: FaIcon(FontAwesomeIcons.images).icon,
       ),
-      DrawerMenu(
-        drawerMenuType: DrawerMenuType.videos,
+      Menu(
+        menuType: MenuType.videos,
         icon: FaIcon(FontAwesomeIcons.video).icon,
       ),
-      DrawerMenu(
-        drawerMenuType: DrawerMenuType.aboutUs,
+      Menu(
+        menuType: MenuType.aboutUs,
         icon: FaIcon(FontAwesomeIcons.infoCircle).icon,
       ),
-      DrawerMenu(
-        drawerMenuType: DrawerMenuType.privacyPolicy,
+      Menu(
+        menuType: MenuType.privacyPolicy,
         icon: FaIcon(FontAwesomeIcons.key).icon,
       ),
-      DrawerMenu(
-        drawerMenuType: DrawerMenuType.termsAndCondition,
+      Menu(
+        menuType: MenuType.termsAndCondition,
         icon: FaIcon(FontAwesomeIcons.fileContract).icon,
+      ),
+      Menu(
+        menuType: MenuType.map,
+        icon: FaIcon(FontAwesomeIcons.map).icon,
       ),
     ];
 
@@ -172,22 +176,22 @@ class AppDrawerMenu extends StatelessWidget {
 }
 
 class AppDrawerMenuItem extends StatelessWidget {
-  final DrawerMenu menu;
+  final Menu menu;
 
   const AppDrawerMenuItem({Key? key, required this.menu}) : super(key: key);
 
   void _handleOnAppDrawerMenuItemClick(BuildContext context) {
     context
         .read<ActiveDrawerMenuProvider>()
-        .setActiveDrawerMenu(menu.drawerMenuType);
+        .setActiveDrawerMenu(menu.menuType);
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    DrawerMenuType _activeMenu =
+    MenuType _activeMenu =
         context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
-    Color backGroundColor = _activeMenu == menu.drawerMenuType
+    Color backGroundColor = _activeMenu == menu.menuType
         ? Colors.black12
         : Colors.transparent;
 
@@ -210,7 +214,7 @@ class AppDrawerMenuItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    menu.drawerMenuType.value,
+                    menu.menuType.value,
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium

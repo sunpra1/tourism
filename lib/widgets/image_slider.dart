@@ -87,8 +87,10 @@ class ImageSliderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () { Navigator.of(context)
-            .pushNamed(ViewBlogScreen.routeName, arguments: dashboardItemInfo.blogId); },
+        onTap: () {
+          Navigator.of(context).pushNamed(ViewBlogScreen.routeName,
+              arguments: dashboardItemInfo.blogId);
+        },
         child: Padding(
           padding: EdgeInsets.only(
             left: 16.0,
@@ -104,16 +106,16 @@ class ImageSliderItem extends StatelessWidget {
                   "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
                   fit: BoxFit.cover,
                   loadingBuilder: (context, widget, loadingProgress) {
-                  if (loadingProgress == null) return widget;
-                  return Center(
-                    child: LinearProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
+                    if (loadingProgress == null) return widget;
+                    return Center(
+                      child: LinearProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
                 ),
                 header: showDetailsAtTop
                     ? GridTileBar(

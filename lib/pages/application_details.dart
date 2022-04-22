@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:tourism/data/pojo/app_details_body.dart';
-import 'package:tourism/models/drawer_menu.dart';
+import 'package:tourism/models/menu.dart';
 import 'package:tourism/models/pp_tc_faq_ab.dart';
 import 'package:tourism/utils/app_theme.dart';
 
@@ -10,7 +10,7 @@ import '../utils/api_request.dart';
 import '../widgets/progress_dialog.dart';
 
 class ApplicationDetails extends StatelessWidget {
-  final DrawerMenuType drawerMenuType;
+  final MenuType drawerMenuType;
 
   const ApplicationDetails({Key? key, required this.drawerMenuType})
       : super(key: key);
@@ -18,10 +18,10 @@ class ApplicationDetails extends StatelessWidget {
   Future<PpTcFaqAb?> _getPpTcFaqAb(BuildContext context) async {
     FlagType flagType;
     switch (drawerMenuType) {
-      case DrawerMenuType.aboutUs:
+      case MenuType.aboutUs:
         flagType = FlagType.aboutUS;
         break;
-      case DrawerMenuType.privacyPolicy:
+      case MenuType.privacyPolicy:
         flagType = FlagType.privacyPolicy;
         break;
       default:

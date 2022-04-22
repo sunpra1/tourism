@@ -1,4 +1,4 @@
-class AppDetailsBody{
+class AppDetailsBody {
   static const _key_flag = "flag";
   static const _key_focus_user = "focusUser";
   static const _key_office_id = "officeId";
@@ -21,16 +21,12 @@ class AppDetailsBody{
   }
 }
 
-enum FlagType{
-  privacyPolicy,
-  aboutUS,
-  termsAndCondition
-}
+enum FlagType { privacyPolicy, aboutUS, termsAndCondition }
 
-extension FlagTypeExt on FlagType{
-  String get value{
+extension FlagTypeExt on FlagType {
+  String get value {
     String value;
-    switch(this){
+    switch (this) {
       case FlagType.privacyPolicy:
         value = "PP";
         break;

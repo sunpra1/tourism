@@ -120,6 +120,7 @@ enum RequestEndPoint {
   updateProfile,
   dashBoardItems,
   appDetails,
+  proximity
 }
 
 extension RequestEndPointExt on RequestEndPoint {
@@ -149,6 +150,9 @@ extension RequestEndPointExt on RequestEndPoint {
         break;
       case RequestEndPoint.appDetails:
         value = "/api/Website/PPTCFAQ";
+        break;
+      case RequestEndPoint.proximity:
+        value = "/api/public/NearPlaces";
         break;
     }
     return value;

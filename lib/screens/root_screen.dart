@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tourism/models/proximity_type.dart';
 import 'package:tourism/pages/application_details.dart';
 import 'package:tourism/pages/blogs_page.dart';
 import 'package:tourism/pages/images_page.dart';
+import 'package:tourism/pages/map_page.dart';
+import 'package:tourism/pages/proximity_page.dart';
 import 'package:tourism/pages/video_page.dart';
 
-import '../models/drawer_menu.dart';
+import '../models/menu.dart';
 import '../pages/home_page.dart';
 import '../providers/active_drawer_menu_provider.dart';
 import '../widgets/app_bottom_navigation_bar.dart';
@@ -19,36 +22,51 @@ class RootScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DrawerMenuType selectedMenu =
+    MenuType selectedMenu =
         context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
 
     Widget page;
     String? title = selectedMenu.value;
     switch (selectedMenu) {
-      case DrawerMenuType.home:
+      case MenuType.home:
         page = HomePage();
         break;
-      case DrawerMenuType.blog:
+      case MenuType.blog:
         page = BlogsPage();
         break;
-      case DrawerMenuType.images:
+      case MenuType.images:
         page = ImagesPage();
         break;
-      case DrawerMenuType.videos:
+      case MenuType.videos:
         page = VideosPage();
         break;
-      case DrawerMenuType.aboutUs:
-        page = ApplicationDetails(drawerMenuType: DrawerMenuType.aboutUs);
+      case MenuType.aboutUs:
+        page = ApplicationDetails(drawerMenuType: MenuType.aboutUs);
         title = null;
         break;
-      case DrawerMenuType.privacyPolicy:
-        page = ApplicationDetails(drawerMenuType: DrawerMenuType.privacyPolicy);
+      case MenuType.privacyPolicy:
+        page = ApplicationDetails(drawerMenuType: MenuType.privacyPolicy);
         title = null;
         break;
-      case DrawerMenuType.termsAndCondition:
+      case MenuType.termsAndCondition:
         page = ApplicationDetails(
-            drawerMenuType: DrawerMenuType.termsAndCondition);
+            drawerMenuType: MenuType.termsAndCondition);
         title = null;
+        break;
+      case MenuType.map:
+        page = MapPage();
+        title = "MAP";
+        break;
+      case MenuType.nearMe:
+        page = ProximityPage(proximityType: ProximityType.nearMe);
+        title = "NEAR ME";
+        break;
+      case MenuType.whereToStay:
+        page = ProximityPage(proximityType: ProximityType.whereToStay);
+        title = "WHERE TO STAY";
+        break;
+      default:
+        page = HomePage();
         break;
     }
 

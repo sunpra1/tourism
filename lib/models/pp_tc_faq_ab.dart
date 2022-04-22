@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 
 class PpTcFaqAb {
   static const String _key_pp_tc_faq_ab = "pptcfaqList";
@@ -6,12 +6,12 @@ class PpTcFaqAb {
 
   PpTcFaqAb({required this.ppTcFaqAbDetailsList});
 
-  factory PpTcFaqAb.fromMap(Map<String, dynamic> map){
+  factory PpTcFaqAb.fromMap(Map<String, dynamic> map) {
     return PpTcFaqAb(
-      ppTcFaqAbDetailsList: PpTcFaqAbDetails.fromListMap(map[_key_pp_tc_faq_ab]),
+      ppTcFaqAbDetailsList:
+          PpTcFaqAbDetails.fromListMap(map[_key_pp_tc_faq_ab]),
     );
   }
-
 }
 
 class PpTcFaqAbDetails {
@@ -21,7 +21,7 @@ class PpTcFaqAbDetails {
 
   PpTcFaqAbDetails({required this.content});
 
-  factory PpTcFaqAbDetails.fromMap(Map<String, dynamic> map){
+  factory PpTcFaqAbDetails.fromMap(Map<String, dynamic> map) {
     return PpTcFaqAbDetails(
       content: map[_key_content],
     );

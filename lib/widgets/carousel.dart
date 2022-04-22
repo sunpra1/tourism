@@ -1,21 +1,22 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:tourism/models/dashboard_item_info.dart';
+import 'package:tourism/screens/view_blog_screen.dart';
+import 'package:tourism/utils/api_request.dart';
 
 import 'carousel_indicator.dart';
 
 class Carousel extends StatefulWidget {
-  const Carousel({Key? key}) : super(key: key);
+  final List<DashboardItemInfo> dashboardItemInfos;
+
+  Carousel({Key? key, required this.dashboardItemInfos}) : super(key: key);
 
   @override
   State<Carousel> createState() => _CarouselState();
 }
 
 class _CarouselState extends State<Carousel> {
-  final List<String> images = [
-    "assets/images/carousel1.jpg",
-    "assets/images/carousel2.jpg",
-    "assets/images/carousel3.jpg"
-  ];
-
   int currentPageIndex = 0;
 
   void _onPageChanged(int index) {
@@ -37,14 +38,16 @@ class _CarouselState extends State<Carousel> {
           child: PageView.builder(
             onPageChanged: _onPageChanged,
             pageSnapping: true,
-            itemBuilder: (_, index) => CarouselItem(image: images[index]),
-            itemCount: images.length,
+            itemBuilder: (_, index) => CarouselItem(
+                dashboardItemInfo: widget.dashboardItemInfos[index]),
+            itemCount: widget.dashboardItemInfos.length,
             scrollDirection: Axis.horizontal,
           ),
           footer: GridTileBar(
             title: Center(
               child: CarouselIndicator(
-                  itemCount: images.length, currentPageIndex: currentPageIndex),
+                  itemCount: widget.dashboardItemInfos.length,
+                  currentPageIndex: currentPageIndex),
             ),
           ),
         ),
@@ -54,16 +57,40 @@ class _CarouselState extends State<Carousel> {
 }
 
 class CarouselItem extends StatelessWidget {
-  final String image;
+  final DashboardItemInfo dashboardItemInfo;
 
-  const CarouselItem({Key? key, required this.image}) : super(key: key);
+  const CarouselItem({Key? key, required this.dashboardItemInfo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      image,
-      width: MediaQuery.of(context).size.width,
-      fit: BoxFit.cover,
+    return Material(
+      child: InkWell(
+        onTap: () => Navigator.of(context).pushNamed(
+          ViewBlogScreen.routeName,
+          arguments: dashboardItemInfo.blogId,
+        ),
+        child: Image.network(
+          "https://${APIRequest.baseUrl}/${Random().nextInt(9) % 2 == 0 ? dashboardItemInfo.image : dashboardItemInfo.image1}",
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, widget, loadingProgress) {
+            if (loadingProgress == null) return widget;
+            return Center(
+              child: SizedBox(
+                height: 32,
+                width: 32,
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

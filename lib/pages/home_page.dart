@@ -39,7 +39,9 @@ class HomePage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Carousel(),
+                Carousel(
+                  dashboardItemInfos: dashboard.dashboardTopSlider,
+                ),
                 Separator(),
                 ImageGallerySlider(
                   dashboardItem: dashboard.dashBoardItems[0],

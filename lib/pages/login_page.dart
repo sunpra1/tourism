@@ -10,7 +10,6 @@ import '../data/pojo/auth_body.dart';
 import '../models/api_response.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
-import '../screens/root_screen.dart';
 import '../utils/api_request.dart';
 import '../widgets/progress_dialog.dart';
 

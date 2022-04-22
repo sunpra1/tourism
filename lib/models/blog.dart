@@ -6,6 +6,8 @@ class Blog {
   static const _key_long_desc = "longDesc";
   static const _key_image = "image";
   static const _key_image1 = "image1";
+  static const _key_latitude = "latitude";
+  static const _key_longitude = "longitude";
 
   final String blogId;
   final String title;
@@ -14,6 +16,8 @@ class Blog {
   final String? longDes;
   final String image;
   final String image1;
+  final double? latitude;
+  final double? longitude;
 
   Blog({
     required this.blogId,
@@ -23,6 +27,8 @@ class Blog {
     required this.longDes,
     required this.image,
     required this.image1,
+    this.latitude,
+    this.longitude,
   });
 
   factory Blog.fromMap(Map<String, dynamic> map) {
@@ -30,10 +36,12 @@ class Blog {
       blogId: map[_key_blog_id],
       title: map[_key_title],
       subTitle: map[_key_sub_title],
-      shortDes: map[_key_short_des],
-      longDes: map[_key_long_desc],
+      shortDes: map[_key_short_des] ?? "",
+      longDes: map[_key_long_desc] ?? "",
       image: map[_key_image],
       image1: map[_key_image1],
+      latitude: map[_key_latitude] != null ? double.tryParse(map[_key_latitude]) : null,
+      longitude: map[_key_longitude] != null ? double.tryParse(map[_key_longitude]) : null,
     );
   }
 

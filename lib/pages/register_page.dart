@@ -8,7 +8,6 @@ import '../data/pojo/auth_body.dart';
 import '../models/api_response.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
-import '../screens/root_screen.dart';
 import '../utils/api_request.dart';
 import '../widgets/gradient_button.dart';
 import '../widgets/progress_dialog.dart';
@@ -173,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 roleName: UserRole.user,
                 token: response.data,
               ),
-        );
+            );
         Navigator.of(context).popUntil(ModalRoute.withName("/"));
       } else {
         showDialog(
