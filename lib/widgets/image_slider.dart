@@ -103,7 +103,7 @@ class ImageSliderItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: GridTile(
                 child: Image.network(
-                  "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
+                  "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
                   fit: BoxFit.cover,
                   loadingBuilder: (context, widget, loadingProgress) {
                     if (loadingProgress == null) return widget;

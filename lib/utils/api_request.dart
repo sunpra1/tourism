@@ -120,7 +120,9 @@ enum RequestEndPoint {
   updateProfile,
   dashBoardItems,
   appDetails,
-  proximity
+  proximity,
+  vendors,
+  vendor,
 }
 
 extension RequestEndPointExt on RequestEndPoint {
@@ -153,6 +155,12 @@ extension RequestEndPointExt on RequestEndPoint {
         break;
       case RequestEndPoint.proximity:
         value = "/api/public/NearPlaces";
+        break;
+      case RequestEndPoint.vendors:
+        value = "/api/Vendor/GetVendorList";
+        break;
+      case RequestEndPoint.vendor:
+        value = _formatPath("/api/Vendor/GetVendorById/%s", pathParams);
         break;
     }
     return value;

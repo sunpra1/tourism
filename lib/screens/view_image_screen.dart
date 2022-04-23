@@ -40,7 +40,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
               height: (MediaQuery.of(context).size.width * 2) / 3,
               child: GridTile(
                 child: Image.network(
-                  "https://${APIRequest.baseUrl}/${image.path}",
+                  "https://${APIRequest.baseUrl}${image.path}",
                   fit: BoxFit.cover,
                 ),
                 footer: showDetails

@@ -6,7 +6,8 @@ import 'package:tourism/pages/blogs_page.dart';
 import 'package:tourism/pages/images_page.dart';
 import 'package:tourism/pages/map_page.dart';
 import 'package:tourism/pages/proximity_page.dart';
-import 'package:tourism/pages/video_page.dart';
+import 'package:tourism/pages/vendors_page.dart';
+import 'package:tourism/pages/videos_page.dart';
 
 import '../models/menu.dart';
 import '../pages/home_page.dart';
@@ -49,8 +50,7 @@ class RootScreen extends StatelessWidget {
         title = null;
         break;
       case MenuType.termsAndCondition:
-        page = ApplicationDetails(
-            drawerMenuType: MenuType.termsAndCondition);
+        page = ApplicationDetails(drawerMenuType: MenuType.termsAndCondition);
         title = null;
         break;
       case MenuType.map:
@@ -61,8 +61,12 @@ class RootScreen extends StatelessWidget {
         page = ProximityPage(proximityType: ProximityType.nearMe);
         title = "NEAR ME";
         break;
-      case MenuType.whereToStay:
+      case MenuType.places:
         page = ProximityPage(proximityType: ProximityType.whereToStay);
+        title = "PLACES";
+        break;
+      case MenuType.whereToStay:
+        page = VendorsPage();
         title = "WHERE TO STAY";
         break;
       default:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:tourism/models/blog.dart';
 import 'package:tourism/screens/view_blog_screen.dart';
 import 'package:tourism/widgets/progress_dialog.dart';
@@ -38,13 +38,20 @@ class BlogsPage extends StatelessWidget {
           if (snapshot.connectionState != ConnectionState.done) {
             return ProgressDialog(message: "LOADING...");
           }
-          List<Blog> blogs = snapshot.data as List<Blog>;
-          return ListView.builder(
-            itemBuilder: (_, index) => BlogItem(
-              blog: blogs[index],
-            ),
-            itemCount: (snapshot.data as List<Blog>?)?.length ?? 0,
-          );
+          List<Blog>? blogs = snapshot.data as List<Blog>?;
+          return (blogs != null && blogs.length > 0)
+              ? ListView.builder(
+                  itemBuilder: (_, index) => BlogItem(
+                    blog: blogs[index],
+                  ),
+                  itemCount: blogs.length,
+                )
+              : Center(
+                  child: Text(
+                    "NO BLOGS FOUND",
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                );
         },
       ),
     );
@@ -56,65 +63,63 @@ class BlogItem extends StatelessWidget {
 
   const BlogItem({Key? key, required this.blog}) : super(key: key);
 
-  Future<LocationData?> _getCurrentLocation(BuildContext context) async {
-    Location location = Location();
-    if (!await location.serviceEnabled()) {
-      if (!await location.requestService()) {
-        await showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text("ERROR"),
-            content: Text("Location service is not unavailable"),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"))
-            ],
-          ),
-        );
-        return null;
-      }
-    } else if (await location.hasPermission() == PermissionStatus.denied) {
-      if (await location.requestPermission() == PermissionStatus.denied) {
-        await showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text("DENIED PERMISSION"),
-            content:
-                Text("Permission is denied to access your current location."),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"))
-            ],
-          ),
-        );
-        return null;
-      }
+  Future<Position?> _getCurrentLocation(BuildContext context) async {
+    if (!await Geolocator.isLocationServiceEnabled()) {
+      await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("ERROR"),
+          content: Text("Location service is not unavailable"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"))
+          ],
+        ),
+      );
+      return null;
     }
-    return await location.getLocation();
+
+    if (await Geolocator.checkPermission() == LocationPermission.denied &&
+        await Geolocator.requestPermission() == LocationPermission.denied) {
+      await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("DENIED PERMISSION"),
+          content:
+              Text("Permission is denied to access your current location."),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"))
+          ],
+        ),
+      );
+      return null;
+    } else {
+      return await Geolocator.getCurrentPosition();
+    }
   }
 
   Future<void> _goToGoogleMap(BuildContext context) async {
     showDialog(
         context: context,
         builder: (_) => ProgressDialog(message: "LOCATING YOU..."));
-    LocationData? location = await _getCurrentLocation(context);
-    if (location != null) {
+    Position? position = await _getCurrentLocation(context);
+    if (position != null) {
       String url =
-          'https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${blog.latitude},${blog.longitude}&travelmode=driving&dir_action=navigate';
-      print(url);
+          'https://www.google.com/maps/dir/?api=1&origin=${position.latitude},${position.longitude}&destination=${blog.latitude},${blog.longitude}&travelmode=driving&dir_action=navigate';
       if (await Launcher.canLaunch(url)) {
         await Launcher.launch(url);
-        Navigator.of(context).pop();
       }
     }
+    Navigator.of(context).pop();
   }
 
   @override
@@ -123,26 +128,29 @@ class BlogItem extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 12.0,
-        vertical: 6,
+        horizontal: 6.0,
+        vertical: 3.0,
       ),
       child: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            Material(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(ViewBlogScreen.routeName,
-                      arguments: blog.blogId);
-                },
-                child: Container(
-                  child: Column(
-                    children: [
-                      ListTile(
+        child: Card(
+          shadowColor: Colors.black54,
+          elevation: 8,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Material(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            ViewBlogScreen.routeName,
+                            arguments: blog.blogId);
+                      },
+                      child: ListTile(
                         tileColor: Colors.white,
                         leading: Image.network(
-                          "https://${APIRequest.baseUrl}/${blog.image}",
+                          "https://${APIRequest.baseUrl}${blog.image}",
                           fit: BoxFit.cover,
                           height: imageSize,
                           width: imageSize,
@@ -180,47 +188,49 @@ class BlogItem extends StatelessWidget {
                               ?.copyWith(
                                   color: Colors.grey.shade600, fontSize: 12),
                         ),
-                        trailing: Icon(Icons.keyboard_arrow_right),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            if (blog.latitude != null && blog.longitude != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-                child: TextButton(
-                  onPressed: () => _goToGoogleMap(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 8.0,
-                        ),
-                        child: Text(
-                          "GET DIRECTION",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(
+                blog.latitude != null && blog.longitude != null
+                    ? Material(
+                        child: InkWell(
+                          onTap: () => _goToGoogleMap(context),
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Container(
+                              height: 24,
+                              width: 24,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      width: 1.0),
+                                  borderRadius: BorderRadius.circular(12.0)),
+                              child: Center(
+                                child: Icon(
+                                  FaIcon(FontAwesomeIcons.mapMarker).icon,
+                                  size: 12,
                                   color:
-                                      Theme.of(context).colorScheme.secondary),
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          FaIcon(FontAwesomeIcons.chevronRight).icon,
+                          size: 12,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
-                      Icon(
-                        FaIcon(FontAwesomeIcons.map).icon,
-                        size: 12,
-                      ),
-                    ],
-                  ),
-                ),
-              )
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

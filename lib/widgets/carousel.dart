@@ -71,7 +71,7 @@ class CarouselItem extends StatelessWidget {
           arguments: dashboardItemInfo.blogId,
         ),
         child: Image.network(
-          "https://${APIRequest.baseUrl}/${Random().nextInt(9) % 2 == 0 ? dashboardItemInfo.image : dashboardItemInfo.image1}",
+          "https://${APIRequest.baseUrl}${Random().nextInt(9) % 2 == 0 ? dashboardItemInfo.image : dashboardItemInfo.image1}",
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
           loadingBuilder: (context, widget, loadingProgress) {

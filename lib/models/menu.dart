@@ -19,7 +19,6 @@ enum MenuType {
   nearMe,
   whereToStay,
   places,
-  essentials,
   askAQuery,
   restrooms,
   audioGuide,
@@ -58,9 +57,6 @@ extension MenuTypeExt on MenuType {
         break;
       case MenuType.whereToStay:
         value = "Where to Stay";
-        break;
-      case MenuType.essentials:
-        value = "Essentials";
         break;
       case MenuType.places:
         value = "Places";

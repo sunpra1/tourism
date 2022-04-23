@@ -108,7 +108,7 @@ class ImageGalleryItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: GridTile(
                 child: Image.network(
-                  "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
+                  "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
                   fit: BoxFit.cover,
                   loadingBuilder: (context, widget, loadingProgress) {
                     if (loadingProgress == null) return widget;
@@ -153,7 +153,7 @@ class ImageGalleryItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  "https://${APIRequest.baseUrl}/${dashboardItemInfo.image1}",
+                  "https://${APIRequest.baseUrl}${dashboardItemInfo.image1}",
                   fit: BoxFit.cover,
                   loadingBuilder: (context, widget, loadingProgress) {
                     if (loadingProgress == null) return widget;
@@ -178,7 +178,7 @@ class ImageGalleryItem extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     Image.network(
-                      "https://${APIRequest.baseUrl}/${dashboardItemInfo.image}",
+                      "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
                       fit: BoxFit.cover,
                       loadingBuilder: (context, widget, loadingProgress) {
                         if (loadingProgress == null) return widget;

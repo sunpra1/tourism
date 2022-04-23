@@ -32,50 +32,67 @@ class ImagesPage extends StatelessWidget {
           if (snapshot.connectionState != ConnectionState.done) {
             return ProgressDialog(message: "LOADING...");
           }
-          List<MyImage> images = snapshot.data as List<MyImage>;
-          return GridView.builder(
-            itemCount: images.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8),
-            itemBuilder: (_, index) => Stack(
-              children: [
-                Positioned.fill(
-                  child: Image.network(
-                    "https://${APIRequest.baseUrl}/${images[index].path}",
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, widget, loadingProgress) {
-                      if (loadingProgress == null) return widget;
-                      return Center(
-                        child: LinearProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
+          List<MyImage>? images = snapshot.data as List<MyImage>?;
+          return (images != null && images.length > 0)
+              ? GridView.builder(
+                  itemCount: images.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8),
+                  itemBuilder: (_, index) => ImageItem(image: images[index]),
+                )
+              : Center(
+                  child: Text(
+                    "NO IMAGES FOUND",
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
-                ),
-                Positioned.fill(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                            ViewImageScreen.routeName,
-                            arguments: images[index]);
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+                );
         },
       ),
+    );
+  }
+}
+
+class ImageItem extends StatelessWidget {
+  final MyImage image;
+
+  const ImageItem({Key? key, required this.image}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Image.network(
+            "https://${APIRequest.baseUrl}${image.path}",
+            fit: BoxFit.cover,
+            loadingBuilder: (context, widget, loadingProgress) {
+              if (loadingProgress == null) return widget;
+              return Center(
+                child: LinearProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+          ),
+        ),
+        Positioned.fill(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(ViewImageScreen.routeName, arguments: image);
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

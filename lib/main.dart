@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tourism/screens/view_vendor_screen.dart';
 
 import 'models/user.dart';
 import 'providers/active_drawer_menu_provider.dart';
@@ -57,11 +58,12 @@ class MyApp extends StatelessWidget {
         routes: {
           RootScreen.routeName: (_) => RootScreen(),
           RegisterScreen.routeName: (_) => RegisterScreen(),
-          ViewDestinationScreen.routeName: (_) => ViewDestinationScreen(),
+          ViewDestinationScreen.routeName: (_) => ViewDestinationScreen(), //TODO NO USE
           LoginScreen.routeName: (_) => LoginScreen(),
           ProfileScreen.routeName: (_) => ProfileScreen(),
           ViewBlogScreen.routeName: (_) => ViewBlogScreen(),
           ViewImageScreen.routeName: (_) => ViewImageScreen(),
+          ViewVendorScreen.routeName: (_) => ViewVendorScreen(),
         },
       ),
     );

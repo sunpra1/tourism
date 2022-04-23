@@ -21,8 +21,8 @@ class AppBottomNavigationBar extends StatelessWidget {
         icon: FaIcon(FontAwesomeIcons.bed).icon,
       ),
       Menu(
-        menuType: MenuType.essentials,
-        icon: FaIcon(FontAwesomeIcons.boxOpen).icon,
+        menuType: MenuType.places,
+        icon: FaIcon(FontAwesomeIcons.mapMarker).icon,
       ),
       Menu(
         menuType: MenuType.askAQuery,
@@ -67,18 +67,22 @@ class AppBottomNavigationBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    MenuType _selectedMenu = context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: () => _handleOnBottomNavigationMenuItemClick(context),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 4.0,
-            vertical: 12.0,
-          ),
-          child: Container(
-            width: 80,
-            height: 48,
+        child: Container(
+          color: menu.menuType == _selectedMenu ? Colors.black26 : null,
+          width: 80,
+          height: 48,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 6.0,
+              vertical: 12.0,
+            ),
             child: Center(
               child: Column(
                 children: [

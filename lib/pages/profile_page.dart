@@ -59,7 +59,7 @@ class ProfilePage extends StatelessWidget {
                       ? CircleAvatar(
                           radius: 50,
                           backgroundImage: NetworkImage(
-                              "https://${APIRequest.baseUrl}/${user.profileImage}"),
+                              "https://${APIRequest.baseUrl}${user.profileImage}"),
                         )
                       : CircleAvatar(
                           radius: 50,

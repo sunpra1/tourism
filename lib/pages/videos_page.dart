@@ -9,19 +9,19 @@ import '../models/VideoInfo.dart';
 class VideosPage extends StatelessWidget {
   final List<VideoInfo> videos = [
     VideoInfo(
-      videoUrl: "https://www.youtube.com/watch?v=yhbVFtaBmso",
+      videoUrl: "https://www.youtube.com/watch?v=7MFKy7DJsCY",
       coverImage: "assets/images/carousel1.jpg",
-      videoTitle: "Mujhko Kya Hua Hai",
+      videoTitle: "National Geographic",
       videoDesc:
-          "Unplugged Version of Kuch Kuch Hota Hai's Mujhko Kya Hua Hai by Karan Nawani.",
+          "Lost World of the Maya (Full Episode)",
       videoSource: VideoSource.youtube,
     ),
     VideoInfo(
-      videoUrl: "https://www.youtube.com/watch?v=FlY2YplRQMM",
+      videoUrl: "https://www.youtube.com/watch?v=WuLevNeUAss",
       coverImage: "assets/images/carousel2.jpg",
-      videoTitle: "Aashiyan",
+      videoTitle: "Harvesting Wild Honey in the Amazon",
       videoDesc:
-          "Bari's movie Aashiyan song. It is sung by Pritam da and Nikhil Paul.",
+          "Primal Survivor: Escape the Amazon | National Geographic",
       videoSource: VideoSource.youtube,
     )
   ];
@@ -82,13 +82,15 @@ class VideoItem extends StatelessWidget {
     double padding = 8.0;
     double totalWidth = MediaQuery.of(context).size.width - 2 * padding;
 
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+    return Card(
+      margin: EdgeInsets.zero,
+      shadowColor: Colors.black54,
+      elevation: 8,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
               child: SizedBox(
                 height: totalWidth * 3 / 2,
                 width: totalWidth,
@@ -102,10 +104,10 @@ class VideoItem extends StatelessWidget {
                     title: Text(
                       videoInfo.videoTitle,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: Colors.white,
+                            color: Colors.white, fontSize: 11,
                           ),
                     ),
-                    leading: Icon(FaIcon(FontAwesomeIcons.play).icon, size: 18),
+                    leading: Icon(FaIcon(FontAwesomeIcons.play).icon, size: 9),
                   ),
                   footer: GridTileBar(
                     backgroundColor: Colors.black54,
@@ -120,16 +122,16 @@ class VideoItem extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        Positioned.fill(
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => _tryLaunchUrl(context, videoInfo.videoUrl),
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => _tryLaunchUrl(context, videoInfo.videoUrl),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
