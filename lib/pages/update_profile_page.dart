@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert' as Convert;
 import 'dart:io';
 
@@ -6,6 +7,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
+import 'package:tourism/models/gender.dart';
 
 import '../models/api_response.dart';
 import '../models/user.dart';
@@ -25,11 +28,20 @@ class UpdateProfilePage extends StatefulWidget {
 }
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
+  static const _KEY_FIRST_NAME = "firstName";
+  static const _KEY_LAST_NAME = "lastName";
+  static const _KEY_COUNTRY = "country";
+  static const _KEY_STATE = "state";
+  static const _KEY_CITY = "city";
+  static const _KEY_ADDRESS = "address";
+
   bool isValueSet = false;
   bool isPasswordEnabled = true;
-  String? gender = 'SELECT GENDER';
+  Gender gender = Gender.unSpeacified;
   String? selectedDate;
   File? imageFile;
+
+  HashMap<String, String> formErrors = HashMap<String, String>();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -47,13 +59,17 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
   TextEditingController countryController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
+  FocusNode mobileNumberFocusNode = FocusNode();
   FocusNode countryFocusNode = FocusNode();
+  FocusNode stateFocusNode = FocusNode();
   FocusNode cityFocusNode = FocusNode();
   FocusNode addressFocusNode = FocusNode();
 
@@ -64,12 +80,12 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       User user = widget.user;
       firstNameController.text = user.firstName;
       lastNameController.text = user.lastName;
+      mobileNumberController.text = user.mobileNumber;
       countryController.text = user.country;
+      stateController.text = user.state;
       cityController.text = user.city;
       addressController.text = user.address;
-      if (user.gender.isNotEmpty) {
-        gender = user.gender;
-      }
+      gender = user.gender;
       isValueSet = true;
     }
   }
@@ -79,13 +95,17 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     super.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
+    mobileNumberController.dispose();
     countryController.dispose();
+    stateController.dispose();
     cityController.dispose();
     addressController.dispose();
 
     firstNameFocusNode.dispose();
     lastNameFocusNode.dispose();
+    mobileNumberFocusNode.dispose();
     countryFocusNode.dispose();
+    stateFocusNode.dispose();
     cityFocusNode.dispose();
     addressFocusNode.dispose();
   }
@@ -170,13 +190,135 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     }
   }
 
+  void _clearError(String key) {
+    HashMap<String, String> newErrors = HashMap.from(formErrors);
+    if (newErrors.containsKey(key)) {
+      newErrors.remove(key);
+    }
+    setState(() {
+      formErrors = newErrors;
+    });
+  }
+
+  bool _validateFirstName({bool displayError = true}) {
+    _clearError(_KEY_FIRST_NAME);
+    bool isValid = true;
+    String value = firstNameController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_FIRST_NAME] = "Firstname is required.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_FIRST_NAME)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateLastName({bool displayError = true}) {
+    _clearError(_KEY_LAST_NAME);
+    bool isValid = true;
+    String value = lastNameController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_LAST_NAME] = "Lastname is required.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_LAST_NAME)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateCountry({bool displayError = true}) {
+    _clearError(_KEY_COUNTRY);
+    bool isValid = true;
+    String value = countryController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_COUNTRY] = "Country is required.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_COUNTRY)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateState({bool displayError = true}) {
+    _clearError(_KEY_STATE);
+    bool isValid = true;
+    String value = stateController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_STATE] = "State is required.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_STATE)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateCity({bool displayError = true}) {
+    _clearError(_KEY_CITY);
+    bool isValid = true;
+    String value = cityController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_CITY] = "City is required.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_CITY)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validateAddress({bool displayError = true}) {
+    _clearError(_KEY_ADDRESS);
+    bool isValid = true;
+    String value = addressController.value.text;
+    if (value.isEmpty) {
+      formErrors[_KEY_ADDRESS] = "Address is required.";
+      isValid = false;
+    }
+    if (displayError && formErrors.containsKey(_KEY_ADDRESS)) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
+  bool _validate() {
+    bool isValid = true;
+    if (!_validateFirstName(displayError: false)) {
+      isValid = false;
+    }
+    if (!_validateLastName(displayError: false)) {
+      isValid = false;
+    }
+    if (!_validateCountry(displayError: false)) {
+      isValid = false;
+    }
+    if (!_validateState(displayError: false)) {
+      isValid = false;
+    }
+    if (!_validateCity(displayError: false)) {
+      isValid = false;
+    }
+    if (!_validateAddress(displayError: false)) {
+      isValid = false;
+    }
+    if (!isValid) {
+      setState(() {});
+    }
+    return isValid;
+  }
+
   Future<void> _onFormSubmitted(BuildContext context) async {
+    if (!_validate()) return;
     User? user = context.read<UserProvider>().loggedInUser;
     if (user != null) {
       user.firstName = firstNameController.text;
       user.lastName = lastNameController.text;
-      user.gender = gender ?? "";
+      user.gender = gender;
       user.country = countryController.text;
+      user.state = stateController.text;
       user.city = cityController.text;
       user.address = addressController.text;
 
@@ -185,25 +327,25 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         builder: (_) => ProgressDialog(message: "LOADING..."),
         barrierDismissible: false,
       );
-      Map<String, dynamic> body = user.toMap();
       if (imageFile != null)
-        body.putIfAbsent(
-          "profileShorImage",
-          () =>
-              "data:image/jpeg;base64,${Convert.base64Encode(imageFile!.readAsBytesSync())}",
-        );
+        user.profileShortImage =
+            "data:image/jpeg;base64,${Convert.base64Encode(imageFile!.readAsBytesSync())}";
 
-      print(body["profileShorImage"]);
-      print(Convert.jsonEncode(body));
+      Map<String, dynamic> body = user.toMap();
       APIResponse response = await APIRequest<Map<String, dynamic>>(
         requestType: RequestType.post,
         requestEndPoint: RequestEndPoint.updateProfile,
         body: body,
       ).make();
-      print("HERE2");
       Navigator.of(context).pop();
       if (response.success) {
         context.read<UserProvider>().setLoggedInUser(user);
+        Navigator.of(context).pop();
+        Toast.show(
+          "Profile updated successfully.",
+          duration: Toast.lengthLong,
+          textStyle: Theme.of(context).textTheme.labelMedium,
+        );
       } else {
         showDialog(
           barrierDismissible: false,
@@ -227,6 +369,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -250,6 +393,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           controller: firstNameController,
                           focusNode: firstNameFocusNode,
                           decoration: InputDecoration(
+                            errorText: formErrors[_KEY_FIRST_NAME],
                             errorMaxLines: 2,
                             contentPadding:
                                 EdgeInsets.only(left: 12, right: 12),
@@ -279,6 +423,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           controller: lastNameController,
                           focusNode: lastNameFocusNode,
                           decoration: InputDecoration(
+                            errorText: formErrors[_KEY_LAST_NAME],
                             errorMaxLines: 2,
                             contentPadding:
                                 EdgeInsets.only(left: 12, right: 12),
@@ -302,6 +447,27 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                     ],
                   ),
                   const SizedBox(height: 18.0),
+                  TextFormField(
+                    controller: mobileNumberController,
+                    focusNode: mobileNumberFocusNode,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 12, right: 12),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(1.0),
+                        ),
+                      ),
+                      labelText: "MOBILE NUMBER",
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.grey.shade600),
+                    ),
+                    keyboardType: TextInputType.number,
+                    maxLength: 10,
+                    textInputAction: TextInputAction.done,
+                  ),
+                  const SizedBox(height: 18.0),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -319,30 +485,30 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           child: Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: DropdownButton<String>(
+                            child: DropdownButton<Gender>(
                               isExpanded: true,
                               value: gender,
                               icon: const Icon(Icons.keyboard_arrow_down_sharp),
                               elevation: 16,
                               style: const TextStyle(color: Colors.deepPurple),
                               underline: SizedBox.shrink(),
-                              onChanged: (String? newValue) {
+                              onChanged: (Gender? newValue) {
                                 setState(() {
                                   gender = newValue!;
                                 });
                               },
                               items: [
-                                'SELECT GENDER',
-                                'MALE',
-                                'FEMALE',
-                                'OTHERS'
-                              ].map<DropdownMenuItem<String>>(
-                                (String value) {
-                                  return DropdownMenuItem<String>(
-                                    enabled: value != 'SELECT GENDER',
+                                Gender.unSpeacified,
+                                Gender.male,
+                                Gender.female,
+                                Gender.others,
+                              ].map<DropdownMenuItem<Gender>>(
+                                (Gender value) {
+                                  return DropdownMenuItem<Gender>(
+                                    enabled: value != Gender.unSpeacified,
                                     value: value,
                                     child: Text(
-                                      value,
+                                      value.value,
                                       style: Theme.of(context)
                                           .textTheme
                                           .labelLarge
@@ -398,6 +564,30 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                     ],
                   ),
                   const SizedBox(height: 18.0),
+                  TextFormField(
+                    controller: addressController,
+                    focusNode: addressFocusNode,
+                    decoration: InputDecoration(
+                      errorText: formErrors[_KEY_ADDRESS],
+                      errorMaxLines: 2,
+                      contentPadding: EdgeInsets.only(left: 12, right: 12),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(1.0),
+                        ),
+                      ),
+                      labelText: "ADDRESS",
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.grey.shade600),
+                    ),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) =>
+                        FocusScope.of(context).requestFocus(countryFocusNode),
+                  ),
+                  const SizedBox(height: 18.0),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -407,6 +597,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           controller: countryController,
                           focusNode: countryFocusNode,
                           decoration: InputDecoration(
+                            errorText: formErrors[_KEY_COUNTRY],
                             errorMaxLines: 2,
                             contentPadding:
                                 EdgeInsets.only(left: 12, right: 12),
@@ -424,7 +615,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) => FocusScope.of(context)
-                              .requestFocus(cityFocusNode),
+                              .requestFocus(stateFocusNode),
                         ),
                       ),
                       SizedBox(
@@ -433,9 +624,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                       Flexible(
                         flex: 1,
                         child: TextFormField(
-                          controller: cityController,
-                          focusNode: cityFocusNode,
+                          controller: stateController,
+                          focusNode: stateFocusNode,
                           decoration: InputDecoration(
+                            errorText: formErrors[_KEY_STATE],
                             errorMaxLines: 2,
                             contentPadding:
                                 EdgeInsets.only(left: 12, right: 12),
@@ -444,7 +636,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                                 Radius.circular(1.0),
                               ),
                             ),
-                            labelText: "CITY",
+                            labelText: "STATE",
                             labelStyle: Theme.of(context)
                                 .textTheme
                                 .labelLarge
@@ -453,31 +645,34 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) => FocusScope.of(context)
-                              .requestFocus(addressFocusNode),
+                              .requestFocus(cityFocusNode),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 18.0),
                   TextFormField(
-                    controller: addressController,
-                    focusNode: addressFocusNode,
+                    controller: cityController,
+                    focusNode: cityFocusNode,
                     decoration: InputDecoration(
+                      errorText: formErrors[_KEY_CITY],
                       errorMaxLines: 2,
                       contentPadding: EdgeInsets.only(left: 12, right: 12),
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(1.0),
                         ),
                       ),
-                      labelText: "ADDRESS",
+                      labelText: "CITY",
                       labelStyle: Theme.of(context)
                           .textTheme
                           .labelLarge
                           ?.copyWith(color: Colors.grey.shade600),
                     ),
                     keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) =>
+                        FocusScope.of(context).requestFocus(addressFocusNode),
                   ),
                   const SizedBox(height: 18.0),
                   Row(

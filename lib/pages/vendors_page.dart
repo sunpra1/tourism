@@ -125,11 +125,15 @@ class VendorItem extends StatelessWidget {
                       onPressed: () => _callToVendor(),
                       child: Row(
                         children: [
-                          Text(
-                            vendor.phoneNumber,
-                            style: Theme.of(context).textTheme.labelMedium,
+                          Expanded(
+                            child: Text(
+                              vendor.phoneNumber,
+                              style: Theme.of(context).textTheme.labelMedium,
+                              maxLines: 2,
+                              softWrap: true,
+                            ),
                           ),
-                          Spacer(),
+
                           Icon(
                             FaIcon(FontAwesomeIcons.phone).icon,
                             size: 16,
@@ -141,11 +145,14 @@ class VendorItem extends StatelessWidget {
                       onPressed: () => _sendEmailToVendor(),
                       child: Row(
                         children: [
-                          Text(
-                            vendor.emailId,
-                            style: Theme.of(context).textTheme.labelMedium,
+                          Expanded(
+                            child: Text(
+                              "Email thayt is to ne baeru lo ngh and ashjo cia u injane kjuanl",
+                              style: Theme.of(context).textTheme.labelMedium,
+                              maxLines: 2,
+                              softWrap: true,
+                            ),
                           ),
-                          Spacer(),
                           Icon(
                             FaIcon(FontAwesomeIcons.envelope).icon,
                             size: 16,

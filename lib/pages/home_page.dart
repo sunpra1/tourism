@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tourism/models/dashboard.dart';
+import 'package:tourism/models/dashboard_item.dart';
 import 'package:tourism/screens/loading_screen.dart';
 
 import '../models/api_response.dart';
@@ -43,30 +44,53 @@ class HomePage extends StatelessWidget {
                   dashboardItemInfos: dashboard.dashboardTopSlider,
                 ),
                 Separator(),
-                ImageGallerySlider(
-                  dashboardItem: dashboard.dashBoardItems[0],
-                ),
-                Separator(),
-                ImageSlider(
-                  dashboardItem: dashboard.dashBoardItems[1],
-                ),
-                Separator(),
-                ImageSlider(
-                  dashboardItem: dashboard.dashBoardItems[2],
-                  showDetailsAtTop: true,
-                ),
-                Separator(),
-                ImageGallerySlider(
-                  dashboardItem: dashboard.dashBoardItems[3],
-                ),
-                Separator(
-                  isLast: true,
+                ListView.builder(
+                  primary: false,
+                  shrinkWrap: true,
+                  itemBuilder: (_, index) => HomeItem(
+                    dashboardItem: dashboard.dashBoardItems[index],
+                    position: index,
+                    isLast: index == dashboard.dashBoardItems.length - 1,
+                  ),
+                  itemCount: dashboard.dashBoardItems.length,
                 ),
               ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class HomeItem extends StatelessWidget {
+  final DashboardItem dashboardItem;
+  final int position;
+  final bool isLast;
+
+  const HomeItem({
+    Key? key,
+    required this.dashboardItem,
+    required this.position,
+    required this.isLast,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        position % 2 == 0
+            ? ImageGallerySlider(
+                dashboardItem: dashboardItem,
+              )
+            : ImageSlider(
+                dashboardItem: dashboardItem,
+                showDetailsAtTop: true,
+              ),
+        Separator(
+          isLast: isLast,
+        )
+      ],
     );
   }
 }

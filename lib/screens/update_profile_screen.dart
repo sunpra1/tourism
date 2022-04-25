@@ -7,6 +7,9 @@ import '../providers/user_provider.dart';
 import '../widgets/my_app_bar.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
+
+  static const String routeName = "/updateProfileScreen";
+
   const UpdateProfileScreen({Key? key}) : super(key: key);
 
   @override

@@ -8,7 +8,7 @@ import '../utils/app_theme.dart';
 class ProfilePage extends StatelessWidget {
   final User user;
 
-  ProfilePage({Key? key, required this.user}) : super(key: key);
+  const ProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,60 +16,102 @@ class ProfilePage extends StatelessWidget {
       decoration: AppTheme.backgroundGradient,
       height: double.infinity,
       width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 100),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: 250,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(18))),
-              child: Column(
-                children: [
-                  SizedBox(height: 50),
-                  ProfileItem(
-                    icon: FaIcon(FontAwesomeIcons.userAlt).icon,
-                    label: "FULL NAME",
-                    details: "${user.firstName} ${user.lastName}",
-                  ),
-                  ProfileItem(
-                    icon: FaIcon(FontAwesomeIcons.solidEnvelope).icon,
-                    label: "EMAIL",
-                    details: user.userName,
-                  ),
-                  ProfileItem(
-                    icon: FaIcon(FontAwesomeIcons.userShield).icon,
-                    label: "ROLE",
-                    details: user.roleName.value,
-                  ),
-                  SizedBox(height: 50),
-                ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 36.0, right: 36.0, top: 50),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
               ),
             ),
-            Transform.translate(
-              offset: Offset(0, -300),
-              child: SizedBox(
-                height: 100,
-                width: 100,
-                child: Center(
-                  child: user.profileImage.isNotEmpty
-                      ? CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(
-                              "https://${APIRequest.baseUrl}${user.profileImage}"),
-                        )
-                      : CircleAvatar(
-                          radius: 50,
-                          backgroundImage:
-                              AssetImage("assets/images/default_user.png"),
-                        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Transform.translate(
+                  offset: Offset(0, -50),
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Center(
+                      child: user.profileShortImage.isNotEmpty
+                          ? CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage(
+                                  "https://${APIRequest.baseUrl}${user.profileShortImage}"),
+                            )
+                          : CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  AssetImage("assets/images/default_user.png"),
+                            ),
+                    ),
+                  ),
                 ),
-              ),
+                Transform.translate(
+                  offset: Offset(0, -50),
+                  child: ListView(
+                    shrinkWrap: true,
+                    primary: false,
+                    children: [
+                      ProfileItem(
+                        icon: FaIcon(FontAwesomeIcons.userAlt).icon,
+                        label: "FULL NAME",
+                        details:
+                            "${user.firstName} ${user.lastName}",
+                      ),
+                      ProfileItem(
+                        icon: FaIcon(FontAwesomeIcons.solidEnvelope).icon,
+                        label: "EMAIL",
+                        details: user.userName,
+                      ),
+                      user.mobileNumber.isNotEmpty
+                          ? ProfileItem(
+                              icon: FaIcon(FontAwesomeIcons.phone).icon,
+                              label: "MOBILE NUMBER",
+                              details: user.mobileNumber,
+                            )
+                          : SizedBox.shrink(),
+                      user.country.isNotEmpty
+                          ? ProfileItem(
+                              icon: FaIcon(FontAwesomeIcons.map).icon,
+                              label: "COUNTRY",
+                              details: user.country,
+                            )
+                          : SizedBox.shrink(),
+                      user.state.isNotEmpty
+                          ? ProfileItem(
+                              icon: FaIcon(FontAwesomeIcons.mapMarker).icon,
+                              label: "STATE",
+                              details: user.state,
+                            )
+                          : SizedBox.shrink(),
+                      user.city.isNotEmpty
+                          ? ProfileItem(
+                              icon: FaIcon(FontAwesomeIcons.mapMarked).icon,
+                              label: "CITY",
+                              details: user.city,
+                            )
+                          : SizedBox.shrink(),
+                      user.city.isNotEmpty
+                          ? ProfileItem(
+                              icon: FaIcon(FontAwesomeIcons.mapPin).icon,
+                              label: "ADDRESS",
+                              details: user.address,
+                            )
+                          : SizedBox.shrink(),
+                      ProfileItem(
+                        icon: FaIcon(FontAwesomeIcons.userShield).icon,
+                        label: "ROLE",
+                        details: user.roleName.value,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

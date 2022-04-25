@@ -29,8 +29,10 @@ class AppDrawer extends StatelessWidget {
                   color: Colors.black45,
                 ),
               ),
-              SizedBox(height: 24),
               AppDrawerMenu(),
+              context.watch<UserProvider>().loggedInUser != null
+                  ? LogoutBtn()
+                  : SizedBox.shrink(),
             ],
           ),
         ),
@@ -181,9 +183,7 @@ class AppDrawerMenuItem extends StatelessWidget {
   const AppDrawerMenuItem({Key? key, required this.menu}) : super(key: key);
 
   void _handleOnAppDrawerMenuItemClick(BuildContext context) {
-    context
-        .read<ActiveDrawerMenuProvider>()
-        .setActiveDrawerMenu(menu.menuType);
+    context.read<ActiveDrawerMenuProvider>().setActiveDrawerMenu(menu.menuType);
     Navigator.of(context).pop();
   }
 
@@ -191,9 +191,8 @@ class AppDrawerMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     MenuType _activeMenu =
         context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
-    Color backGroundColor = _activeMenu == menu.menuType
-        ? Colors.black12
-        : Colors.transparent;
+    Color backGroundColor =
+        _activeMenu == menu.menuType ? Colors.black12 : Colors.transparent;
 
     return Material(
       color: backGroundColor,
@@ -215,6 +214,51 @@ class AppDrawerMenuItem extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
                     menu.menuType.value,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(color: Colors.white),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LogoutBtn extends StatelessWidget {
+  const LogoutBtn({Key? key}) : super(key: key);
+
+  void _handleOnAppDrawerMenuItemClick(BuildContext context) {
+    context.read<UserProvider>().setLoggedInUser(null);
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => _handleOnAppDrawerMenuItemClick(context),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                FaIcon(FontAwesomeIcons.signOutAlt).icon,
+                size: 16,
+                color: Colors.white,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 24.0),
+                  child: Text(
+                    "LOGOUT",
                     style: Theme.of(context)
                         .textTheme
                         .labelMedium

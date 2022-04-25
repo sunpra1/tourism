@@ -167,11 +167,11 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.of(context).pop();
       if (response.success) {
         context.read<UserProvider>().setLoggedInUser(
-              User(
-                userName: body.email,
-                roleName: UserRole.user,
-                token: response.data,
-              ),
+              User.fromMap({
+                "userName": body.email,
+                "roleName": UserRole.user,
+                "token": response.data,
+              }),
             );
         Navigator.of(context).popUntil(ModalRoute.withName("/"));
       } else {

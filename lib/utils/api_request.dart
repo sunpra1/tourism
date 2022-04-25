@@ -123,6 +123,7 @@ enum RequestEndPoint {
   proximity,
   vendors,
   vendor,
+  profile,
 }
 
 extension RequestEndPointExt on RequestEndPoint {
@@ -161,6 +162,9 @@ extension RequestEndPointExt on RequestEndPoint {
         break;
       case RequestEndPoint.vendor:
         value = _formatPath("/api/Vendor/GetVendorById/%s", pathParams);
+        break;
+      case RequestEndPoint.profile:
+        value = _formatPath("/api/UserProfile/GetUserProfileById/%s", pathParams);
         break;
     }
     return value;

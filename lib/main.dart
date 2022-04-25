@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tourism/screens/update_profile_screen.dart';
 import 'package:tourism/screens/view_vendor_screen.dart';
 
 import 'models/user.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
           RegisterScreen.routeName: (_) => RegisterScreen(),
           ViewDestinationScreen.routeName: (_) => ViewDestinationScreen(), //TODO NO USE
           LoginScreen.routeName: (_) => LoginScreen(),
+          UpdateProfileScreen.routeName: (_) => UpdateProfileScreen(),
           ProfileScreen.routeName: (_) => ProfileScreen(),
           ViewBlogScreen.routeName: (_) => ViewBlogScreen(),
           ViewImageScreen.routeName: (_) => ViewImageScreen(),
