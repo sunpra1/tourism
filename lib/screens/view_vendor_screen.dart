@@ -3,6 +3,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tourism/models/VendorDetails.dart';
+import 'package:tourism/widgets/horizontal_line.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
 import '../models/api_response.dart';
@@ -48,28 +49,29 @@ class ViewVendorScreen extends StatelessWidget {
   }
 
   _sendEmailToVendor(String emailId) async {
-    final String emailLaunchUri = Uri(
+    final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: emailId,
-    ).toString();
-    if (await Launcher.canLaunch(emailLaunchUri)) {
-      await Launcher.launch(emailLaunchUri);
+    );
+    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+      await Launcher.launchUrl(emailLaunchUri);
     }
   }
 
-  _visitUrl(String url) async {
-    if (await Launcher.canLaunch(url)) {
-      await Launcher.launch(url);
+  _visitUrl(String stringUrl) async {
+    Uri? url = Uri.tryParse(stringUrl);
+    if (url != null && await Launcher.canLaunchUrl(url)) {
+      await Launcher.launchUrl(url);
     }
   }
 
   _callToVendor(String phoneNumber) async {
-    final String emailLaunchUri = Uri(
+    final Uri emailLaunchUri = Uri(
       scheme: 'tel',
       path: phoneNumber,
-    ).toString();
-    if (await Launcher.canLaunch(emailLaunchUri)) {
-      await Launcher.launch(emailLaunchUri);
+    );
+    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+      await Launcher.launchUrl(emailLaunchUri);
     }
   }
 
@@ -101,7 +103,7 @@ class ViewVendorScreen extends StatelessWidget {
         builder: (_) => AlertDialog(
           title: Text("DENIED PERMISSION"),
           content:
-          Text("Permission is denied to access your current location."),
+              Text("Permission is denied to access your current location."),
           actions: [
             TextButton(
                 onPressed: () {
@@ -117,16 +119,17 @@ class ViewVendorScreen extends StatelessWidget {
     }
   }
 
-  Future<void> _goToGoogleMap(BuildContext context, VendorDetails vendor) async {
+  Future<void> _goToGoogleMap(
+      BuildContext context, VendorDetails vendor) async {
     showDialog(
         context: context,
         builder: (_) => ProgressDialog(message: "LOCATING YOU..."));
     Position? position = await _getCurrentLocation(context);
     if (position != null) {
-      String url =
-          'https://www.google.com/maps/dir/?api=1&origin=${position.latitude},${position.longitude}&destination=${vendor.latitude},${vendor.longitude}&travelmode=driving&dir_action=navigate';
-      if (await Launcher.canLaunch(url)) {
-        await Launcher.launch(url);
+      Uri? url = Uri.tryParse(
+          'https://www.google.com/maps/dir/?api=1&origin=${position.latitude},${position.longitude}&destination=${vendor.latitude},${vendor.longitude}&travelmode=driving&dir_action=navigate');
+      if (url != null && await Launcher.canLaunchUrl(url)) {
+        await Launcher.launchUrl(url);
       }
     }
     Navigator.of(context).pop();
@@ -146,7 +149,7 @@ class ViewVendorScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white,
               ),
-              height: 150,
+              height: 240,
               width: MediaQuery.of(context).size.width * 0.8,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -158,12 +161,25 @@ class ViewVendorScreen extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary,
                           ),
                     ),
+                    SizedBox(height: 16,),
+                    HorizontalLine(),
+                    SizedBox(height: 16,),
+                    Text(
+                      "${vendor.city}, ${vendor.district}, ${vendor.state}, ${vendor.country}\n${vendor.location}",
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      softWrap: true,
+                    ),
+
                     TextButton(
                       onPressed: () => _callToVendor(vendor.phoneNumber),
                       child: Row(
                         children: [
                           Text(
-                            vendor.phoneNumber,
+                            "${vendor.contactPerson} (${vendor.phoneNumber})",
                             style: Theme.of(context).textTheme.labelMedium,
                           ),
                           Spacer(),
@@ -227,7 +243,8 @@ class ViewVendorScreen extends StatelessWidget {
                           actions: [
                             FittedBox(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12.0),
                                 child: Container(
                                   height: 18,
                                   width: 18,
@@ -250,30 +267,35 @@ class ViewVendorScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Container(
-                                  height: 18,
-                                  width: 18,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12)),
-                                  child: InkWell(
-                                    onTap: () => _goToGoogleMap(context, vendor),
-                                    child: Center(
-                                      child: Icon(
-                                        FaIcon(FontAwesomeIcons.mapMarker).icon,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        size: 8,
+                            if (vendor.latitude != null &&
+                                vendor.longitude != null)
+                              FittedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Container(
+                                    height: 18,
+                                    width: 18,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: InkWell(
+                                      onTap: () =>
+                                          _goToGoogleMap(context, vendor),
+                                      child: Center(
+                                        child: Icon(
+                                          FaIcon(FontAwesomeIcons.mapMarker)
+                                              .icon,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          size: 8,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
                           ],
                           flexibleSpace: FlexibleSpaceBar(
                             title: Transform.translate(
@@ -345,7 +367,8 @@ class ViewVendorScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         if (vendor.facebookLink != null &&
                                             vendor.facebookLink!.isNotEmpty)
@@ -353,8 +376,8 @@ class ViewVendorScreen extends StatelessWidget {
                                             onPressed: () =>
                                                 _visitUrl(vendor.facebookLink!),
                                             color: Colors.blue,
-                                            icon:
-                                                FaIcon(FontAwesomeIcons.facebook),
+                                            icon: FaIcon(
+                                                FontAwesomeIcons.facebook),
                                           ),
                                         if (vendor.youtubeLink != null &&
                                             vendor.youtubeLink!.isNotEmpty)
@@ -362,14 +385,14 @@ class ViewVendorScreen extends StatelessWidget {
                                             onPressed: () =>
                                                 _visitUrl(vendor.youtubeLink!),
                                             color: Colors.red,
-                                            icon:
-                                                FaIcon(FontAwesomeIcons.youtube),
+                                            icon: FaIcon(
+                                                FontAwesomeIcons.youtube),
                                           ),
                                         if (vendor.instagramLink != null &&
                                             vendor.instagramLink!.isNotEmpty)
                                           IconButton(
-                                            onPressed: () =>
-                                                _visitUrl(vendor.instagramLink!),
+                                            onPressed: () => _visitUrl(
+                                                vendor.instagramLink!),
                                             color: Colors.red,
                                             icon: FaIcon(
                                                 FontAwesomeIcons.instagram),
@@ -379,8 +402,8 @@ class ViewVendorScreen extends StatelessWidget {
                                           IconButton(
                                             onPressed: () {},
                                             color: Colors.blue.shade800,
-                                            icon:
-                                                FaIcon(FontAwesomeIcons.linkedin),
+                                            icon: FaIcon(
+                                                FontAwesomeIcons.linkedin),
                                           ),
                                       ],
                                     ),

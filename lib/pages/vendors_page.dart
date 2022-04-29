@@ -77,22 +77,22 @@ class VendorItem extends StatelessWidget {
   const VendorItem({Key? key, required this.vendor}) : super(key: key);
 
   _sendEmailToVendor() async {
-    final String emailLaunchUri = Uri(
+    final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: vendor.emailId,
-    ).toString();
-    if (await Launcher.canLaunch(emailLaunchUri)) {
-      await Launcher.launch(emailLaunchUri);
+    );
+    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+      await Launcher.launchUrl(emailLaunchUri);
     }
   }
 
   _callToVendor() async {
-    final String emailLaunchUri = Uri(
+    final Uri emailLaunchUri = Uri(
       scheme: 'tel',
       path: vendor.phoneNumber,
-    ).toString();
-    if (await Launcher.canLaunch(emailLaunchUri)) {
-      await Launcher.launch(emailLaunchUri);
+    );
+    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+      await Launcher.launchUrl(emailLaunchUri);
     }
   }
 
@@ -133,7 +133,6 @@ class VendorItem extends StatelessWidget {
                               softWrap: true,
                             ),
                           ),
-
                           Icon(
                             FaIcon(FontAwesomeIcons.phone).icon,
                             size: 16,
@@ -147,7 +146,7 @@ class VendorItem extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              "Email thayt is to ne baeru lo ngh and ashjo cia u injane kjuanl",
+                              vendor.emailId,
                               style: Theme.of(context).textTheme.labelMedium,
                               maxLines: 2,
                               softWrap: true,

@@ -40,8 +40,12 @@ class Blog {
       longDes: map[_key_long_desc] ?? "",
       image: map[_key_image],
       image1: map[_key_image1],
-      latitude: map[_key_latitude] != null ? double.tryParse(map[_key_latitude]) : null,
-      longitude: map[_key_longitude] != null ? double.tryParse(map[_key_longitude]) : null,
+      latitude: map[_key_latitude] != null
+          ? double.tryParse(map[_key_latitude])
+          : null,
+      longitude: map[_key_longitude] != null
+          ? double.tryParse(map[_key_longitude])
+          : null,
     );
   }
 

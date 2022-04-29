@@ -113,10 +113,10 @@ class BlogItem extends StatelessWidget {
         builder: (_) => ProgressDialog(message: "LOCATING YOU..."));
     Position? position = await _getCurrentLocation(context);
     if (position != null) {
-      String url =
-          'https://www.google.com/maps/dir/?api=1&origin=${position.latitude},${position.longitude}&destination=${blog.latitude},${blog.longitude}&travelmode=driving&dir_action=navigate';
-      if (await Launcher.canLaunch(url)) {
-        await Launcher.launch(url);
+      Uri? url = Uri.tryParse(
+          'https://www.google.com/maps/dir/?api=1&origin=${position.latitude},${position.longitude}&destination=${blog.latitude},${blog.longitude}&travelmode=driving&dir_action=navigate');
+      if (url != null && await Launcher.canLaunchUrl(url)) {
+        await Launcher.launchUrl(url);
       }
     }
     Navigator.of(context).pop();

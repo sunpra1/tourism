@@ -67,8 +67,8 @@ class AppBottomNavigationBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    MenuType _selectedMenu = context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
+    MenuType _selectedMenu =
+        context.watch<ActiveDrawerMenuProvider>().activeDrawerMenuType;
 
     return Material(
       color: Colors.transparent,

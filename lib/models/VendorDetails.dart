@@ -36,8 +36,8 @@ class VendorDetails {
   String website;
   String logo;
   String banner;
-  String latitude;
-  String longitude;
+  String? latitude;
+  String? longitude;
   String contactPerson;
   String phoneNumber;
   String postalCode;

@@ -21,16 +21,18 @@ extension GenderExr on Gender {
   }
 }
 
-class GenderHelper{
-  static Gender fromString(String stringGender){
+class GenderHelper {
+  static Gender fromString(String stringGender) {
     String lowerGender = stringGender.toLowerCase();
-    if(lowerGender == "male" || lowerGender == "m"){
+    if (lowerGender == "male" || lowerGender == "m") {
       return Gender.male;
-    }else if(lowerGender == "female" || lowerGender == "f"){
+    } else if (lowerGender == "female" || lowerGender == "f") {
       return Gender.female;
-    }else if(lowerGender == "other" || lowerGender == "others" ||lowerGender == "o"){
+    } else if (lowerGender == "other" ||
+        lowerGender == "others" ||
+        lowerGender == "o") {
       return Gender.others;
-    }else{
+    } else {
       return Gender.unSpeacified;
     }
   }

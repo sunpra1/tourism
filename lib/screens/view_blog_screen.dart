@@ -75,7 +75,7 @@ class ViewBlogScreen extends StatelessWidget {
         builder: (_) => AlertDialog(
           title: Text("DENIED PERMISSION"),
           content:
-          Text("Permission is denied to access your current location."),
+              Text("Permission is denied to access your current location."),
           actions: [
             TextButton(
                 onPressed: () {
@@ -97,10 +97,10 @@ class ViewBlogScreen extends StatelessWidget {
         builder: (_) => ProgressDialog(message: "LOCATING YOU..."));
     Position? position = await _getCurrentLocation(context);
     if (position != null) {
-      String url =
-          'https://www.google.com/maps/dir/?api=1&origin=${position.latitude},${position.longitude}&destination=${blog.latitude},${blog.longitude}&travelmode=driving&dir_action=navigate';
-      if (await Launcher.canLaunch(url)) {
-        await Launcher.launch(url);
+      Uri? url = Uri.tryParse(
+          'https://www.google.com/maps/dir/?api=1&origin=${position.latitude},${position.longitude}&destination=${blog.latitude},${blog.longitude}&travelmode=driving&dir_action=navigate');
+      if (url != null && await Launcher.canLaunchUrl(url)) {
+        await Launcher.launchUrl(url);
       }
     }
     Navigator.of(context).pop();
@@ -130,30 +130,31 @@ class ViewBlogScreen extends StatelessWidget {
                         floating: false,
                         expandedHeight: 250.0,
                         actions: [
-                          FittedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Container(
-                                height: 18,
-                                width: 18,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: InkWell(
-                                  onTap: () => _goToGoogleMap(context, blog),
-                                  child: Center(
-                                    child: Icon(
-                                      FaIcon(FontAwesomeIcons.mapMarker).icon,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      size: 8,
+                          if (blog.latitude != null && blog.longitude != null)
+                            FittedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  height: 18,
+                                  width: 18,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: InkWell(
+                                    onTap: () => _goToGoogleMap(context, blog),
+                                    child: Center(
+                                      child: Icon(
+                                        FaIcon(FontAwesomeIcons.mapMarker).icon,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        size: 8,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                         flexibleSpace: FlexibleSpaceBar(
                           title: FittedBox(

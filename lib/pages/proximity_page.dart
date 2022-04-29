@@ -18,8 +18,7 @@ class ProximityPage extends StatelessWidget {
     APIResponse response = await APIRequest<Map<String, dynamic>>(
         requestType: RequestType.get,
         requestEndPoint: RequestEndPoint.proximity,
-        queryParameters: {"type": proximityType.value}
-    ).make();
+        queryParameters: {"type": proximityType.value}).make();
     if (response.success)
       return Proximity.fromMap(response.data);
     else

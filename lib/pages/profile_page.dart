@@ -58,8 +58,7 @@ class ProfilePage extends StatelessWidget {
                       ProfileItem(
                         icon: FaIcon(FontAwesomeIcons.userAlt).icon,
                         label: "FULL NAME",
-                        details:
-                            "${user.firstName} ${user.lastName}",
+                        details: "${user.firstName} ${user.lastName}",
                       ),
                       ProfileItem(
                         icon: FaIcon(FontAwesomeIcons.solidEnvelope).icon,

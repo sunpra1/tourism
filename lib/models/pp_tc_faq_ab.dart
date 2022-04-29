@@ -1,5 +1,3 @@
-
-
 class PpTcFaqAb {
   static const String _key_pp_tc_faq_ab = "pptcfaqList";
   List<PpTcFaqAbDetails> ppTcFaqAbDetailsList;

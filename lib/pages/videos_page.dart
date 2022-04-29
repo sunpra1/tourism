@@ -2,29 +2,32 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import 'package:tourism/models/video_detail.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
-import '../models/VideoInfo.dart';
+import '../models/api_response.dart';
+import '../utils/api_request.dart';
+import '../widgets/progress_dialog.dart';
 
 class VideosPage extends StatelessWidget {
-  final List<VideoInfo> videos = [
-    VideoInfo(
-      videoUrl: "https://www.youtube.com/watch?v=7MFKy7DJsCY",
-      coverImage: "assets/images/carousel1.jpg",
-      videoTitle: "National Geographic",
-      videoDesc:
-          "Lost World of the Maya (Full Episode)",
-      videoSource: VideoSource.youtube,
-    ),
-    VideoInfo(
-      videoUrl: "https://www.youtube.com/watch?v=WuLevNeUAss",
-      coverImage: "assets/images/carousel2.jpg",
-      videoTitle: "Harvesting Wild Honey in the Amazon",
-      videoDesc:
-          "Primal Survivor: Escape the Amazon | National Geographic",
-      videoSource: VideoSource.youtube,
-    )
-  ];
+  Future<List<VideoDetail>?> _getVideos(BuildContext context) async {
+    APIResponse response = await APIRequest<List<dynamic>>(
+        requestType: RequestType.post,
+        requestEndPoint: RequestEndPoint.videos,
+        body: {
+          "value": "",
+          "category": "",
+          "subCategory": "",
+          "location": "",
+          "page": 1,
+          "pageSize": 30,
+          "totalPage": 1
+        }).make();
+    if (response.success)
+      return VideoDetail.fromListMap(response.data);
+    else
+      return null;
+  }
 
   VideosPage({Key? key}) : super(key: key);
 
@@ -34,30 +37,51 @@ class VideosPage extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       width: double.infinity,
       height: double.infinity,
-      child: GridView.builder(
-        itemCount: videos.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          childAspectRatio: 3 / 2,
-        ),
-        itemBuilder: (_, index) => VideoItem(
-          videoInfo: videos[index],
-        ),
+      child: FutureBuilder(
+        future: _getVideos(context),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return ProgressDialog(message: "LOADING...");
+          }
+
+          List<VideoDetail>? videos = snapshot.data as List<VideoDetail>?;
+
+          return (videos != null && videos.length > 0)
+              ? GridView.builder(
+                  itemCount: videos.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childAspectRatio: 3 / 2,
+                  ),
+                  itemBuilder: (_, index) => VideoItem( key: Key(videos[index].id.toString()),
+                    videoDetail: videos[index],
+                  ),
+                )
+              : Center(
+                  child: Text(
+                    "NO VIDEOS AVAILABLE",
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                  ),
+                );
+        },
       ),
     );
   }
 }
 
 class VideoItem extends StatelessWidget {
-  final VideoInfo videoInfo;
+  final VideoDetail videoDetail;
 
-  const VideoItem({Key? key, required this.videoInfo}) : super(key: key);
+  const VideoItem({Key? key, required this.videoDetail}) : super(key: key);
 
   Future<void> _tryLaunchUrl(BuildContext context, String urlString) async {
-    if (await Launcher.canLaunch(urlString)) {
-      Launcher.launch(urlString);
+    Uri? uri = Uri.tryParse(urlString);
+    if (uri != null && await Launcher.canLaunchUrl(uri)) {
+      Launcher.launchUrl(uri);
     } else {
       showDialog(
         barrierDismissible: false,
@@ -95,23 +119,28 @@ class VideoItem extends StatelessWidget {
                 height: totalWidth * 3 / 2,
                 width: totalWidth,
                 child: GridTile(
-                  child: Image.asset(
-                    videoInfo.coverImage,
+                  child: videoDetail.imagePath != null ? Image.network(
+                    videoDetail.imagePath!,
+                    fit: BoxFit.cover,
+                  ) : Image.asset(
+                    "assets/images/youtube.jpeg",
                     fit: BoxFit.cover,
                   ),
                   header: GridTileBar(
                     backgroundColor: Colors.black54,
                     title: Text(
-                      videoInfo.videoTitle,
+                      videoDetail.name,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: Colors.white, fontSize: 11,
+                            color: Colors.white,
+                            fontSize: 11,
                           ),
+                      maxLines: 3,
                     ),
                     leading: Icon(FaIcon(FontAwesomeIcons.play).icon, size: 9),
                   ),
                   footer: GridTileBar(
                     backgroundColor: Colors.black54,
-                    subtitle: Text(videoInfo.videoDesc ?? "",
+                    subtitle: Text(videoDetail.shortDec,
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall
@@ -126,7 +155,7 @@ class VideoItem extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () => _tryLaunchUrl(context, videoInfo.videoUrl),
+                onTap: () => _tryLaunchUrl(context, videoDetail.path),
               ),
             ),
           ),

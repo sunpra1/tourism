@@ -117,6 +117,7 @@ enum RequestEndPoint {
   blogs,
   blog,
   images,
+  videos,
   updateProfile,
   dashBoardItems,
   appDetails,
@@ -142,6 +143,9 @@ extension RequestEndPointExt on RequestEndPoint {
       case RequestEndPoint.images:
         value = "/api/ImageVideo/GetAllImageList";
         break;
+      case RequestEndPoint.videos:
+        value = "api/ImageVideo/GetAllVideoList";
+        break;
       case RequestEndPoint.updateProfile:
         value = "/api/UserProfile/SaveUpdateUserProfile";
         break;
@@ -164,7 +168,8 @@ extension RequestEndPointExt on RequestEndPoint {
         value = _formatPath("/api/Vendor/GetVendorById/%s", pathParams);
         break;
       case RequestEndPoint.profile:
-        value = _formatPath("/api/UserProfile/GetUserProfileById/%s", pathParams);
+        value =
+            _formatPath("/api/UserProfile/GetUserProfileById/%s", pathParams);
         break;
     }
     return value;
