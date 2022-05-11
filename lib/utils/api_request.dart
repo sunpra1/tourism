@@ -1,4 +1,5 @@
 import 'dart:convert' as Convert;
+import 'dart:developer';
 
 import 'package:http/http.dart' as Http;
 import 'package:tourism/models/multipart_file.dart';
@@ -55,7 +56,7 @@ class APIRequest<T> {
             headers: _requiredHeaders, body: Convert.jsonEncode(body));
         break;
     }
-    print("Response ${response.body}");
+    log("Response ${response.body}");
     return APIResponse<T>.fromMap(
       Convert.jsonDecode(response.body),
     );
@@ -84,7 +85,7 @@ class APIRequest<T> {
     });
     Http.StreamedResponse response = await request.send();
     String responseString = await response.stream.bytesToString();
-    print("Multipart Response: $responseString");
+    log("Multipart Response: $responseString");
     return APIResponse<T>.fromMap(
       Convert.jsonDecode(responseString),
     );
