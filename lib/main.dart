@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'KERALA TOURISM',
+        title: 'PANCHPOKHARI TOURISM',
         theme: ThemeData(
             colorScheme: AppTheme.colorScheme,
             textTheme: AppTheme.textTheme,

@@ -76,10 +76,11 @@ class APIRequest<T> {
 
     multipartFiles?.map((e) async {
       request.files.add(
-        new Http.MultipartFile.fromBytes(
+        await Http.MultipartFile.fromPath(
           e.fileName,
-          await e.file.readAsBytes(),
+          e.file.path,
           contentType: e.mediaType,
+          filename: e.fileName
         ),
       );
     });
