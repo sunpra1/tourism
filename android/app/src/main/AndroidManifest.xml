@@ -11,7 +11,7 @@
     <application
         android:allowBackup="false"
         android:usesCleartextTraffic="true"
-        android:label="tourism"
+        android:label="Panchpokhari Tourism"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
 
