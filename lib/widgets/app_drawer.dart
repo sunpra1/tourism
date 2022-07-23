@@ -166,6 +166,46 @@ class AppDrawerMenu extends StatelessWidget {
         menuType: MenuType.map,
         icon: FaIcon(FontAwesomeIcons.map).icon,
       ),
+      Menu(
+        menuType: MenuType.panchpokhariAtGlance,
+        icon: FaIcon(FontAwesomeIcons.eye).icon,
+      ),
+      Menu(
+        menuType: MenuType.destinations,
+        icon: FaIcon(FontAwesomeIcons.mapMarked).icon,
+      ),
+      Menu(
+        menuType: MenuType.eBrochure,
+        icon: FaIcon(FontAwesomeIcons.bookReader).icon,
+      ),
+      Menu(
+        menuType: MenuType.travelDesk,
+        icon: Icons.desk,
+      ),
+      Menu(
+        menuType: MenuType.smartAssist,
+        icon: Icons.support_agent,
+      ),
+      Menu(
+        menuType: MenuType.tourPackages,
+        icon: Icons.wallet_giftcard,
+      ),
+      Menu(
+        menuType: MenuType.myTrips,
+        icon: Icons.airplane_ticket,
+      ),
+      Menu(
+        menuType: MenuType.nearBy,
+        icon: FaIcon(FontAwesomeIcons.mapPin).icon,
+      ),
+      Menu(
+        menuType: MenuType.socialChannels,
+        icon: Icons.tv,
+      ),
+      Menu(
+        menuType: MenuType.settings,
+        icon: Icons.settings,
+      ),
     ];
 
     return Expanded(

@@ -18,10 +18,22 @@ enum MenuType {
   map,
   nearMe,
   whereToStay,
+  essentials,
+  createStory,
   places,
   askAQuery,
   restrooms,
   audioGuide,
+  panchpokhariAtGlance,
+  destinations,
+  eBrochure,
+  travelDesk,
+  smartAssist,
+  tourPackages,
+  myTrips,
+  nearBy,
+  socialChannels,
+  settings
 }
 
 extension MenuTypeExt on MenuType {
@@ -69,6 +81,42 @@ extension MenuTypeExt on MenuType {
         break;
       case MenuType.audioGuide:
         value = "Audio Guide";
+        break;
+      case MenuType.essentials:
+        value = "Essentials";
+        break;
+      case MenuType.createStory:
+        value = "Create Story";
+        break;
+      case MenuType.panchpokhariAtGlance:
+        value = "PANCHPOKHARI AT GLANCE";
+        break;
+      case MenuType.destinations:
+        value = "DESTINATIONS";
+        break;
+      case MenuType.eBrochure:
+        value = "E-BROCHURE";
+        break;
+      case MenuType.travelDesk:
+        value = "TRAVEL DESK";
+        break;
+      case MenuType.smartAssist:
+        value = "SMART ASSIST";
+        break;
+      case MenuType.tourPackages:
+        value = "TOUR PACKAGES";
+        break;
+      case MenuType.myTrips:
+        value = "MY TRIPS";
+        break;
+      case MenuType.nearBy:
+        value = "NEAR BY";
+        break;
+      case MenuType.socialChannels:
+        value = "SOCIAL CHANNELS";
+        break;
+      case MenuType.settings:
+        value = "SETTINGS";
         break;
     }
     return value;

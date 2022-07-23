@@ -21,6 +21,14 @@ class AppBottomNavigationBar extends StatelessWidget {
         icon: FaIcon(FontAwesomeIcons.bed).icon,
       ),
       Menu(
+        menuType: MenuType.essentials,
+        icon: FaIcon(FontAwesomeIcons.luggageCart).icon,
+      ),
+      Menu(
+        menuType: MenuType.createStory,
+        icon: FaIcon(FontAwesomeIcons.fileUpload).icon,
+      ),
+      Menu(
         menuType: MenuType.places,
         icon: FaIcon(FontAwesomeIcons.mapMarker).icon,
       ),
