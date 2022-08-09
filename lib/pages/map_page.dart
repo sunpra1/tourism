@@ -27,7 +27,7 @@ class _MapPageState extends State<MapPage> {
         onPageFinished: (_) => Navigator.of(context).pop(),
         javascriptMode: JavascriptMode.unrestricted,
         initialUrl:
-            "https://www.google.com/maps/d/embed?mid=1nq8Su07ACbyVJtSjQUR6yFTE3HqO4APz&ehbc=2E312F",
+            "https://www.google.com/maps/d/embed?mid=1s2jt91Ghx8yB80uSYlpHyrLiHjEycEs",
       ),
     );
   }

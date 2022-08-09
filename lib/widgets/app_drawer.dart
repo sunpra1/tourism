@@ -64,7 +64,7 @@ class AppDrawerBanner extends StatelessWidget {
             Container(
               height: 80,
               width: 80,
-              child: Image.asset("assets/images/abstract.png"),
+              child: Image.asset("assets/images/app_logo.png"),
             ),
             Expanded(
               child: Padding(
