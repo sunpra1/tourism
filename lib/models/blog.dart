@@ -1,22 +1,26 @@
-class Blog {
-  static const _key_blog_id = "blogId";
-  static const _key_title = "title";
-  static const _key_sub_title = "subTitle";
-  static const _key_short_des = "shortDess";
-  static const _key_long_desc = "longDesc";
-  static const _key_image = "image";
-  static const _key_image1 = "image1";
-  static const _key_latitude = "latitude";
-  static const _key_longitude = "longitude";
+import 'package:json_annotation/json_annotation.dart';
 
+part '../generated/blog.g.dart';
+
+@JsonSerializable()
+class Blog {
+  @JsonKey(name: "blogId")
   final String blogId;
+  @JsonKey(name: "title")
   final String title;
+  @JsonKey(name: "subTitle")
   final String subTitle;
+  @JsonKey(name: "shortDess", defaultValue: "")
   final String shortDes;
-  final String? longDes;
+  @JsonKey(name: "longDesc", defaultValue: "")
+  final String longDes;
+  @JsonKey(name: "image")
   final String? image;
+  @JsonKey(name: "image1")
   final String? image1;
+  @JsonKey(name: "latitude")
   final double? latitude;
+  @JsonKey(name: "longitude")
   final double? longitude;
 
   Blog({
@@ -31,28 +35,14 @@ class Blog {
     this.longitude,
   });
 
-  factory Blog.fromMap(Map<String, dynamic> map) {
-    return Blog(
-      blogId: map[_key_blog_id],
-      title: map[_key_title],
-      subTitle: map[_key_sub_title],
-      shortDes: map[_key_short_des] ?? "",
-      longDes: map[_key_long_desc] ?? "",
-      image: map[_key_image],
-      image1: map[_key_image1],
-      latitude: map[_key_latitude] != null
-          ? double.tryParse(map[_key_latitude])
-          : null,
-      longitude: map[_key_longitude] != null
-          ? double.tryParse(map[_key_longitude])
-          : null,
-    );
-  }
+  factory Blog.fromJson(Map<String, dynamic> json) => _$BlogFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BlogToJson(this);
 
   static List<Blog> fromListMap(List<dynamic> listMap) {
     List<Blog> items = [];
     listMap.forEach((element) {
-      items.add(Blog.fromMap(element));
+      items.add(Blog.fromJson(element));
     });
     return items;
   }

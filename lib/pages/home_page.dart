@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:tourism/data/api_service.dart';
 import 'package:tourism/models/dashboard.dart';
 import 'package:tourism/models/dashboard_item.dart';
 import 'package:tourism/screens/loading_screen.dart';
+import 'package:tourism/utils/utils.dart';
 
-import '../models/api_response.dart';
-import '../utils/api_request.dart';
+import '../data/pojo/dashboard_response.dart';
 import '../widgets/carousel.dart';
 import '../widgets/image_gallery_slider.dart';
 import '../widgets/image_slider.dart';
@@ -14,25 +17,32 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   Future<Dashboard?> _getDashboardDetails(BuildContext context) async {
-    APIResponse response = await APIRequest<Map<String, dynamic>>(
-      requestType: RequestType.get,
-      requestEndPoint: RequestEndPoint.dashBoardItems,
-    ).make();
-    if (response.success)
-      return Dashboard.fromMap(response.data);
-    else
+    try {
+      DashboardResponse dashboardResponse =
+          await APIService(Utils.getDioWithInterceptor()).getDashboardData();
+      if (dashboardResponse.success)
+        return dashboardResponse.data;
+      else
+        return null;
+    } catch (e) {
+      log(e.toString());
       return null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<Dashboard?>(
       future: _getDashboardDetails(context),
       builder: (_, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return LoadingScreen();
         }
-        Dashboard dashboard = snapshot.data as Dashboard;
+        Dashboard? dashboard = snapshot.data;
+
+        if (dashboard == null) {
+          return LoadingScreen();
+        }
 
         return Container(
           height: double.infinity,

@@ -76,12 +76,8 @@ class APIRequest<T> {
 
     multipartFiles?.map((e) async {
       request.files.add(
-        await Http.MultipartFile.fromPath(
-          e.fileName,
-          e.file.path,
-          contentType: e.mediaType,
-          filename: e.fileName
-        ),
+        await Http.MultipartFile.fromPath(e.fileName, e.file.path,
+            contentType: e.mediaType, filename: e.fileName),
       );
     });
     Http.StreamedResponse response = await request.send();
@@ -116,14 +112,7 @@ extension RequestTypeExt on RequestType {
 enum RequestEndPoint {
   register,
   login,
-  blogs,
-  blog,
-  images,
-  videos,
   updateProfile,
-  dashBoardItems,
-  appDetails,
-  proximity,
   vendors,
   vendor,
   profile,
@@ -139,29 +128,8 @@ extension RequestEndPointExt on RequestEndPoint {
       case RequestEndPoint.login:
         value = "/api/Account/Login";
         break;
-      case RequestEndPoint.blogs:
-        value = "/api/Blog/GetAllBlog";
-        break;
-      case RequestEndPoint.images:
-        value = "/api/ImageVideo/GetAllImageList";
-        break;
-      case RequestEndPoint.videos:
-        value = "api/ImageVideo/GetAllVideoList";
-        break;
       case RequestEndPoint.updateProfile:
         value = "/api/UserProfile/SaveUpdateUserProfile";
-        break;
-      case RequestEndPoint.blog:
-        value = _formatPath("/api/Blog/GetBlogById/%s", pathParams);
-        break;
-      case RequestEndPoint.dashBoardItems:
-        value = "/api/Public/AppInitial";
-        break;
-      case RequestEndPoint.appDetails:
-        value = "/api/Website/PPTCFAQ";
-        break;
-      case RequestEndPoint.proximity:
-        value = "/api/public/NearPlaces";
         break;
       case RequestEndPoint.vendors:
         value = "/api/Vendor/GetVendorList";

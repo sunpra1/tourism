@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,24 +8,29 @@ import 'package:tourism/screens/view_blog_screen.dart';
 import 'package:tourism/widgets/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
-import '../models/api_response.dart';
+import '../data/api_service.dart';
+import '../data/pojo/blogs_response.dart';
 import '../utils/api_request.dart';
+import '../utils/utils.dart';
 
 class BlogsPage extends StatelessWidget {
   const BlogsPage({Key? key}) : super(key: key);
 
   Future<List<Blog>?> _getBlogs(BuildContext context) async {
-    APIResponse response = await APIRequest<List<dynamic>>(
-        requestType: RequestType.post,
-        requestEndPoint: RequestEndPoint.blogs,
-        body: {}).make();
-    if (response.success)
-      return Blog.fromListMap(response.data)
-          .where((element) =>
-              element.latitude == null || element.longitude == null)
-          .toList();
-    else
+    try {
+      BlogsResponse blogsResponse =
+          await APIService(Utils.getDioWithInterceptor()).getAllBlogs();
+      if (blogsResponse.success)
+        return (blogsResponse.data?.where((element) =>
+                    element.latitude == null || element.longitude == null))
+                ?.toList() ??
+            List.empty();
+      else
+        return null;
+    } catch (e) {
+      log(e.toString());
       return null;
+    }
   }
 
   @override

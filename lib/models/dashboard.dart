@@ -1,20 +1,21 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:tourism/models/dashboard_item.dart';
 import 'package:tourism/models/dashboard_item_info.dart';
 
-class Dashboard {
-  static const _key_dashboard_item = "typeList";
-  static const _key_dashboard_top_slider = "headerList";
+part '../generated/dashboard.g.dart';
 
+@JsonSerializable()
+class Dashboard {
+  @JsonKey(name: 'typeList')
   List<DashboardItem> dashBoardItems;
+  @JsonKey(name: 'headerList')
   List<DashboardItemInfo> dashboardTopSlider;
 
-  Dashboard({required this.dashBoardItems, required this.dashboardTopSlider});
+  Dashboard({required this.dashBoardItems, required this.dashboardTopSlider})
+      : super();
 
-  factory Dashboard.fromMap(Map<String, dynamic> map) {
-    return Dashboard(
-      dashBoardItems: DashboardItem.fromListMap(map[_key_dashboard_item]),
-      dashboardTopSlider:
-          DashboardItemInfo.fromListMap(map[_key_dashboard_top_slider]),
-    );
-  }
+  factory Dashboard.fromJson(Map<String, dynamic> json) =>
+      _$DashboardFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DashboardToJson(this);
 }

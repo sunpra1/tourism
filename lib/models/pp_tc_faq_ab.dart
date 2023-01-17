@@ -1,35 +1,31 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part '../generated/pp_tc_faq_ab.g.dart';
+
+@JsonSerializable()
 class PpTcFaqAb {
-  static const String _key_pp_tc_faq_ab = "pptcfaqList";
+
+  @JsonKey(name: 'pptcfaqList')
   List<PpTcFaqAbDetails> ppTcFaqAbDetailsList;
 
   PpTcFaqAb({required this.ppTcFaqAbDetailsList});
 
-  factory PpTcFaqAb.fromMap(Map<String, dynamic> map) {
-    return PpTcFaqAb(
-      ppTcFaqAbDetailsList:
-          PpTcFaqAbDetails.fromListMap(map[_key_pp_tc_faq_ab]),
-    );
-  }
+  factory PpTcFaqAb.fromJson(Map<String, dynamic> json) =>
+      _$PpTcFaqAbFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PpTcFaqAbToJson(this);
 }
 
+@JsonSerializable()
 class PpTcFaqAbDetails {
-  static const String _key_content = "content";
 
+  @JsonKey(name: 'content')
   String content;
 
   PpTcFaqAbDetails({required this.content});
 
-  factory PpTcFaqAbDetails.fromMap(Map<String, dynamic> map) {
-    return PpTcFaqAbDetails(
-      content: map[_key_content],
-    );
-  }
+  factory PpTcFaqAbDetails.fromJson(Map<String, dynamic> json) =>
+      _$PpTcFaqAbDetailsFromJson(json);
 
-  static List<PpTcFaqAbDetails> fromListMap(List<dynamic> listMap) {
-    List<PpTcFaqAbDetails> items = [];
-    listMap.forEach((element) {
-      items.add(PpTcFaqAbDetails.fromMap(element));
-    });
-    return items;
-  }
+  Map<String, dynamic> toJson() => _$PpTcFaqAbDetailsToJson(this);
 }

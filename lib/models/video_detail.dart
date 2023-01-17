@@ -1,16 +1,20 @@
-class VideoDetail {
-  static const String _key_video_id = "imageVideId";
-  static const String _key_name = "name";
-  static const String _key_path = "path";
-  static const String _key_image_path = "imagePath";
-  static const String _key_short_desc = "shortDesc";
-  static const String _key_display_order = "displayOrder";
+import 'package:json_annotation/json_annotation.dart';
 
+part '../generated/video_detail.g.dart';
+
+@JsonSerializable()
+class VideoDetail {
+  @JsonKey(name: 'imageVideId')
   final int id;
+  @JsonKey(name: 'name')
   final String name;
+  @JsonKey(name: 'path')
   final String path;
+  @JsonKey(name: 'imagePath')
   final String? imagePath;
+  @JsonKey(name: 'shortDesc')
   final String shortDec;
+  @JsonKey(name: 'displayOrder')
   final int displayOrder;
 
   const VideoDetail({
@@ -22,22 +26,8 @@ class VideoDetail {
     required this.displayOrder,
   });
 
-  factory VideoDetail.fromMap(Map<String, dynamic> map) {
-    return VideoDetail(
-      id: map[_key_video_id],
-      name: map[_key_name],
-      path: map[_key_path],
-      imagePath: map[_key_image_path],
-      shortDec: map[_key_short_desc],
-      displayOrder: map[_key_display_order],
-    );
-  }
+  factory VideoDetail.fromJson(Map<String, dynamic> json) =>
+      _$VideoDetailFromJson(json);
 
-  static List<VideoDetail> fromListMap(List<dynamic> listMap) {
-    List<VideoDetail> items = [];
-    listMap.forEach((element) {
-      items.add(VideoDetail.fromMap(element));
-    });
-    return items;
-  }
+  Map<String, dynamic> toJson() => _$VideoDetailToJson(this);
 }

@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:tourism/screens/view_image_screen.dart';
+import 'dart:developer';
 
-import '../models/api_response.dart';
+import 'package:flutter/material.dart';
+import 'package:tourism/data/api_service.dart';
+import 'package:tourism/screens/view_image_screen.dart';
+import 'package:tourism/utils/utils.dart';
+
+import '../data/pojo/my_image_response.dart';
 import '../models/my_image.dart';
 import '../utils/api_request.dart';
 import '../widgets/progress_dialog.dart';
@@ -10,14 +14,17 @@ class ImagesPage extends StatelessWidget {
   const ImagesPage({Key? key}) : super(key: key);
 
   Future<List<MyImage>?> _getImages(BuildContext context) async {
-    APIResponse response = await APIRequest<List<dynamic>>(
-        requestType: RequestType.post,
-        requestEndPoint: RequestEndPoint.images,
-        body: {}).make();
-    if (response.success)
-      return MyImage.fromListMap(response.data);
-    else
+    try {
+      MyImageResponse myImageResponse =
+          await APIService(Utils.getDioWithInterceptor()).getImages();
+      if (myImageResponse.success)
+        return myImageResponse.data;
+      else
+        return null;
+    } catch (e) {
+      log(e.toString());
       return null;
+    }
   }
 
   @override

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:tourism/data/api_service.dart';
 import 'package:tourism/data/pojo/app_details_body.dart';
+import 'package:tourism/data/pojo/pp_tc_faq_ab_response.dart';
 import 'package:tourism/models/menu.dart';
 import 'package:tourism/models/pp_tc_faq_ab.dart';
 import 'package:tourism/utils/app_theme.dart';
 
-import '../models/api_response.dart';
-import '../utils/api_request.dart';
+import '../utils/utils.dart';
 import '../widgets/progress_dialog.dart';
 
 class ApplicationDetails extends StatelessWidget {
@@ -29,13 +30,11 @@ class ApplicationDetails extends StatelessWidget {
         break;
     }
     try {
-      APIResponse response = await APIRequest<Map<String, dynamic>>(
-              requestType: RequestType.post,
-              requestEndPoint: RequestEndPoint.appDetails,
-              body: AppDetailsBody(flag: flagType).toMap())
-          .make();
-      if (response.success) {
-        return PpTcFaqAb.fromMap(response.data);
+      PpTcFaqAbResponse ppTcFaqAbResponse =
+          await APIService(Utils.getDioWithInterceptor())
+              .getAppDetails(AppDetailsBody(flag: flagType).toJson());
+      if (ppTcFaqAbResponse.success) {
+        return ppTcFaqAbResponse.data;
       } else
         throw Exception();
     } on Exception catch (_) {

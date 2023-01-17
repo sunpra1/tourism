@@ -154,7 +154,7 @@ class VendorItem extends StatelessWidget {
                           Expanded(
                             child: Text(
                               (vendor.emailId != null &&
-                                  vendor.emailId!.isNotEmpty)
+                                      vendor.emailId!.isNotEmpty)
                                   ? vendor.emailId!
                                   : "NOT AVAILABLE",
                               style: Theme.of(context).textTheme.labelMedium,

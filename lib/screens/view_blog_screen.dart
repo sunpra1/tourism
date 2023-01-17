@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:tourism/data/api_service.dart';
+import 'package:tourism/data/pojo/blog_response.dart';
+import 'package:tourism/utils/utils.dart';
 import 'package:tourism/widgets/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
-import '../models/api_response.dart';
 import '../models/blog.dart';
-import '../utils/api_request.dart';
 import '../widgets/carousel_with_arrow.dart';
 
 class ViewBlogScreen extends StatelessWidget {
@@ -18,12 +19,10 @@ class ViewBlogScreen extends StatelessWidget {
   Future<Blog?> _getBlog(BuildContext context) async {
     final String blogId = ModalRoute.of(context)!.settings.arguments as String;
     try {
-      APIResponse response = await APIRequest<Map<String, dynamic>>(
-        requestType: RequestType.get,
-        requestEndPoint: RequestEndPoint.blog,
-      ).make(pathParams: [blogId]);
+      BlogResponse response =
+          await APIService(Utils.getDioWithInterceptor()).getBlogById(blogId);
       if (response.success)
-        return Blog.fromMap(response.data);
+        return response.data;
       else
         throw Exception();
     } on Exception catch (_) {

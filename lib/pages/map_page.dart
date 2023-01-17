@@ -9,12 +9,11 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => _MapPageState();
 }
 
-
-
 class _MapPageState extends State<MapPage> {
-
-  void _showProgressDialogue(BuildContext context){
-    showDialog(context: context, builder: (_) => ProgressDialog(message: "LOADING..."));
+  void _showProgressDialogue(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => ProgressDialog(message: "LOADING..."));
   }
 
   @override
