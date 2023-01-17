@@ -55,7 +55,8 @@ class VideosPage extends StatelessWidget {
                     crossAxisSpacing: 8,
                     childAspectRatio: 3 / 2,
                   ),
-                  itemBuilder: (_, index) => VideoItem( key: Key(videos[index].id.toString()),
+                  itemBuilder: (_, index) => VideoItem(
+                    key: Key(videos[index].id.toString()),
                     videoDetail: videos[index],
                   ),
                 )
@@ -101,6 +102,12 @@ class VideoItem extends StatelessWidget {
     }
   }
 
+  String? _getVideoIdFromYoutubeUrl(String? url) {
+    if (url == null) return null;
+    Uri videoUri = Uri.parse(url);
+    return videoUri.queryParameters["v"];
+  }
+
   @override
   Widget build(BuildContext context) {
     double padding = 8.0;
@@ -119,13 +126,20 @@ class VideoItem extends StatelessWidget {
                 height: totalWidth * 3 / 2,
                 width: totalWidth,
                 child: GridTile(
-                  child: videoDetail.imagePath != null ? Image.network(
-                    videoDetail.imagePath!,
-                    fit: BoxFit.cover,
-                  ) : Image.asset(
-                    "assets/images/youtube.jpeg",
-                    fit: BoxFit.cover,
-                  ),
+                  child: videoDetail.imagePath != null
+                      ? Image.network(
+                          videoDetail.imagePath!,
+                          fit: BoxFit.cover,
+                        )
+                      : _getVideoIdFromYoutubeUrl(videoDetail.path) != null
+                          ? Image.network(
+                              "https://img.youtube.com/vi/${_getVideoIdFromYoutubeUrl(videoDetail.path)}/hqdefault.jpg",
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              "assets/images/youtube.jpeg",
+                              fit: BoxFit.cover,
+                            ),
                   header: GridTileBar(
                     backgroundColor: Colors.black54,
                     title: Text(

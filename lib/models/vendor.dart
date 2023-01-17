@@ -12,10 +12,10 @@ class Vendor {
   final String name;
   final String location;
   final String country;
-  final String emailId;
-  final String logo;
-  final String banner;
-  final String phoneNumber;
+  final String? emailId;
+  final String? logo;
+  final String? banner;
+  final String? phoneNumber;
 
   const Vendor({
     required this.vendorInfoId,

@@ -14,8 +14,8 @@ class Blog {
   final String subTitle;
   final String shortDes;
   final String? longDes;
-  final String image;
-  final String image1;
+  final String? image;
+  final String? image1;
   final double? latitude;
   final double? longitude;
 

@@ -77,22 +77,26 @@ class VendorItem extends StatelessWidget {
   const VendorItem({Key? key, required this.vendor}) : super(key: key);
 
   _sendEmailToVendor() async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: vendor.emailId,
-    );
-    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
-      await Launcher.launchUrl(emailLaunchUri);
+    if (vendor.emailId != null && vendor.emailId!.isNotEmpty) {
+      final Uri emailLaunchUri = Uri(
+        scheme: 'mailto',
+        path: vendor.emailId,
+      );
+      if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+        await Launcher.launchUrl(emailLaunchUri);
+      }
     }
   }
 
   _callToVendor() async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'tel',
-      path: vendor.phoneNumber,
-    );
-    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
-      await Launcher.launchUrl(emailLaunchUri);
+    if (vendor.phoneNumber != null && vendor.phoneNumber!.isNotEmpty) {
+      final Uri emailLaunchUri = Uri(
+        scheme: 'tel',
+        path: vendor.phoneNumber,
+      );
+      if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+        await Launcher.launchUrl(emailLaunchUri);
+      }
     }
   }
 
@@ -127,7 +131,10 @@ class VendorItem extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              vendor.phoneNumber,
+                              (vendor.phoneNumber != null &&
+                                      vendor.phoneNumber!.isNotEmpty)
+                                  ? vendor.phoneNumber!
+                                  : "NOT AVAILABLE",
                               style: Theme.of(context).textTheme.labelMedium,
                               maxLines: 2,
                               softWrap: true,
@@ -146,7 +153,10 @@ class VendorItem extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              vendor.emailId,
+                              (vendor.emailId != null &&
+                                  vendor.emailId!.isNotEmpty)
+                                  ? vendor.emailId!
+                                  : "NOT AVAILABLE",
                               style: Theme.of(context).textTheme.labelMedium,
                               maxLines: 2,
                               softWrap: true,
@@ -185,21 +195,27 @@ class VendorItem extends StatelessWidget {
                     ViewVendorScreen.routeName,
                     arguments: vendor.vendorInfoId),
                 child: GridTile(
-                  child: Image.network(
-                    "https://${APIRequest.baseUrl}${vendor.banner}",
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, widget, loadingProgress) {
-                      if (loadingProgress == null) return widget;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
+                  child: (vendor.banner == null || vendor.banner!.isEmpty)
+                      ? Image.asset(
+                          "assets/images/app_logo.png",
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          "https://${APIRequest.baseUrl}${vendor.banner}",
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, widget, loadingProgress) {
+                            if (loadingProgress == null) return widget;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                   header: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -235,9 +251,14 @@ class VendorItem extends StatelessWidget {
                             border: Border.all(width: 3, color: Colors.white)),
                         child: CircleAvatar(
                           radius: 25,
-                          backgroundImage: NetworkImage(
-                            "https://${APIRequest.baseUrl}${vendor.logo}",
-                          ),
+                          backgroundImage:
+                              (vendor.logo == null || vendor.logo!.isEmpty)
+                                  ? AssetImage(
+                                      "assets/images/app_logo.png",
+                                    ) as ImageProvider
+                                  : NetworkImage(
+                                      "https://${APIRequest.baseUrl}${vendor.logo}",
+                                    ),
                         ),
                       ),
                     ),

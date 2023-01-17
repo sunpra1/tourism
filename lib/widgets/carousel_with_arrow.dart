@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tourism/utils/api_request.dart';
 
 class CarouselWithArrow extends StatefulWidget {
-  final List<String> images;
+  final List<String?> images;
 
   const CarouselWithArrow({Key? key, required this.images}) : super(key: key);
 
@@ -21,7 +21,7 @@ class _CarouselWithArrowState extends State<CarouselWithArrow> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> images = widget.images;
+    final List<String?> images = widget.images;
 
     return Container(
       height: 250,
@@ -71,31 +71,37 @@ class _CarouselWithArrowState extends State<CarouselWithArrow> {
 }
 
 class CarouselItem extends StatelessWidget {
-  final String image;
+  final String? image;
 
   const CarouselItem({Key? key, required this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      "https://${APIRequest.baseUrl}/$image",
-      width: MediaQuery.of(context).size.width,
-      fit: BoxFit.cover,
-      loadingBuilder: (context, widget, loadingProgress) {
-        if (loadingProgress == null) return widget;
-        return Center(
-          child: SizedBox(
-            height: 64,
-            width: 64,
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
-            ),
-          ),
-        );
-      },
-    );
+    return image == null || image!.isEmpty
+        ? Image.asset(
+            "assets/images/app_logo.png",
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
+          )
+        : Image.network(
+            "https://${APIRequest.baseUrl}/$image",
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, widget, loadingProgress) {
+              if (loadingProgress == null) return widget;
+              return Center(
+                child: SizedBox(
+                  height: 64,
+                  width: 64,
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                ),
+              );
+            },
+          );
   }
 }

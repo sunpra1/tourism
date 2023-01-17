@@ -105,7 +105,6 @@ class ImageSliderItem extends StatelessWidget {
                 child: dashboardItemInfo.image == null
                     ? Image.asset(
                         "assets/images/app_logo.png",
-                        width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                       )
                     : Image.network(

@@ -33,9 +33,9 @@ class VendorDetails {
   String country;
   String zipCode;
   String emailId;
-  String website;
-  String logo;
-  String banner;
+  String? website;
+  String? logo;
+  String? banner;
   String? latitude;
   String? longitude;
   String contactPerson;

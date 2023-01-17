@@ -149,28 +149,39 @@ class BlogItem extends StatelessWidget {
                       },
                       child: ListTile(
                         tileColor: Colors.white,
-                        leading: Image.network(
-                          "https://${APIRequest.baseUrl}${blog.image}",
-                          fit: BoxFit.cover,
-                          height: imageSize,
-                          width: imageSize,
-                          loadingBuilder: (context, widget, loadingProgress) {
-                            if (loadingProgress == null) return widget;
-                            return Container(
-                              height: imageSize,
-                              width: imageSize,
-                              child: Center(
-                                child: LinearProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
+                        leading: blog.image == null || blog.image!.isEmpty
+                            ? Image.asset(
+                                "assets/images/app_logo.png",
+                                height: imageSize,
+                                width: imageSize,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                "https://${APIRequest.baseUrl}${blog.image}",
+                                fit: BoxFit.cover,
+                                height: imageSize,
+                                width: imageSize,
+                                loadingBuilder:
+                                    (context, widget, loadingProgress) {
+                                  if (loadingProgress == null) return widget;
+                                  return Container(
+                                    height: imageSize,
+                                    width: imageSize,
+                                    child: Center(
+                                      child: LinearProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
                         title: Text(
                           blog.title,
                           style: Theme.of(context)

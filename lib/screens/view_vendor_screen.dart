@@ -48,30 +48,36 @@ class ViewVendorScreen extends StatelessWidget {
     return null;
   }
 
-  _sendEmailToVendor(String emailId) async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: emailId,
-    );
-    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
-      await Launcher.launchUrl(emailLaunchUri);
+  _sendEmailToVendor(String? emailId) async {
+    if (emailId != null) {
+      final Uri emailLaunchUri = Uri(
+        scheme: 'mailto',
+        path: emailId,
+      );
+      if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+        await Launcher.launchUrl(emailLaunchUri);
+      }
     }
   }
 
-  _visitUrl(String stringUrl) async {
-    Uri? url = Uri.tryParse(stringUrl);
-    if (url != null && await Launcher.canLaunchUrl(url)) {
-      await Launcher.launchUrl(url);
+  _visitUrl(String? stringUrl) async {
+    if (stringUrl != null) {
+      Uri? url = Uri.tryParse(stringUrl);
+      if (url != null && await Launcher.canLaunchUrl(url)) {
+        await Launcher.launchUrl(url);
+      }
     }
   }
 
-  _callToVendor(String phoneNumber) async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'tel',
-      path: phoneNumber,
-    );
-    if (await Launcher.canLaunchUrl(emailLaunchUri)) {
-      await Launcher.launchUrl(emailLaunchUri);
+  _callToVendor(String? phoneNumber) async {
+    if (phoneNumber != null) {
+      final Uri emailLaunchUri = Uri(
+        scheme: 'tel',
+        path: phoneNumber,
+      );
+      if (await Launcher.canLaunchUrl(emailLaunchUri)) {
+        await Launcher.launchUrl(emailLaunchUri);
+      }
     }
   }
 
@@ -161,19 +167,22 @@ class ViewVendorScreen extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary,
                           ),
                     ),
-                    SizedBox(height: 16,),
+                    SizedBox(
+                      height: 16,
+                    ),
                     HorizontalLine(),
-                    SizedBox(height: 16,),
+                    SizedBox(
+                      height: 16,
+                    ),
                     Text(
                       "${vendor.city}, ${vendor.district}, ${vendor.state}, ${vendor.country}\n${vendor.location}",
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                       textAlign: TextAlign.center,
                       maxLines: 3,
                       softWrap: true,
                     ),
-
                     TextButton(
                       onPressed: () => _callToVendor(vendor.phoneNumber),
                       child: Row(
@@ -311,31 +320,39 @@ class ViewVendorScreen extends StatelessWidget {
                               ),
                             ),
                             centerTitle: false,
-                            background: Image.network(
-                              "https://${APIRequest.baseUrl}/${vendor.banner}",
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, widget, loadingProgress) {
-                                if (loadingProgress == null) return widget;
-                                return Center(
-                                  child: SizedBox(
-                                    height: 64,
-                                    width: 64,
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
+                            background: (vendor.banner == null ||
+                                    vendor.banner!.isEmpty)
+                                ? Image.asset(
+                                    "assets/images/app_logo.png",
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    "https://${APIRequest.baseUrl}/${vendor.banner}",
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, widget, loadingProgress) {
+                                      if (loadingProgress == null)
+                                        return widget;
+                                      return Center(
+                                        child: SizedBox(
+                                          height: 64,
+                                          width: 64,
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
                           ),
                           bottom: PreferredSize(
                             preferredSize: Size.fromHeight(60),
@@ -350,9 +367,13 @@ class ViewVendorScreen extends StatelessWidget {
                                         width: 3, color: Colors.white)),
                                 child: CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: NetworkImage(
-                                    "https://${APIRequest.baseUrl}${vendor.logo}",
-                                  ),
+                                  backgroundImage: (vendor.logo == null ||
+                                          vendor.logo!.isEmpty)
+                                      ? AssetImage("assets/images/app_logo.png")
+                                          as NetworkImage
+                                      : NetworkImage(
+                                          "https://${APIRequest.baseUrl}${vendor.logo}",
+                                        ),
                                 ),
                               ),
                             ),
