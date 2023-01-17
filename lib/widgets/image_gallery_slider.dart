@@ -107,21 +107,27 @@ class ImageGalleryItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: GridTile(
-                child: Image.network(
-                  "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, widget, loadingProgress) {
-                    if (loadingProgress == null) return widget;
-                    return Center(
-                      child: LinearProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
+                child: dashboardItemInfo.image == null
+                    ? Image.asset(
+                        "assets/images/app_logo.png",
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.network(
+                        "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, widget, loadingProgress) {
+                          if (loadingProgress == null) return widget;
+                          return Center(
+                            child: LinearProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
                 header: GridTileBar(
                   backgroundColor: Colors.black54,
                   title: Text(
@@ -152,21 +158,27 @@ class ImageGalleryItem extends StatelessWidget {
               width: secondaryGridTileSize,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  "https://${APIRequest.baseUrl}${dashboardItemInfo.image1}",
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, widget, loadingProgress) {
-                    if (loadingProgress == null) return widget;
-                    return Center(
-                      child: LinearProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
+                child: dashboardItemInfo.image1 == null
+                    ? Image.asset(
+                        "assets/images/app_logo.png",
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.network(
+                        "https://${APIRequest.baseUrl}${dashboardItemInfo.image1}",
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, widget, loadingProgress) {
+                          if (loadingProgress == null) return widget;
+                          return Center(
+                            child: LinearProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ),
             Container(
@@ -177,21 +189,28 @@ class ImageGalleryItem extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.network(
-                      "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, widget, loadingProgress) {
-                        if (loadingProgress == null) return widget;
-                        return Center(
-                          child: LinearProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
+                    dashboardItemInfo.image == null
+                        ? Image.asset(
+                            "assets/images/app_logo.png",
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, widget, loadingProgress) {
+                              if (loadingProgress == null) return widget;
+                              return Center(
+                                child: LinearProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
                     Center(
                       child: Text(
                         "+${Random().nextInt(150)}",

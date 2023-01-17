@@ -8,15 +8,16 @@ class DashboardItemInfo {
   String blogId;
   String title;
   String subTitle;
-  String image;
-  String image1;
+  String? image;
+  String? image1;
 
-  DashboardItemInfo(
-      {required this.blogId,
-      required this.title,
-      required this.subTitle,
-      required this.image,
-      required this.image1});
+  DashboardItemInfo({
+    required this.blogId,
+    required this.title,
+    required this.subTitle,
+    required this.image,
+    required this.image1,
+  });
 
   factory DashboardItemInfo.fromMap(Map<String, dynamic> map) {
     return DashboardItemInfo(

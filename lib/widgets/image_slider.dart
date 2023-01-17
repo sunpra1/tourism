@@ -102,21 +102,27 @@ class ImageSliderItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: GridTile(
-                child: Image.network(
-                  "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, widget, loadingProgress) {
-                    if (loadingProgress == null) return widget;
-                    return Center(
-                      child: LinearProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
+                child: dashboardItemInfo.image == null
+                    ? Image.asset(
+                        "assets/images/app_logo.png",
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.network(
+                        "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, widget, loadingProgress) {
+                          if (loadingProgress == null) return widget;
+                          return Center(
+                            child: LinearProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
                 header: showDetailsAtTop
                     ? GridTileBar(
                         backgroundColor: Colors.black54,

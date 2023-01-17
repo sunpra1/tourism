@@ -55,6 +55,7 @@ class _CarouselState extends State<Carousel> {
     );
   }
 }
+//
 
 class CarouselItem extends StatelessWidget {
   final DashboardItemInfo dashboardItemInfo;
@@ -70,26 +71,33 @@ class CarouselItem extends StatelessWidget {
           ViewBlogScreen.routeName,
           arguments: dashboardItemInfo.blogId,
         ),
-        child: Image.network(
-          "https://${APIRequest.baseUrl}${Random().nextInt(9) % 2 == 0 ? dashboardItemInfo.image : dashboardItemInfo.image1}",
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-          loadingBuilder: (context, widget, loadingProgress) {
-            if (loadingProgress == null) return widget;
-            return Center(
-              child: SizedBox(
-                height: 32,
-                width: 32,
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              ),
-            );
-          },
-        ),
+        child:
+            dashboardItemInfo.image == null && dashboardItemInfo.image1 == null
+                ? Image.asset(
+                    "assets/images/app_logo.png",
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  )
+                : Image.network(
+                    "https://${APIRequest.baseUrl}${(dashboardItemInfo.image != null && dashboardItemInfo.image1 == null) ? dashboardItemInfo.image != null : (dashboardItemInfo.image == null && dashboardItemInfo.image1 != null) ? dashboardItemInfo.image1 : Random().nextInt(9) % 2 == 0 ? dashboardItemInfo.image : dashboardItemInfo.image1}",
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, widget, loadingProgress) {
+                      if (loadingProgress == null) return widget;
+                      return Center(
+                        child: SizedBox(
+                          height: 32,
+                          width: 32,
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
       ),
     );
   }
