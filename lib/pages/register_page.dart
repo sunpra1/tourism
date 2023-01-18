@@ -3,12 +3,13 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tourism/data/api_service.dart';
+import 'package:tourism/data/pojo/register_response.dart';
+import 'package:tourism/utils/utils.dart';
 
 import '../data/pojo/auth_body.dart';
-import '../models/api_response.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
-import '../utils/api_request.dart';
 import '../widgets/gradient_button.dart';
 import '../widgets/progress_dialog.dart';
 
@@ -159,18 +160,16 @@ class _RegisterPageState extends State<RegisterPage> {
         password: passwordController.text,
         authType: AuthType.register,
       );
-      APIResponse response = await APIRequest<String>(
-              requestType: RequestType.post,
-              requestEndPoint: RequestEndPoint.register,
-              body: body.toMap())
-          .make();
+      RegisterResponse registerResponse =
+          await APIService(Utils.getDioWithInterceptor())
+              .registerUser(body.toJson());
       Navigator.of(context).pop();
-      if (response.success) {
+      if (registerResponse.success && registerResponse.data != null) {
         context.read<UserProvider>().setLoggedInUser(
-              User.fromMap({
+              User.fromJson({
                 "userName": body.email,
                 "roleName": UserRole.user,
-                "token": response.data,
+                "token": registerResponse.data,
               }),
             );
         Navigator.of(context).popUntil(ModalRoute.withName("/"));
@@ -180,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
           context: context,
           builder: (_) => AlertDialog(
             title: Text("REGISTRATION FAILED"),
-            content: Text(response.message ??
+            content: Text(registerResponse.message ??
                 "Registration failed, please try again sometime later."),
             actions: [
               TextButton(

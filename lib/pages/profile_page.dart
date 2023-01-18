@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tourism/utils/api_request.dart';
 
 import '../models/user.dart';
 import '../utils/app_theme.dart';
+import '../utils/k.dart';
 
 class ProfilePage extends StatelessWidget {
   final User user;
@@ -39,7 +39,7 @@ class ProfilePage extends StatelessWidget {
                           ? CircleAvatar(
                               radius: 50,
                               backgroundImage: NetworkImage(
-                                  "https://${APIRequest.baseUrl}${user.profileShortImage}"),
+                                  "${K.imageBaseUrl}${user.profileShortImage}"),
                             )
                           : CircleAvatar(
                               radius: 50,

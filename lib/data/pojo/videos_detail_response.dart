@@ -5,7 +5,7 @@ import '../../models/video_detail.dart';
 part '../../generated/video_detail_response.g.dart';
 
 @JsonSerializable()
-class VideoDetailResponse {
+class VideosDetailResponse {
   @JsonKey(name: 'code')
   String code;
   @JsonKey(name: 'success')
@@ -15,14 +15,14 @@ class VideoDetailResponse {
   @JsonKey(name: 'data')
   List<VideoDetail>? data;
 
-  VideoDetailResponse({
+  VideosDetailResponse({
     required this.code,
     required this.success,
     required this.message,
     required this.data,
   });
 
-  factory VideoDetailResponse.fromJson(Map<String, dynamic> json) =>
+  factory VideosDetailResponse.fromJson(Map<String, dynamic> json) =>
       _$VideoDetailResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$VideoDetailResponseToJson(this);

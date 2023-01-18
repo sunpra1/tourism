@@ -1,4 +1,4 @@
-enum Gender { male, female, others, unSpeacified }
+enum Gender { male, female, others, unSpecified }
 
 extension GenderExr on Gender {
   String get value {
@@ -13,7 +13,7 @@ extension GenderExr on Gender {
       case Gender.others:
         value = "OTHERS";
         break;
-      case Gender.unSpeacified:
+      case Gender.unSpecified:
         value = "SELECT GENDER";
         break;
     }
@@ -33,7 +33,7 @@ class GenderHelper {
         lowerGender == "o") {
       return Gender.others;
     } else {
-      return Gender.unSpeacified;
+      return Gender.unSpecified;
     }
   }
 }

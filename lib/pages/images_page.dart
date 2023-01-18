@@ -5,9 +5,9 @@ import 'package:tourism/data/api_service.dart';
 import 'package:tourism/screens/view_image_screen.dart';
 import 'package:tourism/utils/utils.dart';
 
-import '../data/pojo/my_image_response.dart';
+import '../data/pojo/my_images_response.dart';
 import '../models/my_image.dart';
-import '../utils/api_request.dart';
+import '../utils/k.dart';
 import '../widgets/progress_dialog.dart';
 
 class ImagesPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class ImagesPage extends StatelessWidget {
 
   Future<List<MyImage>?> _getImages(BuildContext context) async {
     try {
-      MyImageResponse myImageResponse =
+      MyImagesResponse myImageResponse =
           await APIService(Utils.getDioWithInterceptor()).getImages();
       if (myImageResponse.success)
         return myImageResponse.data;
@@ -73,7 +73,7 @@ class ImageItem extends StatelessWidget {
       children: [
         Positioned.fill(
           child: Image.network(
-            "https://${APIRequest.baseUrl}${image.path}",
+            "${K.imageBaseUrl}${image.path}",
             fit: BoxFit.cover,
             loadingBuilder: (context, widget, loadingProgress) {
               if (loadingProgress == null) return widget;

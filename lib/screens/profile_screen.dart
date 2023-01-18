@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tourism/data/api_service.dart';
+import 'package:tourism/data/pojo/login_response.dart';
 import 'package:tourism/screens/update_profile_screen.dart';
+import 'package:tourism/utils/utils.dart';
 
-import '../models/api_response.dart';
 import '../models/user.dart';
 import '../pages/profile_page.dart';
 import '../providers/user_provider.dart';
-import '../utils/api_request.dart';
 import '../widgets/my_app_bar.dart';
 import '../widgets/progress_dialog.dart';
 
@@ -23,12 +24,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   Future<User?> _getUserProfile(BuildContext context) async {
     User user = context.read<UserProvider>().loggedInUser!;
-    APIResponse response = await APIRequest<Map<String, dynamic>>(
-      requestType: RequestType.get,
-      requestEndPoint: RequestEndPoint.profile,
-    ).make(pathParams: [user.profileId]);
-    if (response.success) {
-      User userProfile = User.fromMap(response.data);
+    LoginResponse response = await APIService(Utils.getDioWithInterceptor())
+        .getProfile(user.profileId);
+    if (response.success && response.data != null) {
+      User userProfile = response.data!;
       userProfile.userName = user.userName;
       userProfile.token = user.token;
       userProfile.userId = user.userId;

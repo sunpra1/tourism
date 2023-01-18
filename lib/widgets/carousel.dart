@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tourism/models/dashboard_item_info.dart';
 import 'package:tourism/screens/view_blog_screen.dart';
-import 'package:tourism/utils/api_request.dart';
 
+import '../utils/k.dart';
 import 'carousel_indicator.dart';
 
 class Carousel extends StatefulWidget {
@@ -79,7 +79,7 @@ class CarouselItem extends StatelessWidget {
                     fit: BoxFit.cover,
                   )
                 : Image.network(
-                    "https://${APIRequest.baseUrl}${(dashboardItemInfo.image != null && dashboardItemInfo.image1 == null) ? dashboardItemInfo.image != null : (dashboardItemInfo.image == null && dashboardItemInfo.image1 != null) ? dashboardItemInfo.image1 : Random().nextInt(9) % 2 == 0 ? dashboardItemInfo.image : dashboardItemInfo.image1}",
+                    "${K.imageBaseUrl}${(dashboardItemInfo.image != null && dashboardItemInfo.image1 == null) ? dashboardItemInfo.image != null : (dashboardItemInfo.image == null && dashboardItemInfo.image1 != null) ? dashboardItemInfo.image1 : Random().nextInt(9) % 2 == 0 ? dashboardItemInfo.image : dashboardItemInfo.image1}",
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, widget, loadingProgress) {

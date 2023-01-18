@@ -22,7 +22,7 @@ class SharedPreferenceStorage {
     SharedPreferences prefs = await _prefs;
     String? userString = prefs.getString(_key_user);
     if (userString != null)
-      return User.fromMap(
+      return User.fromJson(
         Convert.jsonDecode(userString) as Map<String, dynamic>,
       );
     else

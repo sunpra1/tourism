@@ -1,20 +1,24 @@
-class Vendor {
-  static const _key_vendor_info_id = "vendorInfoId";
-  static const _key_name = "name";
-  static const _key_location = "location";
-  static const _key_country = "country";
-  static const _key_email_id = "emailId";
-  static const _key_logo = "logo";
-  static const _key_banner = "banner";
-  static const _key_phone_number = "phoneNumber";
+import 'package:json_annotation/json_annotation.dart';
 
+part '../generated/vendor.g.dart';
+
+@JsonSerializable()
+class Vendor {
+  @JsonKey(name: 'vendorInfoId')
   final String vendorInfoId;
+  @JsonKey(name: 'name')
   final String name;
+  @JsonKey(name: 'location')
   final String location;
+  @JsonKey(name: 'country')
   final String country;
+  @JsonKey(name: 'emailId')
   final String? emailId;
+  @JsonKey(name: 'logo')
   final String? logo;
+  @JsonKey(name: 'banner')
   final String? banner;
+  @JsonKey(name: 'phoneNumber')
   final String? phoneNumber;
 
   const Vendor({
@@ -28,24 +32,8 @@ class Vendor {
     required this.phoneNumber,
   });
 
-  factory Vendor.fromMap(Map<String, dynamic> map) {
-    return Vendor(
-      vendorInfoId: map[_key_vendor_info_id],
-      name: map[_key_name],
-      location: map[_key_location],
-      country: map[_key_country],
-      emailId: map[_key_email_id],
-      logo: map[_key_logo],
-      banner: map[_key_banner],
-      phoneNumber: map[_key_phone_number],
-    );
-  }
+  factory Vendor.fromJson(Map<String, dynamic> json) =>
+      _$VendorFromJson(json);
 
-  static List<Vendor> fromListMap(List<dynamic> listMap) {
-    List<Vendor> items = [];
-    listMap.forEach((element) {
-      items.add(Vendor.fromMap(element));
-    });
-    return items;
-  }
+  Map<String, dynamic> toJson() => _$VendorToJson(this);
 }

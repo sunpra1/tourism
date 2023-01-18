@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:tourism/models/VendorDetails.dart';
-import 'package:tourism/widgets/horizontal_line.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
-import '../models/api_response.dart';
-import '../utils/api_request.dart';
+import '../data/api_service.dart';
+import '../data/pojo/vendor_response.dart';
+import '../models/vendor_details.dart';
+import '../utils/k.dart';
+import '../utils/utils.dart';
+import '../widgets/horizontal_line.dart';
 import '../widgets/progress_dialog.dart';
 
 class ViewVendorScreen extends StatelessWidget {
@@ -19,12 +21,10 @@ class ViewVendorScreen extends StatelessWidget {
     final String vendorId =
         ModalRoute.of(context)!.settings.arguments as String;
     try {
-      APIResponse response = await APIRequest<Map<String, dynamic>>(
-        requestType: RequestType.get,
-        requestEndPoint: RequestEndPoint.vendor,
-      ).make(pathParams: [vendorId]);
-      if (response.success)
-        return VendorDetails.formMap(response.data);
+      VendorResponse vendorResponse =
+          await APIService(Utils.getDioWithInterceptor()).getVendor(vendorId);
+      if (vendorResponse.success)
+        return vendorResponse.data;
       else
         throw Exception();
     } on Exception catch (_) {
@@ -328,7 +328,7 @@ class ViewVendorScreen extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   )
                                 : Image.network(
-                                    "https://${APIRequest.baseUrl}/${vendor.banner}",
+                                    "${K.imageBaseUrl}${vendor.banner}",
                                     width: MediaQuery.of(context).size.width,
                                     fit: BoxFit.cover,
                                     loadingBuilder:
@@ -372,7 +372,7 @@ class ViewVendorScreen extends StatelessWidget {
                                       ? AssetImage("assets/images/app_logo.png")
                                           as NetworkImage
                                       : NetworkImage(
-                                          "https://${APIRequest.baseUrl}${vendor.logo}",
+                                          "${K.imageBaseUrl}${vendor.logo}",
                                         ),
                                 ),
                               ),

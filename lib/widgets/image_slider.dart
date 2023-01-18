@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/dashboard_item.dart';
 import '../models/dashboard_item_info.dart';
 import '../screens/view_blog_screen.dart';
-import '../utils/api_request.dart';
+import '../utils/k.dart';
 import 'image_slider_footer.dart';
 import 'slider_header.dart';
 
@@ -108,7 +108,7 @@ class ImageSliderItem extends StatelessWidget {
                         fit: BoxFit.cover,
                       )
                     : Image.network(
-                        "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
+                        "${K.imageBaseUrl}${dashboardItemInfo.image}",
                         fit: BoxFit.cover,
                         loadingBuilder: (context, widget, loadingProgress) {
                           if (loadingProgress == null) return widget;

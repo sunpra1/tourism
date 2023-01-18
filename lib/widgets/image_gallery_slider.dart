@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tourism/models/dashboard_item.dart';
 import 'package:tourism/models/dashboard_item_info.dart';
-import 'package:tourism/utils/api_request.dart';
 
 import '../screens/view_blog_screen.dart';
+import '../utils/k.dart';
 import 'slider_footer.dart';
 import 'slider_header.dart';
 
@@ -114,7 +114,7 @@ class ImageGalleryItem extends StatelessWidget {
                         fit: BoxFit.cover,
                       )
                     : Image.network(
-                        "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
+                        "${K.imageBaseUrl}${dashboardItemInfo.image}",
                         fit: BoxFit.cover,
                         loadingBuilder: (context, widget, loadingProgress) {
                           if (loadingProgress == null) return widget;
@@ -165,7 +165,7 @@ class ImageGalleryItem extends StatelessWidget {
                         fit: BoxFit.cover,
                       )
                     : Image.network(
-                        "https://${APIRequest.baseUrl}${dashboardItemInfo.image1}",
+                        "${K.imageBaseUrl}${dashboardItemInfo.image1}",
                         fit: BoxFit.cover,
                         loadingBuilder: (context, widget, loadingProgress) {
                           if (loadingProgress == null) return widget;
@@ -195,7 +195,7 @@ class ImageGalleryItem extends StatelessWidget {
                             fit: BoxFit.cover,
                           )
                         : Image.network(
-                            "https://${APIRequest.baseUrl}${dashboardItemInfo.image}",
+                            "${K.imageBaseUrl}${dashboardItemInfo.image}",
                             fit: BoxFit.cover,
                             loadingBuilder: (context, widget, loadingProgress) {
                               if (loadingProgress == null) return widget;

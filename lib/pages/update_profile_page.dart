@@ -8,12 +8,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'package:tourism/data/api_service.dart';
+import 'package:tourism/data/pojo/dynamic_data_response.dart';
 import 'package:tourism/models/gender.dart';
+import 'package:tourism/utils/utils.dart';
 
-import '../models/api_response.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
-import '../utils/api_request.dart';
 import '../widgets/gradient_button.dart';
 import '../widgets/horizontal_line.dart';
 import '../widgets/progress_dialog.dart';
@@ -37,7 +38,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   bool isValueSet = false;
   bool isPasswordEnabled = true;
-  Gender gender = Gender.unSpeacified;
+  Gender gender = Gender.unSpecified;
   String? selectedDate;
   File? imageFile;
 
@@ -331,12 +332,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         user.profileShortImage =
             "data:image/jpeg;base64,${Convert.base64Encode(imageFile!.readAsBytesSync())}";
 
-      Map<String, dynamic> body = user.toMap();
-      APIResponse response = await APIRequest<Map<String, dynamic>>(
-        requestType: RequestType.post,
-        requestEndPoint: RequestEndPoint.updateProfile,
-        body: body,
-      ).make();
+      Map<String, dynamic> body = user.toJson();
+      DynamicDataResponse response =
+          await APIService(Utils.getDioWithInterceptor()).updateProfile(body);
       Navigator.of(context).pop();
       if (response.success) {
         context.read<UserProvider>().setLoggedInUser(user);
@@ -498,14 +496,14 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                                 });
                               },
                               items: [
-                                Gender.unSpeacified,
+                                Gender.unSpecified,
                                 Gender.male,
                                 Gender.female,
                                 Gender.others,
                               ].map<DropdownMenuItem<Gender>>(
                                 (Gender value) {
                                   return DropdownMenuItem<Gender>(
-                                    enabled: value != Gender.unSpeacified,
+                                    enabled: value != Gender.unSpecified,
                                     value: value,
                                     child: Text(
                                       value.value,

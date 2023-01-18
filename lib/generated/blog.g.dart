@@ -14,8 +14,8 @@ Blog _$BlogFromJson(Map<String, dynamic> json) => Blog(
       longDes: json['longDesc'] as String? ?? '',
       image: json['image'] as String?,
       image1: json['image1'] as String?,
-      latitude: (json['latitude'] as num?)?.toDouble(),
-      longitude: (json['longitude'] as num?)?.toDouble(),
+      latitude: json['latitude'] as String?,
+      longitude: json['longitude'] as String?,
     );
 
 Map<String, dynamic> _$BlogToJson(Blog instance) => <String, dynamic>{

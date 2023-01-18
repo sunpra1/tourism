@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tourism/models/my_image.dart';
-import 'package:tourism/utils/api_request.dart';
 import 'package:tourism/widgets/my_app_bar.dart';
+
+import '../utils/k.dart';
 
 class ViewImageScreen extends StatefulWidget {
   static const String routeName = "/viewImageScreen";
@@ -40,7 +41,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
               height: (MediaQuery.of(context).size.width * 2) / 3,
               child: GridTile(
                 child: Image.network(
-                  "https://${APIRequest.baseUrl}${image.path}",
+                  "${K.imageBaseUrl}${image.path}",
                   fit: BoxFit.cover,
                 ),
                 footer: showDetails

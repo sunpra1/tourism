@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import 'package:tourism/data/api_service.dart';
-import 'package:tourism/data/pojo/video_detail_response.dart';
+import 'package:tourism/data/pojo/videos_detail_response.dart';
 import 'package:tourism/models/video_detail.dart';
 import 'package:tourism/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
@@ -14,8 +14,8 @@ import '../widgets/progress_dialog.dart';
 class VideosPage extends StatelessWidget {
   Future<List<VideoDetail>?> _getVideos(BuildContext context) async {
     try {
-      VideoDetailResponse videoDetailResponse =
-      await APIService(Utils.getDioWithInterceptor()).getVideos({
+      VideosDetailResponse videoDetailResponse =
+          await APIService(Utils.getDioWithInterceptor()).getVideos({
         "value": "",
         "category": "",
         "subCategory": "",
@@ -53,34 +53,26 @@ class VideosPage extends StatelessWidget {
 
           return (videos != null && videos.length > 0)
               ? GridView.builder(
-            itemCount: videos.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 3 / 2,
-            ),
-            itemBuilder: (_, index) =>
-                VideoItem(
-                  key: Key(videos[index].id.toString()),
-                  videoDetail: videos[index],
-                ),
-          )
+                  itemCount: videos.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childAspectRatio: 3 / 2,
+                  ),
+                  itemBuilder: (_, index) => VideoItem(
+                    key: Key(videos[index].id.toString()),
+                    videoDetail: videos[index],
+                  ),
+                )
               : Center(
-            child: Text(
-              "NO VIDEOS AVAILABLE",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .secondary,
-              ),
-            ),
-          );
+                  child: Text(
+                    "NO VIDEOS AVAILABLE",
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                  ),
+                );
         },
       ),
     );
@@ -100,18 +92,17 @@ class VideoItem extends StatelessWidget {
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (_) =>
-            AlertDialog(
-              title: Text("UNABLE TO OPEN"),
-              content: Text("Video url is not recognized as valid video url."),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("DISMISS"))
-              ],
-            ),
+        builder: (_) => AlertDialog(
+          title: Text("UNABLE TO OPEN"),
+          content: Text("Video url is not recognized as valid video url."),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("DISMISS"))
+          ],
+        ),
       );
     }
   }
@@ -125,10 +116,7 @@ class VideoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double padding = 8.0;
-    double totalWidth = MediaQuery
-        .of(context)
-        .size
-        .width - 2 * padding;
+    double totalWidth = MediaQuery.of(context).size.width - 2 * padding;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -145,31 +133,26 @@ class VideoItem extends StatelessWidget {
                 child: GridTile(
                   child: videoDetail.imagePath != null
                       ? Image.network(
-                    videoDetail.imagePath!,
-                    fit: BoxFit.cover,
-                  )
+                          videoDetail.imagePath!,
+                          fit: BoxFit.cover,
+                        )
                       : _getVideoIdFromYoutubeUrl(videoDetail.path) != null
-                      ? Image.network(
-                    "https://img.youtube.com/vi/${_getVideoIdFromYoutubeUrl(
-                        videoDetail.path)}/hqdefault.jpg",
-                    fit: BoxFit.cover,
-                  )
-                      : Image.asset(
-                    "assets/images/youtube.jpeg",
-                    fit: BoxFit.cover,
-                  ),
+                          ? Image.network(
+                              "https://img.youtube.com/vi/${_getVideoIdFromYoutubeUrl(videoDetail.path)}/hqdefault.jpg",
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              "assets/images/youtube.jpeg",
+                              fit: BoxFit.cover,
+                            ),
                   header: GridTileBar(
                     backgroundColor: Colors.black54,
                     title: Text(
                       videoDetail.name,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .labelMedium
-                          ?.copyWith(
-                        color: Colors.white,
-                        fontSize: 11,
-                      ),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: Colors.white,
+                            fontSize: 11,
+                          ),
                       maxLines: 3,
                     ),
                     leading: Icon(FaIcon(FontAwesomeIcons.play).icon, size: 9),
@@ -177,8 +160,7 @@ class VideoItem extends StatelessWidget {
                   footer: GridTileBar(
                     backgroundColor: Colors.black54,
                     subtitle: Text(videoDetail.shortDec,
-                        style: Theme
-                            .of(context)
+                        style: Theme.of(context)
                             .textTheme
                             .labelSmall
                             ?.copyWith(color: Colors.white, fontSize: 9),

@@ -19,9 +19,9 @@ class Blog {
   @JsonKey(name: "image1")
   final String? image1;
   @JsonKey(name: "latitude")
-  final double? latitude;
+  final String? latitude;
   @JsonKey(name: "longitude")
-  final double? longitude;
+  final String? longitude;
 
   Blog({
     required this.blogId,

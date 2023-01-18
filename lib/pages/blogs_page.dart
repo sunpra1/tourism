@@ -10,7 +10,7 @@ import 'package:url_launcher/url_launcher.dart' as Launcher;
 
 import '../data/api_service.dart';
 import '../data/pojo/blogs_response.dart';
-import '../utils/api_request.dart';
+import '../utils/k.dart';
 import '../utils/utils.dart';
 
 class BlogsPage extends StatelessWidget {
@@ -164,7 +164,7 @@ class BlogItem extends StatelessWidget {
                                 fit: BoxFit.cover,
                               )
                             : Image.network(
-                                "https://${APIRequest.baseUrl}${blog.image}",
+                                "${K.imageBaseUrl}${blog.image}",
                                 fit: BoxFit.cover,
                                 height: imageSize,
                                 width: imageSize,

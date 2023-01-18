@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tourism/data/api_service.dart';
+import 'package:tourism/data/pojo/vendors_response.dart';
 import 'package:tourism/models/vendor.dart';
+import 'package:tourism/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
-import '../models/api_response.dart';
 import '../screens/view_vendor_screen.dart';
-import '../utils/api_request.dart';
+import '../utils/k.dart';
 import '../widgets/progress_dialog.dart';
 
 class VendorsPage extends StatelessWidget {
   const VendorsPage({Key? key}) : super(key: key);
 
   Future<List<Vendor>?> _getVendors(BuildContext context) async {
-    APIResponse response = await APIRequest<List<dynamic>>(
-        requestType: RequestType.post,
-        requestEndPoint: RequestEndPoint.vendors,
-        body: {
-          "value": "",
-          "category": "",
-          "subCategory": "",
-          "location": "",
-          "page": 1,
-          "pageSize": 30,
-          "totalPage": 1
-        }).make();
-    if (response.success)
-      return Vendor.fromListMap(response.data);
+    VendorsResponse vendorsResponse =
+        await APIService(Utils.getDioWithInterceptor()).getVendors({
+      "value": "",
+      "category": "",
+      "subCategory": "",
+      "location": "",
+      "page": 1,
+      "pageSize": 30,
+      "totalPage": 1
+    });
+    if (vendorsResponse.success)
+      return vendorsResponse.data;
     else
       return null;
   }
@@ -201,7 +201,7 @@ class VendorItem extends StatelessWidget {
                           fit: BoxFit.cover,
                         )
                       : Image.network(
-                          "https://${APIRequest.baseUrl}${vendor.banner}",
+                          "${K.imageBaseUrl}${vendor.banner}",
                           fit: BoxFit.cover,
                           loadingBuilder: (context, widget, loadingProgress) {
                             if (loadingProgress == null) return widget;
@@ -257,7 +257,7 @@ class VendorItem extends StatelessWidget {
                                       "assets/images/app_logo.png",
                                     ) as ImageProvider
                                   : NetworkImage(
-                                      "https://${APIRequest.baseUrl}${vendor.logo}",
+                                      "${K.imageBaseUrl}${vendor.logo}",
                                     ),
                         ),
                       ),

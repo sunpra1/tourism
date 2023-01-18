@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tourism/utils/api_request.dart';
+
+import '../utils/k.dart';
 
 class CarouselWithArrow extends StatefulWidget {
   final List<String?> images;
@@ -84,7 +85,7 @@ class CarouselItem extends StatelessWidget {
             fit: BoxFit.cover,
           )
         : Image.network(
-            "https://${APIRequest.baseUrl}/$image",
+            "${K.imageBaseUrl}$image",
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
             loadingBuilder: (context, widget, loadingProgress) {

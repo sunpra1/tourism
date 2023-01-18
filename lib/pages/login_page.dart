@@ -3,14 +3,14 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tourism/data/api_service.dart';
+import 'package:tourism/data/pojo/login_response.dart';
 import 'package:tourism/screens/register_screen.dart';
+import 'package:tourism/utils/utils.dart';
 import 'package:tourism/widgets/gradient_button.dart';
 
 import '../data/pojo/auth_body.dart';
-import '../models/api_response.dart';
-import '../models/user.dart';
 import '../providers/user_provider.dart';
-import '../utils/api_request.dart';
 import '../widgets/progress_dialog.dart';
 
 class LoginPage extends StatefulWidget {
@@ -127,16 +127,12 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
         authType: AuthType.login,
       );
-      APIResponse response = await APIRequest<Map<String, dynamic>>(
-              requestType: RequestType.post,
-              requestEndPoint: RequestEndPoint.login,
-              body: body.toMap())
-          .make();
+      LoginResponse loginResponse =
+          await APIService(Utils.getDioWithInterceptor())
+              .loginUser(body.toJson());
       Navigator.of(context).pop();
-      if (response.success) {
-        context.read<UserProvider>().setLoggedInUser(
-              User.fromMap(response.data),
-            );
+      if (loginResponse.success) {
+        context.read<UserProvider>().setLoggedInUser(loginResponse.data);
         Navigator.of(context).popUntil(ModalRoute.withName("/"));
       } else {
         showDialog(
@@ -144,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           builder: (_) => AlertDialog(
             title: Text("LOGIN FAILED"),
-            content: Text(response.message ??
+            content: Text(loginResponse.message ??
                 "Login failed, please try again sometime later."),
             actions: [
               TextButton(

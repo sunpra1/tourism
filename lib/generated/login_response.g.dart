@@ -1,23 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../data/pojo/videos_detail_response.dart';
+part of '../data/pojo/login_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-VideosDetailResponse _$VideoDetailResponseFromJson(Map<String, dynamic> json) =>
-    VideosDetailResponse(
+LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
+    LoginResponse(
       code: json['code'] as String,
       success: json['success'] as bool,
       message: json['message'] as String?,
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => VideoDetail.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: json['data'] == null
+          ? null
+          : User.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$VideoDetailResponseToJson(
-        VideosDetailResponse instance) =>
+Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
       'code': instance.code,
       'success': instance.success,

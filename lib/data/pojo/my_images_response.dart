@@ -5,7 +5,7 @@ import '../../models/my_image.dart';
 part '../../generated/my_image_response.g.dart';
 
 @JsonSerializable()
-class MyImageResponse {
+class MyImagesResponse {
   @JsonKey(name: 'code')
   String code;
   @JsonKey(name: 'success')
@@ -15,14 +15,14 @@ class MyImageResponse {
   @JsonKey(name: 'data')
   List<MyImage>? data;
 
-  MyImageResponse({
+  MyImagesResponse({
     required this.code,
     required this.success,
     required this.message,
     required this.data,
   });
 
-  factory MyImageResponse.fromJson(Map<String, dynamic> json) =>
+  factory MyImagesResponse.fromJson(Map<String, dynamic> json) =>
       _$MyImageResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$MyImageResponseToJson(this);

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_details_body.dart';
+part of '../data/pojo/app_details_body.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

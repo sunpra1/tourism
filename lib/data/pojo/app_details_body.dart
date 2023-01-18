@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'app_details_body.g.dart';
+part '../../generated/app_details_body.g.dart';
 
 @JsonSerializable()
 class AppDetailsBody {
