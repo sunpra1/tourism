@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tourism/data/api_service.dart';
 import 'package:tourism/models/dashboard.dart';
 import 'package:tourism/models/dashboard_item.dart';
+import 'package:tourism/pages/failed_getting_data.dart';
 import 'package:tourism/screens/loading_screen.dart';
 import 'package:tourism/utils/utils.dart';
 
@@ -13,10 +14,15 @@ import '../widgets/image_gallery_slider.dart';
 import '../widgets/image_slider.dart';
 import '../widgets/separator.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  Future<Dashboard?> _getDashboardDetails(BuildContext context) async {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Future<Dashboard?> _getDashboardDetails() async {
     try {
       DashboardResponse dashboardResponse =
           await APIService(Utils.getDioWithInterceptor()).getDashboardData();
@@ -30,10 +36,14 @@ class HomePage extends StatelessWidget {
     }
   }
 
+  _retry() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Dashboard?>(
-      future: _getDashboardDetails(context),
+      future: _getDashboardDetails(),
       builder: (_, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return LoadingScreen();
@@ -41,7 +51,9 @@ class HomePage extends StatelessWidget {
         Dashboard? dashboard = snapshot.data;
 
         if (dashboard == null) {
-          return LoadingScreen();
+          return FailedGettingData(
+            onClick: _retry,
+          );
         }
 
         return Container(
