@@ -79,6 +79,7 @@ flutter:
     - assets/images/abstract.png
     - assets/images/app_logo.png
     - assets/images/default_user.png
+    - assets/images/feels_lonely.png
     - assets/images/image_placeholder.webp
     - assets/images/no_internet_connection.webp
     - assets/images/server_maintenance.webp

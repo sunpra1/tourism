@@ -26,8 +26,8 @@ abstract class APIService {
   @GET("public/NearPlaces")
   Future<NearbyPlacesResponse> getNearbyPlaces();
 
-  @GET("Blog/GetAllBlog")
-  Future<BlogsResponse> getAllBlogs();
+  @POST("Blog/GetAllBlog")
+  Future<BlogsResponse> getAllBlogs(@Body() Map<String, dynamic> body);
 
   @GET("Blog/GetBlogById/{blogId}")
   Future<BlogResponse> getBlogById(@Path("blogId") String blogId);

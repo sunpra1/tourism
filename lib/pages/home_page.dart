@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tourism/data/api_service.dart';
 import 'package:tourism/models/dashboard.dart';
 import 'package:tourism/models/dashboard_item.dart';
-import 'package:tourism/pages/failed_getting_data.dart';
+import 'package:tourism/pages/failed_getting_data_page.dart';
 import 'package:tourism/screens/loading_screen.dart';
 import 'package:tourism/utils/utils.dart';
 

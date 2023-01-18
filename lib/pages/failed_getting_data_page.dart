@@ -66,8 +66,8 @@ class _FailedGettingDataState extends State<FailedGettingData> {
               connectivityResult == ConnectivityResult.none
                   ? "assets/images/no_internet_connection.webp"
                   : "assets/images/server_maintenance.webp",
-              width: 150.0,
-              height: 200.0,
+              width: 200.0,
+              height: 220.0,
               fit: BoxFit.fill,
             ),
             SizedBox(

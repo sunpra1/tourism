@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tourism/models/blog.dart';
+import 'package:tourism/pages/feels_lonely_here_page.dart';
 import 'package:tourism/screens/view_blog_screen.dart';
 import 'package:tourism/widgets/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
@@ -12,25 +13,34 @@ import '../data/api_service.dart';
 import '../data/pojo/blogs_response.dart';
 import '../utils/k.dart';
 import '../utils/utils.dart';
+import 'failed_getting_data_page.dart';
 
-class BlogsPage extends StatelessWidget {
+class BlogsPage extends StatefulWidget {
   const BlogsPage({Key? key}) : super(key: key);
 
+  @override
+  State<BlogsPage> createState() => _BlogsPageState();
+}
+
+class _BlogsPageState extends State<BlogsPage> {
   Future<List<Blog>?> _getBlogs(BuildContext context) async {
     try {
       BlogsResponse blogsResponse =
-          await APIService(Utils.getDioWithInterceptor()).getAllBlogs();
+          await APIService(Utils.getDioWithInterceptor()).getAllBlogs({});
       if (blogsResponse.success)
         return (blogsResponse.data?.where((element) =>
                     element.latitude == null || element.longitude == null))
-                ?.toList() ??
-            List.empty();
+                ?.toList();
       else
         return null;
     } catch (e) {
       log(e.toString());
       return null;
     }
+  }
+
+  _retry() {
+    setState(() {});
   }
 
   @override
@@ -46,6 +56,19 @@ class BlogsPage extends StatelessWidget {
             return ProgressDialog(message: "LOADING...");
           }
           List<Blog>? blogs = snapshot.data as List<Blog>?;
+
+          if (blogs == null) {
+            return FailedGettingData(
+              onClick: _retry,
+            );
+          }
+
+          if (blogs.isEmpty) {
+            return FeelsLonelyHerePage(
+              message: "No blogs available."
+            );
+          }
+
           return (blogs != null && blogs.length > 0)
               ? ListView.builder(
                   itemBuilder: (_, index) => BlogItem(

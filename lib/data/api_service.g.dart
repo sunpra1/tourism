@@ -67,14 +67,15 @@ class _APIService implements APIService {
   }
 
   @override
-  Future<BlogsResponse> getAllBlogs() async {
+  Future<BlogsResponse> getAllBlogs(body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BlogsResponse>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
