@@ -32,8 +32,7 @@ class Vendor {
     required this.phoneNumber,
   });
 
-  factory Vendor.fromJson(Map<String, dynamic> json) =>
-      _$VendorFromJson(json);
+  factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);
 
   Map<String, dynamic> toJson() => _$VendorToJson(this);
 }

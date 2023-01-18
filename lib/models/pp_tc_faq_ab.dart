@@ -4,7 +4,6 @@ part '../generated/pp_tc_faq_ab.g.dart';
 
 @JsonSerializable()
 class PpTcFaqAb {
-
   @JsonKey(name: 'pptcfaqList')
   List<PpTcFaqAbDetails> ppTcFaqAbDetailsList;
 
@@ -18,7 +17,6 @@ class PpTcFaqAb {
 
 @JsonSerializable()
 class PpTcFaqAbDetails {
-
   @JsonKey(name: 'content')
   String content;
 

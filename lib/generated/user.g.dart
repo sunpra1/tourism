@@ -22,8 +22,9 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       profileId: json['profileId'] as String? ?? '',
       profileImage: json['profileImage'] as String? ?? '',
       profileShortImage: json['profileShorImage'] as String? ?? '',
-      roleName: $enumDecodeNullable(_$UserRoleEnumMap, json['roleName']) ??
-          UserRole.user,
+      roleName: json['roleName'] == null
+          ? UserRole.user
+          : User._getRoleFromString(json['roleName'] as String),
       token: json['token'] as String? ?? '',
     );
 
@@ -42,7 +43,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'profileId': instance.profileId,
       'profileImage': instance.profileImage,
       'profileShorImage': instance.profileShortImage,
-      'roleName': _$UserRoleEnumMap[instance.roleName]!,
+      'roleName': User._getStringFromRole(instance.roleName),
       'token': instance.token,
     };
 
@@ -51,9 +52,4 @@ const _$GenderEnumMap = {
   Gender.female: 'female',
   Gender.others: 'others',
   Gender.unSpecified: 'unSpecified',
-};
-
-const _$UserRoleEnumMap = {
-  UserRole.user: 'user',
-  UserRole.admin: 'admin',
 };

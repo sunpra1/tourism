@@ -50,7 +50,12 @@ class User {
   @JsonKey(name: 'profileShorImage', defaultValue: '')
   String profileShortImage;
 
-  @JsonKey(name: 'roleName', defaultValue: UserRole.user)
+  @JsonKey(
+    name: 'roleName',
+    defaultValue: UserRole.user,
+    fromJson: _getRoleFromString,
+    toJson: _getStringFromRole,
+  )
   UserRole roleName;
 
   @JsonKey(name: 'token', defaultValue: '')
@@ -84,7 +89,7 @@ class User {
     return Convert.jsonEncode(toJson());
   }
 
-  static UserRole _getRole(String roleString) {
+  static UserRole _getRoleFromString(String roleString) {
     UserRole value;
     switch (roleString) {
       case "Admin":
@@ -99,6 +104,8 @@ class User {
     }
     return value;
   }
+
+  static String _getStringFromRole(UserRole role) => role.value;
 }
 
 enum UserRole { user, admin }
