@@ -10,13 +10,20 @@ import 'package:tourism/widgets/progress_dialog.dart';
 import '../data/api_service.dart';
 import '../utils/utils.dart';
 import 'blogs_page.dart';
+import 'failed_getting_data_page.dart';
+import 'feels_lonely_here_page.dart';
 
-class ProximityPage extends StatelessWidget {
+class ProximityPage extends StatefulWidget {
   final ProximityType proximityType;
 
   const ProximityPage({Key? key, required this.proximityType})
       : super(key: key);
 
+  @override
+  State<ProximityPage> createState() => _ProximityPageState();
+}
+
+class _ProximityPageState extends State<ProximityPage> {
   Future<Proximity?> _getBlogs(BuildContext context) async {
     try {
       NearbyPlacesResponse nearbyPlacesResponse =
@@ -30,6 +37,8 @@ class ProximityPage extends StatelessWidget {
       return null;
     }
   }
+
+  _retry() => setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +55,15 @@ class ProximityPage extends StatelessWidget {
           List<Blog>? blogs = snapshot.data?.list;
 
           if (blogs == null) {
-            return ProgressDialog(message: "LOADING...");
+            return FailedGettingData(
+              onClick: _retry,
+            );
+          }
+
+          if (blogs.isEmpty) {
+            return FeelsLonelyHerePage(
+                message: "No posts available."
+            );
           }
 
           return ListView.builder(

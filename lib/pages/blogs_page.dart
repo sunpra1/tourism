@@ -29,8 +29,7 @@ class _BlogsPageState extends State<BlogsPage> {
           await APIService(Utils.getDioWithInterceptor()).getAllBlogs({});
       if (blogsResponse.success)
         return (blogsResponse.data?.where((element) =>
-                    element.latitude == null || element.longitude == null))
-                ?.toList();
+            element.latitude == null || element.longitude == null))?.toList();
       else
         return null;
     } catch (e) {
@@ -39,9 +38,7 @@ class _BlogsPageState extends State<BlogsPage> {
     }
   }
 
-  _retry() {
-    setState(() {});
-  }
+  _retry() => setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -64,24 +61,15 @@ class _BlogsPageState extends State<BlogsPage> {
           }
 
           if (blogs.isEmpty) {
-            return FeelsLonelyHerePage(
-              message: "No blogs available."
-            );
+            return FeelsLonelyHerePage(message: "No blogs available.");
           }
 
-          return (blogs != null && blogs.length > 0)
-              ? ListView.builder(
-                  itemBuilder: (_, index) => BlogItem(
-                    blog: blogs[index],
-                  ),
-                  itemCount: blogs.length,
-                )
-              : Center(
-                  child: Text(
-                    "NO BLOGS FOUND",
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                );
+          return ListView.builder(
+            itemBuilder: (_, index) => BlogItem(
+              blog: blogs[index],
+            ),
+            itemCount: blogs.length,
+          );
         },
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,13 +11,19 @@ import 'package:tourism/widgets/progress_dialog.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
 import '../models/blog.dart';
+import '../pages/failed_getting_data_page.dart';
 import '../widgets/carousel_with_arrow.dart';
 
-class ViewBlogScreen extends StatelessWidget {
+class ViewBlogScreen extends StatefulWidget {
   static const String routeName = "/viewBlogScreen";
 
   const ViewBlogScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ViewBlogScreen> createState() => _ViewBlogScreenState();
+}
+
+class _ViewBlogScreenState extends State<ViewBlogScreen> {
   Future<Blog?> _getBlog(BuildContext context) async {
     final String blogId = ModalRoute.of(context)!.settings.arguments as String;
     try {
@@ -25,25 +33,10 @@ class ViewBlogScreen extends StatelessWidget {
         return response.data;
       else
         throw Exception();
-    } on Exception catch (_) {
-      await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text("ERROR"),
-          content: Text("Unable to load blog details."),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"))
-          ],
-        ),
-      );
-      Navigator.of(context).pop();
+    } on Exception catch (e) {
+      log(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<Position?> _getCurrentLocation(BuildContext context) async {
@@ -105,94 +98,98 @@ class ViewBlogScreen extends StatelessWidget {
     Navigator.of(context).pop();
   }
 
+  _retry() => setState(() {});
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _getBlog(context),
-      builder: (_, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return Scaffold(
-            body: ProgressDialog(message: "LOADING...", wrap: false),
-          );
-        }
-        Blog? blog = snapshot.data as Blog?;
-        return blog != null
-            ? Scaffold(
-                body: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverAppBar(
-                        pinned: true,
-                        snap: false,
-                        floating: false,
-                        expandedHeight: 250.0,
-                        actions: [
-                          if (blog.latitude != null && blog.longitude != null)
-                            FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Container(
-                                  height: 18,
-                                  width: 18,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12)),
-                                  child: InkWell(
-                                    onTap: () => _goToGoogleMap(context, blog),
-                                    child: Center(
-                                      child: Icon(
-                                        FaIcon(FontAwesomeIcons.mapMarker).icon,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        size: 8,
-                                      ),
-                                    ),
-                                  ),
+    return Scaffold(
+      body: FutureBuilder(
+        future: _getBlog(context),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return ProgressDialog(message: "LOADING...", wrap: false);
+          }
+          Blog? blog = snapshot.data as Blog?;
+
+          if (blog == null) {
+            return FailedGettingData(
+              onClick: _retry,
+            );
+          }
+
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  pinned: true,
+                  snap: false,
+                  floating: false,
+                  expandedHeight: 250.0,
+                  actions: [
+                    if (blog.latitude != null && blog.longitude != null)
+                      FittedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                            height: 18,
+                            width: 18,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: InkWell(
+                              onTap: () => _goToGoogleMap(context, blog),
+                              child: Center(
+                                child: Icon(
+                                  FaIcon(FontAwesomeIcons.mapMarker).icon,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  size: 8,
                                 ),
                               ),
                             ),
-                        ],
-                        flexibleSpace: FlexibleSpaceBar(
-                          title: FittedBox(
-                            child: Text(
-                              blog.title.toUpperCase(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(color: Colors.white),
-                            ),
-                          ),
-                          centerTitle: false,
-                          background: CarouselWithArrow(
-                            images: [blog.image, blog.image1],
                           ),
                         ),
                       ),
-                      SliverToBoxAdapter(
-                        child: Container(
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 32.0,
-                            ),
-                            child: SingleChildScrollView(
-                              child: HtmlWidget(
-                                blog.longDes ?? blog.shortDes,
-                              ),
-                            ),
-                          ),
-                        ),
+                  ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: FittedBox(
+                      child: Text(
+                        blog.title.toUpperCase(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: Colors.white),
                       ),
-                    ],
+                    ),
+                    centerTitle: false,
+                    background: CarouselWithArrow(
+                      images: [blog.image, blog.image1],
+                    ),
                   ),
                 ),
-              )
-            : SizedBox.shrink();
-      },
+                SliverToBoxAdapter(
+                  child: Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 32.0,
+                      ),
+                      child: SingleChildScrollView(
+                        child: HtmlWidget(
+                          blog.longDes ?? blog.shortDes,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

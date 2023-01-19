@@ -9,10 +9,17 @@ import 'package:url_launcher/url_launcher.dart' as Launcher;
 import '../screens/view_vendor_screen.dart';
 import '../utils/k.dart';
 import '../widgets/progress_dialog.dart';
+import 'failed_getting_data_page.dart';
+import 'feels_lonely_here_page.dart';
 
-class VendorsPage extends StatelessWidget {
+class VendorsPage extends StatefulWidget {
   const VendorsPage({Key? key}) : super(key: key);
 
+  @override
+  State<VendorsPage> createState() => _VendorsPageState();
+}
+
+class _VendorsPageState extends State<VendorsPage> {
   Future<List<Vendor>?> _getVendors(BuildContext context) async {
     VendorsResponse vendorsResponse =
         await APIService(Utils.getDioWithInterceptor()).getVendors({
@@ -30,21 +37,33 @@ class VendorsPage extends StatelessWidget {
       return null;
   }
 
+  _retry() => setState(() {});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      child: FutureBuilder(
+      child: FutureBuilder<List<Vendor>?>(
         future: _getVendors(context),
         builder: (_, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return ProgressDialog(message: "LOADING...");
           }
-          List<Vendor>? vendors = snapshot.data as List<Vendor>?;
-          print("Vendor size is: ${vendors?.length}");
-          return (vendors != null && vendors.length > 0)
-              ? Padding(
+
+          List<Vendor>? vendors = snapshot.data;
+
+          if (vendors == null) {
+            return FailedGettingData(
+              onClick: _retry,
+            );
+          }
+
+          if (vendors.isEmpty) {
+            return FeelsLonelyHerePage(message: "No vendors available.");
+          }
+
+          return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: GridView.builder(
                     itemBuilder: (_, index) => VendorItem(
@@ -57,12 +76,6 @@ class VendorsPage extends StatelessWidget {
                       mainAxisSpacing: 8.0,
                       crossAxisSpacing: 8.0,
                     ),
-                  ),
-                )
-              : Center(
-                  child: Text(
-                    "NO VENDORS FOUND",
-                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                 );
         },

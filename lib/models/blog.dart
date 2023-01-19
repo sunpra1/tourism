@@ -13,7 +13,7 @@ class Blog {
   @JsonKey(name: "shortDess", defaultValue: "")
   final String shortDes;
   @JsonKey(name: "longDesc", defaultValue: "")
-  final String longDes;
+  final String? longDes;
   @JsonKey(name: "image")
   final String? image;
   @JsonKey(name: "image1")

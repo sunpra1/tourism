@@ -36,9 +36,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _retry() {
-    setState(() {});
-  }
+  _retry() => setState(() {});
 
   @override
   Widget build(BuildContext context) {

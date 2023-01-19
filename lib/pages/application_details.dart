@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:tourism/data/api_service.dart';
@@ -9,16 +11,22 @@ import 'package:tourism/utils/app_theme.dart';
 
 import '../utils/utils.dart';
 import '../widgets/progress_dialog.dart';
+import 'failed_getting_data_page.dart';
 
-class ApplicationDetails extends StatelessWidget {
+class ApplicationDetails extends StatefulWidget {
   final MenuType drawerMenuType;
 
   const ApplicationDetails({Key? key, required this.drawerMenuType})
       : super(key: key);
 
+  @override
+  State<ApplicationDetails> createState() => _ApplicationDetailsState();
+}
+
+class _ApplicationDetailsState extends State<ApplicationDetails> {
   Future<PpTcFaqAb?> _getPpTcFaqAb(BuildContext context) async {
     FlagType flagType;
-    switch (drawerMenuType) {
+    switch (widget.drawerMenuType) {
       case MenuType.aboutUs:
         flagType = FlagType.aboutUS;
         break;
@@ -37,26 +45,13 @@ class ApplicationDetails extends StatelessWidget {
         return ppTcFaqAbResponse.data;
       } else
         throw Exception();
-    } on Exception catch (_) {
-      await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text("ERROR"),
-          content:
-              Text("Unable to load ${drawerMenuType.value.toLowerCase()}."),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"))
-          ],
-        ),
-      );
+    } on Exception catch (e) {
+      log(e.toString());
+      return null;
     }
-    return null;
   }
+
+  _retry() => setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +65,7 @@ class ApplicationDetails extends StatelessWidget {
             expandedHeight: 150.0,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                drawerMenuType.value.toUpperCase(),
+                widget.drawerMenuType.value.toUpperCase(),
                 style: Theme.of(context)
                     .textTheme
                     .labelMedium
@@ -85,7 +80,7 @@ class ApplicationDetails extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: FutureBuilder(
+            child: FutureBuilder<PpTcFaqAb?>(
               future: _getPpTcFaqAb(context),
               builder: (_, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
@@ -94,22 +89,25 @@ class ApplicationDetails extends StatelessWidget {
                     wrap: true,
                   );
                 }
-                PpTcFaqAb? ppTcFaqAb = snapshot.data as PpTcFaqAb?;
-                if (ppTcFaqAb != null) {
-                  return SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 32.0,
-                      ),
-                      child: HtmlWidget(
-                        ppTcFaqAb.ppTcFaqAbDetailsList[0].content,
-                      ),
-                    ),
+                PpTcFaqAb? ppTcFaqAb = snapshot.data;
+
+                if (ppTcFaqAb == null) {
+                  return FailedGettingData(
+                    onClick: _retry,
                   );
-                } else {
-                  return SizedBox.shrink();
                 }
+
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 32.0,
+                    ),
+                    child: HtmlWidget(
+                      ppTcFaqAb.ppTcFaqAbDetailsList[0].content,
+                    ),
+                  ),
+                );
               },
             ),
           ),

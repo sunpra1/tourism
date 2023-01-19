@@ -10,20 +10,30 @@ import 'package:tourism/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart' as Launcher;
 
 import '../widgets/progress_dialog.dart';
+import 'failed_getting_data_page.dart';
+import 'feels_lonely_here_page.dart';
 
-class VideosPage extends StatelessWidget {
+class VideosPage extends StatefulWidget {
+  VideosPage({Key? key}) : super(key: key);
+
+  @override
+  State<VideosPage> createState() => _VideosPageState();
+}
+
+class _VideosPageState extends State<VideosPage> {
   Future<List<VideoDetail>?> _getVideos(BuildContext context) async {
     try {
       VideosDetailResponse videoDetailResponse =
-          await APIService(Utils.getDioWithInterceptor()).getVideos({
-        "value": "",
-        "category": "",
-        "subCategory": "",
-        "location": "",
-        "page": 1,
-        "pageSize": 30,
-        "totalPage": 1,
-      });
+          await APIService(Utils.getDioWithInterceptor())
+              .getVideos({
+                "value": "",
+                "category": "",
+                "subCategory": "",
+                "location": "",
+                "page": 1,
+                "pageSize": 30,
+                "totalPage": 1,
+              });
       if (videoDetailResponse.success)
         return videoDetailResponse.data;
       else
@@ -34,7 +44,7 @@ class VideosPage extends StatelessWidget {
     }
   }
 
-  VideosPage({Key? key}) : super(key: key);
+  _retry() => setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -42,37 +52,38 @@ class VideosPage extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       width: double.infinity,
       height: double.infinity,
-      child: FutureBuilder(
+      child: FutureBuilder<List<VideoDetail>?>(
         future: _getVideos(context),
         builder: (_, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return ProgressDialog(message: "LOADING...");
           }
 
-          List<VideoDetail>? videos = snapshot.data as List<VideoDetail>?;
+          List<VideoDetail>? videos = snapshot.data;
 
-          return (videos != null && videos.length > 0)
-              ? GridView.builder(
-                  itemCount: videos.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 3 / 2,
-                  ),
-                  itemBuilder: (_, index) => VideoItem(
-                    key: Key(videos[index].id.toString()),
-                    videoDetail: videos[index],
-                  ),
-                )
-              : Center(
-                  child: Text(
-                    "NO VIDEOS AVAILABLE",
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ),
-                );
+          if (videos == null) {
+            return FailedGettingData(
+              onClick: _retry,
+            );
+          }
+
+          if (videos.isEmpty) {
+            return FeelsLonelyHerePage(message: "No videos available.");
+          }
+
+          return GridView.builder(
+            itemCount: videos.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 3 / 2,
+            ),
+            itemBuilder: (_, index) => VideoItem(
+              key: Key(videos[index].id.toString()),
+              videoDetail: videos[index],
+            ),
+          );
         },
       ),
     );
