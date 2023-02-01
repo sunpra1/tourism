@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:retrofit/http.dart';
 import 'package:tourism/data/pojo/dynamic_data_response.dart';
 import 'package:tourism/data/pojo/login_response.dart';
@@ -14,8 +15,15 @@ import 'pojo/nearby_places_response.dart';
 import 'pojo/vendor_response.dart';
 import 'pojo/videos_detail_response.dart';
 
-part 'api_service.g.dart';
+// part 'api_service.g.dart';
 
+part '../generated/api_service.g.dart';
+
+/*
+Uncomment above commented part, when new endpoint is added and paste the new override from this
+file to "./generated/api_service.g.dart" and wrap json parsing with compute.
+Currently parser = parser: Parser.FlutterCompute is giving issues.
+ */
 @RestApi(baseUrl: "http://www.panchpokharitourism.com/api/")
 abstract class APIService {
   factory APIService(Dio dio, {String baseUrl}) = _APIService;

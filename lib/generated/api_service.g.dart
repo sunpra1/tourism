@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api_service.dart';
+part of '../data/api_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -39,7 +39,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = DashboardResponse.fromJson(_result.data!);
+    final value = await compute(DashboardResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -62,7 +62,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NearbyPlacesResponse.fromJson(_result.data!);
+    final value = await compute(NearbyPlacesResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -86,7 +86,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BlogsResponse.fromJson(_result.data!);
+    final value = await compute(BlogsResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -109,7 +109,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BlogResponse.fromJson(_result.data!);
+    final value = await compute(BlogResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -132,7 +132,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = MyImagesResponse.fromJson(_result.data!);
+    final value = await compute(MyImagesResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -156,7 +156,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VideosDetailResponse.fromJson(_result.data!);
+    final value = await compute(VideosDetailResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -180,7 +180,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = PpTcFaqAbResponse.fromJson(_result.data!);
+    final value = await compute(PpTcFaqAbResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -204,7 +204,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VendorsResponse.fromJson(_result.data!);
+    final value = await compute(VendorsResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -227,7 +227,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VendorResponse.fromJson(_result.data!);
+    final value = await compute(VendorResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -251,7 +251,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = RegisterResponse.fromJson(_result.data!);
+    final value = await compute(RegisterResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -275,7 +275,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = LoginResponse.fromJson(_result.data!);
+    final value = await compute(LoginResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -299,7 +299,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = DynamicDataResponse.fromJson(_result.data!);
+    final value = await compute(DynamicDataResponse.fromJson, _result.data!);
     return value;
   }
 
@@ -322,7 +322,7 @@ class _APIService implements APIService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = LoginResponse.fromJson(_result.data!);
+    final value = await compute(LoginResponse.fromJson, _result.data!);
     return value;
   }
 
